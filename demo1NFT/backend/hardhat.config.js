@@ -3,18 +3,18 @@ require("@nomiclabs/hardhat-waffle");
 /** @type import('hardhat/config').HardhatUserConfig */
 
 // 账户地址
-const OWNER_ADDRESS = "30a5f84d70dd09cf9B58DcE7754F9EB7F65B7C5a";
+const OWNER_ADDRESS = "30";
 // 账户私钥 设置为自己的账户私钥
-const PRIVATE_KEY = "8a25f2a7c145e80e862d31019511620ba5d5da6ad655226a82fb45489f5c3407";
+const PRIVATE_KEY = "8a2";
 
 // infrua 可以去infrua官网申请
-const INFURA_PROJECT_KEY = "1a1d448adf7045729eea206b7fb589a5";
+const INFURA_PROJECT_KEY = "1a";
 
 // alchemy
-const ALCHEMY_PORJECT_KEY = "lP56buX2yA871IuM5JLrF9mrV95qHUko";
+const ALCHEMY_PORJECT_KEY = "lP";
 
 // nft.storage API Token
-const NFT_STORAGE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDc2NDhFOEEwRDhmQUQyMTRERDU1NTg1YWEwMTZlZGRFNWE5NjJDOTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjk3MjI0NjA3NiwibmFtZSI6Ik15VGVzdEtleSJ9.PZfFTykgLVawc8RT82p_uonvG7poLBjn1lAb_kGN0KE";
+const NFT_STORAGE_KEY = "ek";
 
 // 部署成功后的合约地址
 const NFT_CONTRACT_ADDRESS = "0x6334ff95222dc286D95b26A3F0e1E65233B24106";
