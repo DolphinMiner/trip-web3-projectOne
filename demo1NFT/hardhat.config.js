@@ -1,11 +1,12 @@
 require("@nomiclabs/hardhat-waffle");
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 
 // 账户地址
-const OWNER_ADDRESS = "30";
+const OWNER_ADDRESS = process.env.OWNER_ADDRESS;
 // 账户私钥 设置为自己的账户私钥
-const PRIVATE_KEY = "8a2";
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 // infrua 可以去infrua官网申请
 const INFURA_PROJECT_KEY = "1a";
@@ -23,6 +24,9 @@ module.exports = {
   solidity: "0.8.9",
 // 配置部署的网络，这里我配置了两个测试环境ropsten和goerli
   networks: {
+    hardhat: {
+      chainId: 1337 // We set 1337 to make interacting with MetaMask simpler
+    },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${INFURA_PROJECT_KEY}`,
       accounts: [`${PRIVATE_KEY}`]
