@@ -9,16 +9,16 @@ const OWNER_ADDRESS = process.env.OWNER_ADDRESS;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 // infrua 可以去infrua官网申请
-const INFURA_PROJECT_KEY = "1a";
+const INFURA_PROJECT_KEY = process.env.INFURA_PROJECT_KEY;
 
 // alchemy
-const ALCHEMY_PORJECT_KEY = "lP";
+const ALCHEMY_PORJECT_KEY = process.env.ALCHEMY_PORJECT_KEY;
 
 // nft.storage API Token
-const NFT_STORAGE_KEY = "ek";
+const NFT_STORAGE_KEY = process.env.NFT_STORAGE_KEY;
 
 // 部署成功后的合约地址
-const NFT_CONTRACT_ADDRESS = "0x6334ff95222dc286D95b26A3F0e1E65233B24106";
+const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS
 
 module.exports = {
   solidity: "0.8.9",
