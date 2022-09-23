@@ -2,6 +2,7 @@
 ### 确保本地已正确安装node环境
 nodejs官网下载安装包：https://nodejs.org/en/
 也可以使用nvm来做版本管理：https://github.com/nvm-sh/nvm
+如已安装nvm，可在项目目录下使用`nvm use`来快速将node版本同步至开发推荐版本。
 
 ### 配置测试环境以太坊
 浏览器安装matemask插件，并注册使用一个开发wallet：https://metamask.io/
