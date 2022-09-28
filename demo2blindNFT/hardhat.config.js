@@ -1,29 +1,23 @@
 require("@nomiclabs/hardhat-waffle");
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 
-// 账户地址
-const OWNER_ADDRESS = "30a5f84d70dd09cf9B58DcE7754F9EB7F65B7C5a";
-// 账户私钥 设置为自己的账户私钥
-const PRIVATE_KEY = "";
-
-// infrua 可以去infrua官网申请
-const INFURA_PROJECT_KEY = "1a1d448adf7045729eea206b7fb589a5";
-
-// alchemy
-const ALCHEMY_PORJECT_KEY = "lP56buX2yA871IuM5JLrF9mrV95qHUko";
-
-// nft.storage API Token
-const NFT_STORAGE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDc2NDhFOEEwRDhmQUQyMTRERDU1NTg1YWEwMTZlZGRFNWE5NjJDOTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjk3MjI0NjA3NiwibmFtZSI6Ik15VGVzdEtleSJ9.PZfFTykgLVawc8RT82p_uonvG7poLBjn1lAb_kGN0KE";
-
-// 部署成功后的合约地址
-const NFT_CONTRACT_ADDRESS = "0x49e55BdF88b15c20594787aC86513f6cd41a24Cf";
+const OWNER_ADDRESS = process.env.OWNER_ADDRESS;
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const INFURA_PROJECT_KEY = process.env.INFURA_PROJECT_KEY;
+const ALCHEMY_PORJECT_KEY = process.env.ALCHEMY_PORJECT_KEY;
+const NFT_STORAGE_KEY = process.env.NFT_STORAGE_KEY;
+const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS;
 
 module.exports = {
   solidity: "0.8.10",
   gas: 500000,
 // 配置部署的网络，这里我配置了两个测试环境ropsten和goerli
   networks: {
+    hardhat: {
+      chainId: 1337 // We set 1337 to make interacting with MetaMask simpler
+    },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${INFURA_PROJECT_KEY}`,
       accounts: [`${PRIVATE_KEY}`]

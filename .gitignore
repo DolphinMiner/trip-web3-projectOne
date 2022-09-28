@@ -110,3 +110,8 @@ dist
 /demo1NFT/artifacts/
 /demo1NFT/cache/
 /demo1NFT/webapp/contracts/
+
+# demo1NFT local deploys
+/demo2blindNFT/artifacts/
+/demo2blindNFT/cache/
+/demo2blindNFT/webapp/contracts/

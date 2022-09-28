@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "npx hardhat --network localhost run ./scripts/deploy.js",
+    "deployGoerli": "npx hardhat --network goerli run ./scripts/deploy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,6 +15,7 @@
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "chai": "^4.3.6",
+    "dotenv": "^16.0.2",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.1",
     "hardhat": "^2.11.2"
