@@ -1,0 +1,19 @@
+{
+  "attributes": [
+    {
+      "trait_type": "Headdress",
+      "value": "Yellow"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Black"
+    },
+    {
+      "trait_stats": "Luck",
+      "value": "3"
+    }
+  ],
+  "description": "The world's most strongest gourd baby.",
+  "image": "ipfs://QmRRVjTRdmiRmVY4RSxTbMGtCtW9dqrMUVFfNZvx7rwa41/3.jpg",
+  "name": "San Wa"
+}

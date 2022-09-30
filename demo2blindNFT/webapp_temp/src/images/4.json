@@ -1,0 +1,19 @@
+{
+  "attributes": [
+    {
+      "trait_type": "Headdress",
+      "value": "Green"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Black"
+    },
+    {
+      "trait_stats": "Luck",
+      "value": "4"
+    }
+  ],
+  "description": "The world's most strongest gourd baby.",
+  "image": "ipfs://QmRRVjTRdmiRmVY4RSxTbMGtCtW9dqrMUVFfNZvx7rwa41/4.jpg",
+  "name": "Si Wa"
+}
