@@ -50,3 +50,11 @@ terminal新开窗口
 
 # 部署上mainnet
 //todo
+
+
+# quickStart
+1. 配置环境：在该目录中新建.env文件，根据env.examples文件中的内容进行补齐
+2. 合约编译：cd ./demo2blindNFT npx hardhat compile 编译合约文件会在项目目录中生成artifacts，将生成的/artifacts/contracts/TripNFT.sol/TripNFT.json内容，拷贝至webapp/src/contracts/contract.json中
+3. 合约部署：cd ./demo2blindNFT npx hardhat run scripts/deploy.js --network goerli 生成的合约地址拷贝至webapp/src/contracts/contract-address.json中的Token属性
+4. 启动web：cd ./webapp nmp install  npm run start 启动前端应用
+5. 进行铸币过程中提示gas out请在钱包交易时修改gas limit = 300000
