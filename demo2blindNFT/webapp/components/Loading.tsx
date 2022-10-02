@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Loading() {
+const Loading = () => {
   return (
     <div
       style={{
@@ -33,3 +33,4 @@ export function Loading() {
     </div>
   );
 }
+export default Loading;

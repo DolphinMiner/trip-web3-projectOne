@@ -2,7 +2,7 @@ const path = require("path");
 const { ethers } = require("hardhat");
 
 // 在这里填入需要部署的合约名，合约需位于./contracts文件夹内
-const CONTRACT_NAME_LIST = ["TripNFT"];
+const CONTRACT_NAME_LIST = ["TripNFT", "TestGreeting"];
 
 // 部署合约的脚本
 async function main() {
