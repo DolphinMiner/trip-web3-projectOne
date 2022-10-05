@@ -1,0 +1,19 @@
+{
+  "attributes": [
+    {
+      "trait_type": "Headdress",
+      "value": "Colorful"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Colorful"
+    },
+    {
+      "trait_stats": "Luck",
+      "value": "10"
+    }
+  ],
+  "description": "The world's rarest gourd baby.",
+  "image": "ipfs://QmRRVjTRdmiRmVY4RSxTbMGtCtW9dqrMUVFfNZvx7rwa41/8.jpg",
+  "name": "Cai Wa"
+}
