@@ -12,7 +12,7 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const INFURA_PROJECT_KEY = process.env.INFURA_PROJECT_KEY;
 
 // alchemy
-const ALCHEMY_PORJECT_KEY = process.env.ALCHEMY_PORJECT_KEY;
+const ALCHEMY_PROJECT_KEY = process.env.ALCHEMY_PROJECT_KEY;
 
 // nft.storage API Token
 const NFT_STORAGE_KEY = process.env.NFT_STORAGE_KEY;
@@ -33,7 +33,7 @@ module.exports = {
 
     },
     goerli: {
-      url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_PORJECT_KEY}`,
+      url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_PROJECT_KEY}`,
       accounts: [`${PRIVATE_KEY}`]
     },
   },

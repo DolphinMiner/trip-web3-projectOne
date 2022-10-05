@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Transfer({ transferTokens, transferEthers, tokenSymbol }) {
+const Transfer = ({ transferTokens, transferEthers, tokenSymbol }) => {
   return (
     <div>
       <h4>Transfer</h4>
@@ -80,3 +80,5 @@ export function Transfer({ transferTokens, transferEthers, tokenSymbol }) {
     </div>
   );
 }
+
+export default Transfer;
