@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env PROVIDER_MODE=local env-cmd -f ../.env next dev",
-    "devGoerli": "cross-env PROVIDER_MODE=goerli env-cmd -f ../.env next dev",
+    "dev:goerli": "cross-env PROVIDER_MODE=goerli env-cmd -f ../.env next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
