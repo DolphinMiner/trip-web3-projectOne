@@ -1,13 +1,14 @@
 import Image from "next/image";
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import styles from "./App.module.css";
-import { toPng } from "html-to-image";
+import { toBlob, toPng } from "html-to-image";
 import Avatar from "./components/Avatar";
 import pngSource from "./png";
 import { Attributes, LayerName } from "./types";
 import { Action, initialState, reducer } from "./reducer/attributes";
 import { shuffle } from "./utils";
 import { saveAs } from "file-saver";
+import JSZip from 'jszip'
 
 const App = () => {
   const avatarRef = useRef<HTMLDivElement | null>(null);
@@ -25,16 +26,24 @@ const App = () => {
     if (!window || !avatarRef.current) {
       return;
     }
-    toPng(avatarRef.current)
+    toBlob(avatarRef.current)
       .then(pngBlob => {
-        // image
-        saveAs(pngBlob, "avatar.png");
-        // json
+        if (!pngBlob) throw Error("Failed to toBlob");
+
         const jsonBlob = new Blob(
           [JSON.stringify(attributes)],
           {type: "text/plain;charset=utf-8"}
         );
-        saveAs(jsonBlob, 'metadata.json');
+
+        const zip = new JSZip();
+        zip.file('/png/avatar.png', pngBlob);
+        zip.file("/json/metadata.json", jsonBlob);
+        zip.generateAsync({type: "blob"})
+          .then(blob => {
+            saveAs(blob, 'avatar.zip')
+          }).catch(err => {
+            console.log(err);
+          });
       })
       .catch(err => {
         console.log('Failed to download', err);
