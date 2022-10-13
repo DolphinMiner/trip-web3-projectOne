@@ -26,6 +26,7 @@ const App = () => {
     }
     toPng(avatarRef.current)
       .then(blobUrl => {
+        console.log('attributes', attributes);
         const anchor = window.document.createElement('a');
         anchor.style.display = 'none';
         anchor.href = blobUrl;
