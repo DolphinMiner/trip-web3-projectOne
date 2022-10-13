@@ -29,6 +29,8 @@ const App = () => {
         console.log('attributes', attributes);
         const anchor = window.document.createElement('a');
         anchor.style.display = 'none';
+
+        // image
         anchor.href = blobUrl;
         anchor.download = "avatar.png";
         document.body.appendChild(anchor);
