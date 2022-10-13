@@ -1,57 +1,39 @@
 import { useEffect, useState } from "react";
 
-// We'll use ethers to interact with the Ethereum network and our contract
-import { ethers } from "ethers";
-
 import {
   useAccount,
   useBalance,
   useConnect,
   useContract,
   useContractRead,
-  useContractReads,
   useProvider,
   useSigner,
 } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
 
 import TripNFTArtifact from "../contracts/TripNFT.json";
 import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
 
 import NoWalletDetected from "./NoWalletDetected";
-import ConnectWallet from "./ConnectWallet";
-import Loading from "./Loading";
-import WaitingForTransactionMessage from "./WaitingForTransactionMessage";
-import TransactionErrorMessage from "./TransactionErrorMessage";
-import Transfer from "./Transfer";
+import BgImage from "./BgImage";
 
-const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
+import styles from "../styles/DApp.module.css";
 
 const DApp = () => {
   // 当前用户的地址
   const { address: currentAddress, isConnected } = useAccount();
   // 用户余额
-  const {
-    data: balanceData,
-    isError: isBalanceError,
-    isLoading: isBalanceLoading,
-  } = useBalance({ addressOrName: currentAddress });
+  const { data: balanceData } = useBalance({ addressOrName: currentAddress });
   // 以太坊网络提供方provider与singer
-  const provider = useProvider();
   const { data: signer, isError, isLoading } = useSigner();
   // NFT Contract Object
-  const nftContractObj = useContract({
-    addressOrName: contractAddress.TripNFT,
-    contractInterface: TripNFTArtifact.abi,
-    signerOrProvider: signer,
-  });
-  // Greeting Contract Object
-  const testGreetingContractObj = useContract({
-    addressOrName: contractAddress.TestGreeting,
-    contractInterface: TestGreetingArtifact.abi,
-    signerOrProvider: signer,
-  });
+  // const nftContractObj = useContract({
+  //   addressOrName: contractAddress.TripNFT,
+  //   contractInterface: TripNFTArtifact.abi,
+  //   signerOrProvider: signer,
+  // });
+  // TODO：之后改为读取合约的白名单字段
+  const isInWhiteList = true;
   // 本地调试用，查看是否正确连接至合约
   const {
     data: greetMsg,
@@ -62,12 +44,20 @@ const DApp = () => {
     contractInterface: TestGreetingArtifact.abi,
     functionName: "greet",
   });
-  console.log(greetMsg);
+  // 倒计时时钟指针
+  let countDownPointer: ReturnType<typeof setInterval> | null;
+  // 倒计时文案
+  const [countDownText, setCountDownText] = useState("--:--:--");
 
   // 连接钱包
   const { connect, connectors } = useConnect();
 
-  // --------------------------------   方法   --------------------------------------------------
+  useEffect(() => {
+    startCountDown();
+    return () => {
+      clearInterval(countDownPointer);
+    };
+  }, []);
 
   // 连接钱包
   const connectWallet = async () => {
@@ -77,116 +67,90 @@ const DApp = () => {
     console.log("connectWallet Successful!");
   };
 
-  // 获取当前账户的nft和以太币的数量
-  // const getUserAccountInfo = async () => {
+  // 铸造请求
+  const requestMint = () => {
+    // TODO: and contract call here
+  };
 
-  //   // 获取用户的nft数量
-  //   const TripNFT = await this.contractObj.balanceOf(this.state.currentAddress);
-  // };
+  const startCountDown = () => {
+    countDownPointer = setInterval(() => {
+      const restTotalSeconds = (new Date("2022/10/25") - new Date()) / 1000;
+      const seconds = Math.floor(restTotalSeconds % 60);
+      const minutes = Math.floor((restTotalSeconds / 60) % 60);
+      const hours = Math.floor((restTotalSeconds / 60 / 60) % 24);
+      const days = Math.floor(restTotalSeconds / 60 / 60 / 24);
 
-  // // 铸币交易
-  // // to：接收nft的地址, amount：铸造的数量
-  // const freeMint = async (amount, to) => {
-  //   try {
-  //     this.dismissTransactionError();
-  //     // 调用合约对象的铸造方法mintNft
-  //     const tx = await this.contractObj.mintNft(amount, to);
-  //     this.setState({ txBeingSent: tx.hash });
+      setCountDownText(`${days} days ${hours}:${minutes}:${seconds}`);
+    }, 1000);
+  };
 
-  //     const receipt = await tx.wait();
-  //     if (receipt.status === 0) {
-  //       // We can't know the exact error that made the transaction fail when it
-  //       // was mined, so we throw this generic one.
-  //       throw new Error("Transaction failed");
-  //     }
-  //   } catch (error) {
-  //     if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
-  //       return;
-  //     }
-  //     console.error(error);
-  //     this.setState({ transactionError: error });
-  //   } finally {
-  //     this.setState({ txBeingSent: undefined });
-  //   }
-  // };
+  const renderConnector = () => {
+    return (
+      <div>
+        {isConnected ? (
+          <button
+            type="button"
+            onClick={connectWallet}
+            className={styles.walletWelcome}
+          >
+            Welcome {`0x...${currentAddress?.substr(-4)}`}!
+          </button>
+        ) : (
+          <button
+            className={styles.walletLogin}
+            type="button"
+            onClick={connectWallet}
+          >
+            Connect Wallet
+          </button>
+        )}
+      </div>
+    );
+  };
 
-  // // 发起以太坊转账交易
-  // const transferEthers = async (to, amount, data) => {
-  //   try {
-  //     this.dismissTransactionError();
-  //     // 将ether转换为wei
-  //     const parseAmount = ethers.utils.parseEther(amount);
-  //     const from = this.state.currentAddress;
-  //     await window.ethereum.request({
-  //       method: "eth_sendTransaction",
-  //       params: [
-  //         {
-  //           from: from,
-  //           to: to,
-  //           gas: "0xa410", // 0x5208  21000  //0xa410 42000
-  //           value: parseAmount._hex,
-  //           data: data._hex, //data域普通转账交易可不填
-  //         },
-  //       ],
-  //     });
-  //   } catch (error) {
-  //     if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
-  //       return;
-  //     }
-  //     console.error(error);
-  //     this.setState({ transactionError: error });
-  //   } finally {
-  //     this.setState({ txBeingSent: undefined });
-  //   }
-  // };
+  const renderMintButton = () => {
+    const isAble = currentAddress && isInWhiteList;
+    const btnText = !currentAddress
+      ? "Connect wallet first."
+      : !isInWhiteList
+      ? "You are not qualified to buy."
+      : "MINT!";
 
-  // --------------------------------   render   --------------------------------------------------
-
-  // 1. 如果浏览器中没有安装钱包插件,则提示用户安装
-  if (window.ethereum === undefined) {
-    return <NoWalletDetected />;
-  }
-
-  // 2. 如果用户未连接钱包,则返回ConnectWallet组件(连接钱包，初始化用户信息)
-  if (!isConnected) {
-    return <ConnectWallet connectWallet={connectWallet} />;
-  }
+    return (
+      <div className="mt-10">
+        <button
+          className={isAble ? styles.mintAble : styles.mintDisable}
+          type="button"
+          onClick={() => isAble && requestMint()}
+        >
+          <span className="font-bold text-xl">{btnText}</span>
+        </button>
+      </div>
+    );
+  };
 
   // 4. 初始化完毕后
   return (
-    <div className="container p-4">
-      <div className="row">
-        <div className="col-12">
-          {balanceData && (
-            <b>
-              <span>{"User balance: "}</span>
-              {balanceData.formatted} ({balanceData.symbol})
-            </b>
-          )}
+    <div
+      className="container relative h-full w-full p-8 bg-white rounded-xl shadow-2xl"
+      style={{
+        backgroundImage: "linear-gradient(to top, #dfe9f3  0%, #ffffff 100%)",
+      }}
+    >
+      <BgImage />
 
-          <p>
-            <b>{"User address: "}</b>
-            <b>{currentAddress}</b>
-            <br></br>
-          </p>
-        </div>
+      <div className="relative">
+        {renderConnector()}
+
+        <h1 className="text-black font-bold text-5xl mt-10">LOG位广告位招商</h1>
+
+        <h1 className="text-black font-bold text-3xl mt-10">
+          Whitelist Sale Util In: <br/>
+          {`${countDownText}`}
+        </h1>
+
+        {renderMintButton()}
       </div>
-
-      <hr />
-
-      {/* <div className="row">
-        <div className="col-12">
-          {this.state.balance.gt(0) && (
-            <Transfer
-              transferTokens={(to, amount) => this.freeMint(amount, to)}
-              transferEthers={(to, amount, data) =>
-                this.transferEthers(to, amount, data)
-              }
-              tokenSymbol={this.state.tokenData.symbol}
-            />
-          )}
-        </div>
-      </div> */}
     </div>
   );
 };

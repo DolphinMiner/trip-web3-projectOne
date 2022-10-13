@@ -1,15 +1,13 @@
 .container {
-  padding: 0 2rem;
+  padding: 0;
 }
 
 .main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 8% 16% 8% 12%;
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+  background-image: url("../public/sea_bg.jpeg");
 }
 
 .footer {
@@ -28,27 +26,6 @@
   flex-grow: 1;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-}
-
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-}
-
-.title,
-.description {
-  text-align: center;
-}
 
 .description {
   margin: 4rem 0;

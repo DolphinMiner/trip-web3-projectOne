@@ -17,9 +17,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="">Web3.0!</a>
-        </h1>
         <DApp />
       </main>
     </div>
