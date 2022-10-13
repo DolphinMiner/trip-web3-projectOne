@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "setup": "rm -rf node_modules package-lock.json && npm i",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
