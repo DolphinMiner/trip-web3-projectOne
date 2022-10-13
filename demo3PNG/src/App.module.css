@@ -34,13 +34,10 @@
 .btnContainer {
   margin-top: 20px;
 }
-.randomBtn {
-  /* position: absolute;
-  bottom: 50px;
-  left: 0; */
-  width: 60px;
-  height: 50px;
+
+.btnContainer button {
+  width: 100px;
+  height: 40px;
+  margin: 10px;
   cursor: pointer;
-  background-image: url(https://i.imgur.com/IPZeZHl.png);
-  border: 1px solid #707070;
 }
