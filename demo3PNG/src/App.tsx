@@ -7,6 +7,7 @@ import pngSource from "./png";
 import { Attributes, LayerName } from "./types";
 import { Action, initialState, reducer } from "./reducer/attributes";
 import { shuffle } from "./utils";
+import { saveAs } from "file-saver";
 
 const App = () => {
   const avatarRef = useRef<HTMLDivElement | null>(null);
@@ -25,16 +26,15 @@ const App = () => {
       return;
     }
     toPng(avatarRef.current)
-      .then(blobUrl => {
-        console.log('attributes', attributes);
-        const anchor = window.document.createElement('a');
-        anchor.style.display = 'none';
-
+      .then(pngBlob => {
         // image
-        anchor.href = blobUrl;
-        anchor.download = "avatar.png";
-        document.body.appendChild(anchor);
-        anchor.click();
+        saveAs(pngBlob, "avatar.png");
+        // json
+        const jsonBlob = new Blob(
+          [JSON.stringify(attributes)],
+          {type: "text/plain;charset=utf-8"}
+        );
+        saveAs(jsonBlob, 'metadata.json');
       })
       .catch(err => {
         console.log('Failed to download', err);

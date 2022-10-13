@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "file-saver": "^2.0.5",
     "html-to-image": "^1.10.8",
     "html2canvas": "^1.4.1",
     "next": "12.3.1",
@@ -17,6 +18,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/node": "18.8.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
