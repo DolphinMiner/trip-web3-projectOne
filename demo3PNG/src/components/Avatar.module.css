@@ -1,0 +1,6 @@
+.container {
+  width: 360px;
+  height: 360px;
+  display: block;
+  position: relative;
+}

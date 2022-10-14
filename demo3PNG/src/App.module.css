@@ -1,0 +1,43 @@
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #eeeeee;
+}
+
+.container {
+  width: 360px;
+  height: 360px;
+  display: block;
+  position: relative;
+  background-color:beige;
+}
+
+.avatarContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.btnContainer {
+  margin-top: 20px;
+}
+
+.btnContainer button {
+  width: 100px;
+  height: 40px;
+  margin: 10px;
+  cursor: pointer;
+}
