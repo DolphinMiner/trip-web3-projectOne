@@ -1,4 +1,4 @@
-import pngSource from "../png";
+import { pngSource } from "../configs";
 import { Attributes } from "../types";
 
 export const shuffle = (): Attributes => {
@@ -6,7 +6,7 @@ export const shuffle = (): Attributes => {
     const collection = Object.keys(pngSource[cur]);
     return {
       ...acc,
-      [cur]: collection[Math.floor(Math.random() * collection.length)]
-    }
-  }, {})
+      [cur]: collection[Math.floor(Math.random() * collection.length)],
+    };
+  }, {});
 };

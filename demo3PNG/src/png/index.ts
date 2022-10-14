@@ -55,15 +55,4 @@ export const pngSource = {
   },
 } as const;
 
-export const layerOrder = [
-  "skin",
-  "accessory",
-  "eye",
-  "eyebrow",
-  "mouth",
-  "clothe",
-  "hair",
-  "eyeglass",
-] as const;
-
 export default pngSource;
