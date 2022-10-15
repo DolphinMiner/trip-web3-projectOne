@@ -1,5 +1,4 @@
-import pngSource from "../png";
+import configs from "../configs";
 
-export type PngSource = typeof pngSource;
-export type LayerName = keyof PngSource;
-export type Attributes = Record<LayerName, string>;
+export type LayerName = typeof configs.layers[number];
+export type Attributes = Record<string, string>;
