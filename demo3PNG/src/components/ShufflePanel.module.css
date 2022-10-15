@@ -1,0 +1,10 @@
+.leftPanelCard {
+  width: 256px;
+  height: 100%;
+  padding: 18px 12px;
+}
+
+.batchContainer {
+    width: 100%;
+    min-height: 400px;
+}

@@ -7,11 +7,12 @@ type AvatarProps = {
   attributes: Record<LayerName, string>;
   layers: LayerName[];
   source: Record<string, Record<string, any>>;
+  isSmall?: boolean;
 };
 
-const Avatar = ({ attributes, layers, source }: Props) => {
+const Avatar = ({ attributes, layers, source, isSmall }: AvatarProps) => {
   return (
-    <div className={styles.container}>
+    <div className={isSmall ? styles.smallContainer : styles.container}>
       {layers.map((layer) => {
         return attributes[layer] &&
           source[layer] &&
