@@ -1,4 +1,4 @@
-import { layers } from "../configs";
+import configs from "../configs";
 
-export type LayerName = (typeof layers)[number];
+export type LayerName = typeof configs.layers[number];
 export type Attributes = Record<string, string>;

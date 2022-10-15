@@ -1,7 +1,7 @@
 import React from "react";
 import { LayerName } from "../types";
 import Layer from "./Layer";
-import { layers, pngSource } from "../configs";
+import configs from "../configs";
 import styles from "./Avatar.module.css";
 
 type AvatarProps = {
@@ -9,6 +9,7 @@ type AvatarProps = {
 };
 
 const Avatar = ({ attributes }: Props) => {
+  const { layers, pngSource } = configs;
   return (
     <div className={styles.container}>
       {layers.map((layer) => {

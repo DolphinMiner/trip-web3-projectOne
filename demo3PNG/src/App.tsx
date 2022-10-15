@@ -4,22 +4,19 @@ import styles from "./App.module.css";
 import { toBlob, toPng } from "html-to-image";
 import Avatar from "./components/Avatar";
 import { Attributes, LayerName } from "./types";
-import { Action, initialState, reducer } from "./reducer/avatarAttributes";
 import { shuffle } from "./utils";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import configs from "./configs";
+import useAvatar from "./hooks/useAvatar";
 
 const App = () => {
   const avatarRef = useRef<HTMLDivElement | null>(null);
-  const [avatarAttributes, dispatch] = useReducer(reducer, initialState);
+  const { attributes, setAttributes } = useAvatar();
 
   const onShuffle = () => {
     const payload = shuffle();
-    dispatch({
-      type: "update",
-      payload,
-    });
+    setAttributes(payload)
   };
 
   const onDownload = () => {
@@ -30,7 +27,7 @@ const App = () => {
       .then((pngBlob) => {
         if (!pngBlob) throw Error("Failed to toBlob");
 
-        const jsonBlob = new Blob([JSON.stringify(avatarAttributes)], {
+        const jsonBlob = new Blob([JSON.stringify(attributes)], {
           type: "text/plain;charset=utf-8",
         });
 
@@ -60,7 +57,7 @@ const App = () => {
   return (
     <main className={styles.main}>
       <div className={styles.container} ref={avatarRef}>
-        <Avatar attributes={avatarAttributes} />
+        <Avatar attributes={attributes} />
       </div>
       <div className={styles.btnContainer}>
         <button onClick={onShuffle}>Shuffle</button>
