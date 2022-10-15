@@ -16,7 +16,8 @@ const App = () => {
 
   const onShuffle = () => {
     const payload = shuffle();
-    setAttributes(payload)
+    setAttributes(payload);
+    console.log(payload);
   };
 
   const onDownload = () => {
@@ -52,12 +53,14 @@ const App = () => {
     onShuffle();
   }, []);
 
-  console.log(configs);
-
   return (
     <main className={styles.main}>
       <div className={styles.container} ref={avatarRef}>
-        <Avatar attributes={attributes} />
+        <Avatar
+          source={configs.pngSource}
+          layers={configs.layers}
+          attributes={attributes}
+        />
       </div>
       <div className={styles.btnContainer}>
         <button onClick={onShuffle}>Shuffle</button>
