@@ -85,8 +85,35 @@ contract TripNFT is Ownable, ERC721Enumerable {
         _mintNftMeta(tokenQuantity, recipient);
     }
 
+    // 根据nonce生成对应数字映射 0～8
+    function getIndexFromNonce(uint256 nonce) private pure returns (uint256) {
+        if (nonce == 0) return 0;
+        if (nonce >= 1 && nonce <= 20) return 1;
+        if (nonce >= 21 && nonce <= 40) return 2;
+        if (nonce >= 41 && nonce <= 55) return 3;
+        if (nonce >= 56 && nonce <= 65) return 4;
+        if (nonce >= 66 && nonce <= 75) return 5;
+        if (nonce >= 76 && nonce <= 85) return 6;
+        if (nonce >= 86 && nonce <= 95) return 7;
+        return 8;
+    }
+
+    // 生成目标URI
+    function getURIFromIndex(uint256 index) private pure returns (string memory) {
+        string memory uri = index == 0
+            ? "ipfs://Qme8ZKMgMLPYyra51gChJn4HxgpWm8oeKFV2NPjGtBd1pz"
+            : string(
+                abi.encodePacked(
+                    "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/",
+                    index.toString(),
+                    ".json"
+                )
+            );
+        return uri;
+    }
+
     // 进行铸造
-    function _mintNftMeta(uint256 tokenQuantity,address recipient) internal {
+    function _mintNftMeta(uint256 tokenQuantity, address recipient) internal {
         for (uint256 i = 0; i < tokenQuantity; i++) {
 
             if (totalSupply() < MAX_SUPPLY) {
@@ -95,29 +122,16 @@ contract TripNFT is Ownable, ERC721Enumerable {
                 uint256 tokenId = totalSupply();
 
                 // 计算概率，随机数生成
-                uint nonce = uint(keccak256(abi.encodePacked(msg.sender,block.timestamp))) % Hash_Array;
-                if(nonce == 0){
-                    // 天选之人，那么你就得问号图片吧！！！哈哈哈
-                    _tokenURIs[tokenId] = "ipfs://Qme8ZKMgMLPYyra51gChJn4HxgpWm8oeKFV2NPjGtBd1pz";
-                }
-                // fixme solidity 字符串拼接问题
-                if(nonce >= 1 && nonce <= 20) {
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/1.json" ;
-                }else if(nonce >= 21 && nonce <= 40){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/2.json" ;
-                }else if(nonce >= 41 && nonce <= 55){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/3.json" ;
-                }else if(nonce >= 56 && nonce <= 65){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/4.json" ;
-                }else if(nonce >= 66 && nonce <= 75){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/5.json" ;
-                }else if(nonce >= 76 && nonce <= 85){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/6.json" ;
-                }else if(nonce >= 86 && nonce <= 95){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/7.json" ;
-                }else{
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/8.json" ;
-                }
+                uint256 nonce = uint256(
+                    keccak256(abi.encodePacked(msg.sender, block.timestamp))
+                ) % Hash_Array;
+
+                // 获取随机数映射的值，范围0～8
+                uint256 indexFromNonce = getIndexFromNonce(nonce);
+
+                // 根据映射的值设置对应的URI
+                _tokenURIs[tokenId] = getURIFromIndex(indexFromNonce);
+
                 // 调用ERC721.sol的_safeMint方法 为recipient账户分配这个tokenId
                 _safeMint(recipient, tokenId);
             }
