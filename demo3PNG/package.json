@@ -10,6 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.9",
     "file-saver": "^2.0.5",
     "html-to-image": "^1.10.8",
     "html2canvas": "^1.4.1",
