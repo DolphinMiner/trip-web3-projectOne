@@ -1,6 +1,8 @@
 export const pngSource = {
   skin: {
     default: require("./skin/default.png"),
+    black: require("./skin/black.png"),
+    white: require("./skin/white.png"),
   },
   accessory: {
     none: "",
