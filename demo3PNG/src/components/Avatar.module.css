@@ -1,14 +1,6 @@
 .container {
-  display: block;
-  position: relative;
-}
-
-.normalSize {
   width: 360px;
   height: 360px;
-}
-
-.smallSize {
-  width: 180px;
-  height: 180px;
+  display: block;
+  position: relative;
 }

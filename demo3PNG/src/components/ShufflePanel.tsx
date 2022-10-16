@@ -28,12 +28,12 @@ const ShufflePanel = () => {
       <Grid container className={styles.batchContainer}>
         {entities.map((entity, idx) => {
           return (
-            <div className="p-2 text-center">
+            <div key={idx} className="p-2 text-center">
               <Avatar
                 source={configs.pngSource}
                 layers={configs.layers}
                 attributes={entity}
-                isSmall
+                className={styles.smallAvatar}
               />
               <Checkbox
                 checked={!!selected[idx]}
