@@ -2,6 +2,7 @@ import React from "react";
 import { LayerName } from "../types";
 import Layer from "./Layer";
 import styles from "./Avatar.module.css";
+import classnames from "classnames";
 
 type AvatarProps = {
   attributes: Record<LayerName, string>;
@@ -12,7 +13,11 @@ type AvatarProps = {
 
 const Avatar = ({ attributes, layers, source, isSmall }: AvatarProps) => {
   return (
-    <div className={[styles.container, isSmall ? styles.smallContainer : null]}>
+    <div className={classnames([
+      styles.container,
+      styles.normalSize,
+      isSmall ? styles.smallSize : null
+    ])}>
       {layers.map((layer) => {
         return attributes[layer] &&
           source[layer] &&
