@@ -12,7 +12,7 @@ type AvatarProps = {
 
 const Avatar = ({ attributes, layers, source, isSmall }: AvatarProps) => {
   return (
-    <div className={isSmall ? styles.smallContainer : styles.container}>
+    <div className={[styles.container, isSmall ? styles.smallContainer : null]}>
       {layers.map((layer) => {
         return attributes[layer] &&
           source[layer] &&
