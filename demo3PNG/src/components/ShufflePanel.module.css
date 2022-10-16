@@ -8,3 +8,8 @@
     width: 100%;
     min-height: 400px;
 }
+
+.smallAvatar {
+  width: 180px;
+  height: 180px;
+}
