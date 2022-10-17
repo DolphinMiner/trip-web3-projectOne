@@ -5,7 +5,9 @@
 
 .leftContainer {
   width: 300px;
-  background-color: #f3f3f3;
+  box-sizing: border-box;
+  border-right: 1px solid #eee;
+  border-top: 1px solid #eee;
 }
 
 .leftContainer ul {
@@ -17,6 +19,8 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-top: 1px solid #eee;
+  box-sizing: border-box;
 }
 
 .avatarContainer {
