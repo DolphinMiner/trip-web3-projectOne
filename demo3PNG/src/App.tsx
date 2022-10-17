@@ -34,8 +34,8 @@ const App = () => {
 
   const renderPatchPanel = () => {
     return (
-      <>
-        <div className={styles.container} ref={avatarRef}>
+      <div className={styles.container}>
+        <div className={styles.avatarContainer} ref={avatarRef}>
           <Avatar
             source={configs.pngSource}
             layers={configs.layers}
@@ -50,7 +50,7 @@ const App = () => {
             Download
           </Button>
         </div>
-      </>
+      </div>
     );
   };
 
