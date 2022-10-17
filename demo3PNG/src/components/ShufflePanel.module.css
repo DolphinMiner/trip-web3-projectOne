@@ -10,6 +10,6 @@
 }
 
 .smallAvatar {
-  width: 180px;
-  height: 180px;
+  width: 180px !important;
+  height: 180px !important;
 }
