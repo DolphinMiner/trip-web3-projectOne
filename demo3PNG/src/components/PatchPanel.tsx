@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useRef } from "react";
-import Avatar from "../components/Avatar";
+import Avatar from "./Avatar";
 import configs from "../configs";
 import useAvatar from "../hooks/useAvatar";
 import { download, shuffle } from "../utils";

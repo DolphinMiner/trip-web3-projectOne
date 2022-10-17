@@ -3,7 +3,7 @@ import styles from "./App.module.css";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import ShufflePanel from "./components/ShufflePanel";
-import PatchPanel from "./screens/PatchPanel";
+import PatchPanel from "./components/PatchPanel";
 
 const App = () => {
   const [selectedPanel, setSelectedPanel] = useState<"patch" | "shuffle">(
