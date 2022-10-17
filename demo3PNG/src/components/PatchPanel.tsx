@@ -5,6 +5,8 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemButton,
+  ListItemIcon,
   ListItemText,
   ListSubheader,
 } from "@mui/material";
@@ -55,16 +57,21 @@ const PatchPanel = () => {
                 <ListSubheader>{`${layer.toUpperCase()}`}</ListSubheader>
                 {Object.keys(configs.attributes[layer]).map((layerStyle) => (
                   <ListItem key={`item-${layer}-${layerStyle}`}>
-                    <Checkbox
-                      checked={attributes[layer] === layerStyle}
-                      onChange={() => {
-                        setAttributes({
-                          [layer]: layerStyle,
-                        });
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                    <ListItemText primary={`${layerStyle}`} />
+                    <ListItemButton
+                      role={undefined}
+                      onClick={() => setAttributes({ [layer]: layerStyle })}
+                      dense
+                    >
+                      <ListItemIcon style={{ minWidth: 30 }}>
+                        <Checkbox
+                          edge="start"
+                          checked={layerStyle === attributes[layer]}
+                          tabIndex={-1}
+                          disableRipple
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary={`${layerStyle}`} />
+                    </ListItemButton>
                   </ListItem>
                 ))}
               </ul>
