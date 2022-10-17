@@ -1,4 +1,13 @@
-import { Box, Button, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+} from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import Avatar from "./Avatar";
 import configs from "../configs";
@@ -30,7 +39,38 @@ const PatchPanel = () => {
   return (
     <Grid className={styles.patchPanelContainer} container spacing={0}>
       <Grid item xs={"auto"} className={styles.leftContainer}>
-        <div>xs=4</div>
+        <List
+          sx={{
+            width: "100%",
+            maxWidth: 360,
+            bgcolor: "background.paper",
+            position: "relative",
+            overflow: "auto",
+            maxHeight: 720,
+          }}
+        >
+          {configs.layers.map((layer) => (
+            <li key={`section-${layer}`}>
+              <ul>
+                <ListSubheader>{`${layer.toUpperCase()}`}</ListSubheader>
+                {Object.keys(configs.attributes[layer]).map((layerStyle) => (
+                  <ListItem key={`item-${layer}-${layerStyle}`}>
+                    <Checkbox
+                      checked={attributes[layer] === layerStyle}
+                      onChange={() => {
+                        setAttributes({
+                          [layer]: layerStyle,
+                        });
+                      }}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                    <ListItemText primary={`${layerStyle}`} />
+                  </ListItem>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </List>
       </Grid>
       <Grid item xs className={styles.rightContainer}>
         <div className={styles.avatarContainer} ref={avatarRef}>

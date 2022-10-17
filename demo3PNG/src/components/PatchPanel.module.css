@@ -8,6 +8,10 @@
   background-color: #f3f3f3;
 }
 
+.leftContainer ul {
+  padding: 0;
+}
+
 .rightContainer {
   display: flex;
   justify-content: center;
