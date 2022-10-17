@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import Avatar from "./Avatar";
 import configs from "../configs";
@@ -28,23 +28,28 @@ const PatchPanel = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.avatarContainer} ref={avatarRef}>
-        <Avatar
-          source={configs.pngSource}
-          layers={configs.layers}
-          attributes={attributes}
-        />
-      </div>
-      <div className={styles.btnContainer}>
-        <Button variant="contained" onClick={onShuffle}>
-          Shuffle
-        </Button>
-        <Button variant="contained" onClick={onDownload}>
-          Download
-        </Button>
-      </div>
-    </div>
+    <Grid className={styles.patchPanelContainer} container spacing={0}>
+      <Grid item xs={"auto"} className={styles.leftContainer}>
+        <div>xs=4</div>
+      </Grid>
+      <Grid item xs className={styles.rightContainer}>
+        <div className={styles.avatarContainer} ref={avatarRef}>
+          <Avatar
+            source={configs.pngSource}
+            layers={configs.layers}
+            attributes={attributes}
+          />
+        </div>
+        <div className={styles.btnContainer}>
+          <Button variant="contained" onClick={onShuffle}>
+            Shuffle
+          </Button>
+          <Button variant="contained" onClick={onDownload}>
+            Download
+          </Button>
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 

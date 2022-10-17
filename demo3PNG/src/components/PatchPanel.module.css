@@ -1,6 +1,18 @@
-.container {
-  width: 360px;;
-  background-color: #ffffff;
+.patchPanelContainer {
+  flex: 1;
+  width: 100%;
+}
+
+.leftContainer {
+  width: 300px;
+  background-color: #f3f3f3;
+}
+
+.rightContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .avatarContainer {
