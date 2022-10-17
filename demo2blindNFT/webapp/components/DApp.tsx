@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 import {
   useAccount,
   useBalance,
   useConnect,
-  useContract,
   useContractRead,
-  useProvider,
+  useContractWrite,
   useSigner,
 } from "wagmi";
 
 import TripNFTArtifact from "../contracts/TripNFT.json";
 import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
-
-import NoWalletDetected from "./NoWalletDetected";
 import BgImage from "./BgImage";
 
 import styles from "../styles/DApp.module.css";
+
+// Mint合约的配置
+// TODO: 依据不同环境不同配置（加入生产环境配置）
+const nftContractConfig = {
+  addressOrName: contractAddress.TripNFT,
+  contractInterface: TripNFTArtifact.abi,
+};
+
+const greetContractConfig = {
+  addressOrName: contractAddress.TestGreeting,
+  contractInterface: TestGreetingArtifact.abi,
+};
 
 const DApp = () => {
   // 当前用户的地址
@@ -27,27 +37,29 @@ const DApp = () => {
   // 以太坊网络提供方provider与singer
   const { data: signer, isError, isLoading } = useSigner();
   // NFT Contract Object
-  // const nftContractObj = useContract({
-  //   addressOrName: contractAddress.TripNFT,
-  //   contractInterface: TripNFTArtifact.abi,
-  //   signerOrProvider: signer,
-  // });
+  const { writeAsync: mintAsync, error: mintError } = useContractWrite({
+    ...nftContractConfig,
+    mode: "recklesslyUnprepared",
+    functionName: "mintNft",
+  });
+  // 通过读取合约字段活动铸造售价
+  const { data: mintPrice } = useContractRead({
+    ...nftContractConfig,
+    functionName: "mintPrice",
+  });
   // TODO：之后改为读取合约的白名单字段
   const isInWhiteList = true;
   // 本地调试用，查看是否正确连接至合约
-  const {
-    data: greetMsg,
-    isError: isContractError,
-    isLoading: isContractLoading,
-  } = useContractRead({
-    addressOrName: contractAddress.TestGreeting,
-    contractInterface: TestGreetingArtifact.abi,
+  const { data: greetMsg } = useContractRead({
+    ...greetContractConfig,
     functionName: "greet",
   });
   // 倒计时时钟指针
   let countDownPointer: ReturnType<typeof setInterval> | null;
   // 倒计时文案
   const [countDownText, setCountDownText] = useState("--:--:--");
+  // mint按钮状态
+  const [isMintLoading, setMintLoading] = useState(false);
 
   // 连接钱包
   const { connect, connectors } = useConnect();
@@ -68,8 +80,28 @@ const DApp = () => {
   };
 
   // 铸造请求
-  const requestMint = () => {
-    // TODO: and contract call here
+  const requestMint = async () => {
+    // 还未读取到合约方法
+    if (!mintAsync) return;
+
+    setMintLoading(true);
+
+    try {
+      const tx = await mintAsync({
+        recklesslySetUnpreparedArgs: [1, currentAddress],
+        recklesslySetUnpreparedOverrides: {
+          from: currentAddress,
+          value: mintPrice, // 传入合约里的售价
+        },
+      });
+
+      const receipt = await tx.wait();
+      console.log({ receipt });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setMintLoading(false);
+    }
   };
 
   const startCountDown = () => {
@@ -109,11 +141,13 @@ const DApp = () => {
   };
 
   const renderMintButton = () => {
-    const isAble = currentAddress && isInWhiteList;
+    const isAble = currentAddress && isInWhiteList && !isMintLoading;
     const btnText = !currentAddress
       ? "Connect wallet first."
       : !isInWhiteList
       ? "You are not qualified to buy."
+      : isMintLoading
+      ? "Minting..."
       : "MINT!";
 
     return (
@@ -142,10 +176,10 @@ const DApp = () => {
       <div className="relative">
         {renderConnector()}
 
-        <h1 className="text-black font-bold text-5xl mt-10">LOG位广告位招商</h1>
+        <h1 className="text-black font-bold text-5xl mt-10">{greetMsg}</h1>
 
         <h1 className="text-black font-bold text-3xl mt-10">
-          Whitelist Sale Util In: <br/>
+          Whitelist Sale Util In: <br />
           {`${countDownText}`}
         </h1>
 

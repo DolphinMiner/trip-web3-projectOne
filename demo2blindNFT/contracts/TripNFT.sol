@@ -20,7 +20,7 @@ contract TripNFT is Ownable, ERC721Enumerable {
     uint256 public constant MAX_SUPPLY = 50;
 
     // 铸造Nft的价格
-    uint256 public mintPrice = 0 ether;
+    uint256 public mintPrice = 0.02 ether;
 
     // 铸造的钱包最多只能有5个nft数量
     uint256 public maxBalance = 5;
@@ -76,7 +76,7 @@ contract TripNFT is Ownable, ERC721Enumerable {
         // 校验用户是否有足够金额支付nft价格
         require(
             tokenQuantity * mintPrice <= msg.value,
-            "Not enough ether sent"
+            "Not enough ether sent."
         );
         // 校验本次铸造的数量 <= 本次铸造的最大数量
         require(tokenQuantity <= maxMint, "Can only mint 1 tokens at a time");
