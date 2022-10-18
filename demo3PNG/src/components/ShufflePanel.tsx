@@ -8,11 +8,24 @@ import Avatar from "./Avatar";
 import configs from "../configs";
 import { Pagination, Stack } from "@mui/material";
 import classnames from "classnames";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+
+const PAGE_SIZE = 20;
 
 const ShufflePanel = () => {
   const { entities, selected, onNextBatch, onSelected } = useBatch();
-  const [curIdx, setCurIdx] = useState<number>(-1);
+  const [curIdx, setCurIdx] = useState(-1);
+  const [curPage, setCurPage] = useState(1);
+
+  const pageCount = useMemo(() => {
+    return Math.ceil(entities.length / PAGE_SIZE);
+  }, [entities.length]);
+
+  const [startIdx, endIdx] = useMemo(() => {
+    const startIdx = (curPage - 1) * PAGE_SIZE;
+    const endIdx = startIdx + PAGE_SIZE;
+    return [startIdx, endIdx];
+  }, [curPage]);
 
   const onBatchSave = () => {
     // TODO
@@ -80,14 +93,15 @@ const ShufflePanel = () => {
       <Grid item xs className={styles.rightContainer}>
         <div className={styles.avatarListContainer}>
           <div className={styles.gridContainer}>
-            {entities.map((entity, idx) => {
+            {entities.slice(startIdx, endIdx).map((entity, idx) => {
+              const actualIdx = idx + startIdx;
               return (
-                <div key={idx} className={styles.gridItem}>
+                <div key={actualIdx} className={styles.gridItem}>
                   <div className={styles.innerContainer}>
                     <div
                       className={classnames({
                         [styles.avatarContainer]: true,
-                        [styles.active]: idx === curIdx,
+                        [styles.active]: actualIdx === curIdx,
                       })}
                     >
                       <Avatar
@@ -96,12 +110,12 @@ const ShufflePanel = () => {
                         attributes={entity}
                         className={styles.avatar}
                         onClick={() => {
-                          setCurIdx(idx === curIdx ? -1 : idx);
+                          setCurIdx(actualIdx === curIdx ? -1 : actualIdx);
                         }}
                       />
                     </div>
                     <div className={styles.description}>{`Token #${
-                      idx + 1
+                      actualIdx + 1
                     }`}</div>
                   </div>
                 </div>
@@ -110,7 +124,14 @@ const ShufflePanel = () => {
           </div>
         </div>
         <Stack className={styles.pageContainer} spacing={2} padding={"10px"}>
-          <Pagination count={10} shape="rounded" />
+          <Pagination
+            count={pageCount}
+            page={curPage}
+            onChange={(e, value) => {
+              setCurPage(value);
+            }}
+            shape="rounded"
+          />
         </Stack>
       </Grid>
     </Grid>
