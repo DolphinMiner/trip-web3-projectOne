@@ -6,9 +6,26 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs from "../configs";
+import { Pagination, Stack } from "@mui/material";
+import classnames from "classnames";
+import React, { useMemo, useState } from "react";
+
+const PAGE_SIZE = 20;
 
 const ShufflePanel = () => {
   const { entities, selected, onNextBatch, onSelected } = useBatch();
+  const [curIdx, setCurIdx] = useState(-1);
+  const [curPage, setCurPage] = useState(1);
+
+  const pageCount = useMemo(() => {
+    return Math.ceil(entities.length / PAGE_SIZE);
+  }, [entities.length]);
+
+  const [startIdx, endIdx] = useMemo(() => {
+    const startIdx = (curPage - 1) * PAGE_SIZE;
+    const endIdx = startIdx + PAGE_SIZE;
+    return [startIdx, endIdx];
+  }, [curPage]);
 
   const onBatchSave = () => {
     // TODO
@@ -28,12 +45,12 @@ const ShufflePanel = () => {
       <Grid container className={styles.batchContainer}>
         {entities.map((entity, idx) => {
           return (
-            <div className="p-2 text-center">
+            <div key={idx} className="p-2 text-center">
               <Avatar
                 source={configs.pngSource}
                 layers={configs.layers}
                 attributes={entity}
-                isSmall
+                className={styles.smallAvatar}
               />
               <Checkbox
                 checked={!!selected[idx]}
@@ -59,7 +76,7 @@ const ShufflePanel = () => {
     );
   };
 
-  return (
+  /* return (
     <div className="flex flex-1 w-full">
       {renderLeftPanel()}
 
@@ -68,6 +85,56 @@ const ShufflePanel = () => {
         {renderActionButtons()}
       </div>
     </div>
+  ); */
+
+  return (
+    <Grid className={styles.shufflePanelContainer} container spacing={0}>
+      <Grid item xs={"auto"} className={styles.leftContainer}></Grid>
+      <Grid item xs className={styles.rightContainer}>
+        <div className={styles.avatarListContainer}>
+          <div className={styles.gridContainer}>
+            {entities.slice(startIdx, endIdx).map((entity, idx) => {
+              const actualIdx = idx + startIdx;
+              return (
+                <div key={actualIdx} className={styles.gridItem}>
+                  <div className={styles.innerContainer}>
+                    <div
+                      className={classnames({
+                        [styles.avatarContainer]: true,
+                        [styles.active]: actualIdx === curIdx,
+                      })}
+                    >
+                      <Avatar
+                        source={configs.pngSource}
+                        layers={configs.layers}
+                        attributes={entity}
+                        className={styles.avatar}
+                        onClick={() => {
+                          setCurIdx(actualIdx === curIdx ? -1 : actualIdx);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.description}>{`Token #${
+                      actualIdx + 1
+                    }`}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <Stack className={styles.pageContainer} spacing={2} padding={"10px"}>
+          <Pagination
+            count={pageCount}
+            page={curPage}
+            onChange={(e, value) => {
+              setCurPage(value);
+            }}
+            shape="rounded"
+          />
+        </Stack>
+      </Grid>
+    </Grid>
   );
 };
 
