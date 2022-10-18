@@ -8,12 +8,14 @@ import Avatar from "./Avatar";
 import configs from "../configs";
 import { Pagination, Stack } from "@mui/material";
 import classnames from "classnames";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import useBatch from "../hooks/useBatch";
 
 const PAGE_SIZE = 120;
 
 const ShufflePanel = () => {
-  const { entities, selected, onNextBatch, onSelected } = useBatch();
+  const [total, setTotal] = useState(1000);
+  const { entities, updateEntity, shuffleEntities } = useBatch(total);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
 
@@ -27,65 +29,11 @@ const ShufflePanel = () => {
     return [startIdx, endIdx];
   }, [curPage]);
 
-  const onBatchSave = () => {
-    // TODO
-  };
-
-  const renderLeftPanel = () => {
-    return (
-      <Card variant="outlined" className={styles.leftPanelCard}>
-        <h2>Configure Panel</h2>
-        <h2>...</h2>
-      </Card>
-    );
-  };
-
-  const renderBatch = () => {
-    return (
-      <Grid container className={styles.batchContainer}>
-        {entities.map((entity, idx) => {
-          return (
-            <div key={idx} className="p-2 text-center">
-              <Avatar
-                source={configs.pngSource}
-                layers={configs.layers}
-                attributes={entity}
-                className={styles.smallAvatar}
-              />
-              <Checkbox
-                checked={!!selected[idx]}
-                onClick={() => onSelected(idx)}
-              />
-            </div>
-          );
-        })}
-      </Grid>
-    );
-  };
-
-  const renderActionButtons = () => {
-    return (
-      <div className="block p-10 mh-20 w-full text-center">
-        <Button variant="contained" className="mr-4" onClick={onBatchSave}>
-          批量生成
-        </Button>
-        <Button variant="contained" onClick={onNextBatch}>
-          下一波
-        </Button>
-      </div>
-    );
-  };
-
-  /* return (
-    <div className="flex flex-1 w-full">
-      {renderLeftPanel()}
-
-      <div className="flex-1">
-        {renderBatch()}
-        {renderActionButtons()}
-      </div>
-    </div>
-  ); */
+  useEffect(() => {
+    setCurIdx(-1);
+    setCurPage(1);
+    shuffleEntities(total);
+  }, [total]);
 
   return (
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
