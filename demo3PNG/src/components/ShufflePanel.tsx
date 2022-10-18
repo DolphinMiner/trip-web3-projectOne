@@ -6,15 +6,16 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs from "../configs";
-import { Pagination, Stack } from "@mui/material";
+import { Input, Pagination, Stack, TextField } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 
 const PAGE_SIZE = 120;
+const DEFAULT_TOTAL = 1000;
 
 const ShufflePanel = () => {
   const [total, setTotal] = useState(1000);
-  const { entities, updateEntity, shuffleEntities } = useBatch(total);
+  const { entities, updateEntity, shuffleEntities } = useBatch(DEFAULT_TOTAL);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
 
@@ -28,15 +29,32 @@ const ShufflePanel = () => {
     return [startIdx, endIdx];
   }, [curPage]);
 
-  useEffect(() => {
+  const onUpdate = () => {
     setCurIdx(-1);
     setCurPage(1);
     shuffleEntities(total);
-  }, [total]);
+  };
 
   return (
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
-      <Grid item xs={"auto"} className={styles.leftContainer}></Grid>
+      <Grid item xs={"auto"} className={styles.leftContainer}>
+        <Stack direction={"row"} spacing={2}>
+          <TextField
+            size={"small"}
+            label="Tokens"
+            focused
+            value={total}
+            onChange={(e) => setTotal(parseInt(e.target.value || 0))}
+          />
+          <Button
+            variant="contained"
+            disabled={total === entities.length}
+            onClick={onUpdate}
+          >
+            Update
+          </Button>
+        </Stack>
+      </Grid>
       <Grid item xs className={styles.rightContainer}>
         <div className={styles.avatarListContainer}>
           <div className={styles.gridContainer}>
