@@ -19,36 +19,3 @@
   padding: 1rem;
   text-align: center;
 }
-
-.container {
-  width: 360px;
-  height: 360px;
-  display: block;
-  position: relative;
-  background-color: #eeeeee;
-}
-
-.avatarContainer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
-.avatar {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.btnContainer {
-  margin-top: 20px;
-}
-
-.btnContainer button {
-  width: 100px;
-  height: 40px;
-  margin: 10px;
-  cursor: pointer;
-}

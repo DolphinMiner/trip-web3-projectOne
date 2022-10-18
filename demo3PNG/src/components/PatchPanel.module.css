@@ -1,0 +1,47 @@
+.patchPanelContainer {
+  flex: 1;
+  width: 100%;
+}
+
+.leftContainer {
+  width: 300px;
+  box-sizing: border-box;
+  border-right: 1px solid #eee;
+  border-top: 1px solid #eee;
+}
+
+.leftContainer ul {
+  padding: 0;
+}
+
+.rightContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-top: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+.avatarContainer {
+  width: 360px;
+  height: 360px;
+  display: block;
+  position: relative;
+  background-color: #eeeeee;
+}
+
+.btnContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.btnContainer button {
+  display: block;
+  width: 120px;
+  height: 40px;
+  margin: 10px;
+  cursor: pointer;
+}
