@@ -9,14 +9,21 @@ type AvatarProps = {
   layers: LayerName[];
   source: Record<string, Record<string, any>>;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
-const Avatar = ({ attributes, layers, source, className }: AvatarProps) => {
+const Avatar = ({
+  attributes,
+  layers,
+  source,
+  className,
+  onClick,
+}: AvatarProps) => {
   return (
-    <div className={classnames([
-      styles.container,
-      className ? className : null,
-    ])}>
+    <div
+      onClick={onClick}
+      className={classnames([styles.container, className ? className : null])}
+    >
       {layers.map((layer) => {
         return attributes[layer] &&
           source[layer] &&

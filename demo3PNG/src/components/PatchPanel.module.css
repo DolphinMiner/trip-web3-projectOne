@@ -8,6 +8,15 @@
   box-sizing: border-box;
   border-right: 1px solid #eee;
   border-top: 1px solid #eee;
+  background-color: green;
+}
+
+.listContainer {
+  position: relative;
+  width: "100%";
+  overflow: auto;
+  /* 100% - headerWidth - borderWidth */
+  max-height: calc(100vh - 70px - 1px);
 }
 
 .leftContainer ul {
@@ -28,7 +37,7 @@
   height: 360px;
   display: block;
   position: relative;
-  background-color: #eeeeee;
+  background-color: #FFFFFF;
 }
 
 .btnContainer {

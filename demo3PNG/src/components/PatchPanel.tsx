@@ -42,13 +42,9 @@ const PatchPanel = () => {
     <Grid className={styles.patchPanelContainer} container spacing={0}>
       <Grid item xs={"auto"} className={styles.leftContainer}>
         <List
+          className={styles.listContainer}
           sx={{
-            width: "100%",
-            maxWidth: 360,
             bgcolor: "background.paper",
-            position: "relative",
-            overflow: "auto",
-            maxHeight: 720,
           }}
         >
           {configs.layers.map((layer) => (
