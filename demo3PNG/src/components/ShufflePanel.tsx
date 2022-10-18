@@ -7,9 +7,12 @@ import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs from "../configs";
 import { Pagination, Stack } from "@mui/material";
+import classnames from "classnames";
+import React, { useState } from "react";
 
 const ShufflePanel = () => {
   const { entities, selected, onNextBatch, onSelected } = useBatch();
+  const [curIdx, setCurIdx] = useState<number>(-1);
 
   const onBatchSave = () => {
     // TODO
@@ -81,12 +84,20 @@ const ShufflePanel = () => {
               return (
                 <div key={idx} className={styles.gridItem}>
                   <div className={styles.innerContainer}>
-                    <div className={styles.avatarContainer}>
+                    <div
+                      className={classnames({
+                        [styles.avatarContainer]: true,
+                        [styles.active]: idx === curIdx,
+                      })}
+                    >
                       <Avatar
                         source={configs.pngSource}
                         layers={configs.layers}
                         attributes={entity}
                         className={styles.avatar}
+                        onClick={() => {
+                          setCurIdx(idx === curIdx ? -1 : idx);
+                        }}
                       />
                     </div>
                     <div className={styles.description}>{`Token #${
