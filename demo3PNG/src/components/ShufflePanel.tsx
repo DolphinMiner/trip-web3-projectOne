@@ -9,7 +9,6 @@ import configs from "../configs";
 import { Pagination, Stack } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
-import useBatch from "../hooks/useBatch";
 
 const PAGE_SIZE = 120;
 
