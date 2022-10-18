@@ -10,7 +10,7 @@ import { Pagination, Stack } from "@mui/material";
 import classnames from "classnames";
 import React, { useMemo, useState } from "react";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 120;
 
 const ShufflePanel = () => {
   const { entities, selected, onNextBatch, onSelected } = useBatch();
