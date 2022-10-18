@@ -6,6 +6,7 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs from "../configs";
+import { Pagination, Stack } from "@mui/material";
 
 const ShufflePanel = () => {
   const { entities, selected, onNextBatch, onSelected } = useBatch();
@@ -69,10 +70,16 @@ const ShufflePanel = () => {
       </div>
     </div>
   ); */
+
   return (
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
-      {/* <Grid item xs={"auto"} className={styles.leftContainer}></Grid>
-      <Grid item xs className={styles.rightContainer}></Grid> */}
+      <Grid item xs={"auto"} className={styles.leftContainer}></Grid>
+      <Grid item xs className={styles.rightContainer}>
+        <div className={styles.avatarListContainer}>avatar list</div>
+        <Stack spacing={2} padding={"10px"}>
+          <Pagination count={10} shape="rounded" />
+        </Stack>
+      </Grid>
     </Grid>
   );
 };
