@@ -59,7 +59,7 @@ const ShufflePanel = () => {
     );
   };
 
-  return (
+  /* return (
     <div className="flex flex-1 w-full">
       {renderLeftPanel()}
 
@@ -68,6 +68,12 @@ const ShufflePanel = () => {
         {renderActionButtons()}
       </div>
     </div>
+  ); */
+  return (
+    <Grid className={styles.shufflePanelContainer} container spacing={0}>
+      {/* <Grid item xs={"auto"} className={styles.leftContainer}></Grid>
+      <Grid item xs className={styles.rightContainer}></Grid> */}
+    </Grid>
   );
 };
 
