@@ -75,8 +75,30 @@ const ShufflePanel = () => {
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
       <Grid item xs={"auto"} className={styles.leftContainer}></Grid>
       <Grid item xs className={styles.rightContainer}>
-        <div className={styles.avatarListContainer}>avatar list</div>
-        <Stack spacing={2} padding={"10px"}>
+        <div className={styles.avatarListContainer}>
+          <div className={styles.gridContainer}>
+            {entities.map((entity, idx) => {
+              return (
+                <div key={idx} className={styles.gridItem}>
+                  <div className={styles.innerContainer}>
+                    <div className={styles.avatarContainer}>
+                      <Avatar
+                        source={configs.pngSource}
+                        layers={configs.layers}
+                        attributes={entity}
+                        className={styles.avatar}
+                      />
+                    </div>
+                    <div className={styles.description}>{`Token #${
+                      idx + 1
+                    }`}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <Stack className={styles.pageContainer} spacing={2} padding={"10px"}>
           <Pagination count={10} shape="rounded" />
         </Stack>
       </Grid>
