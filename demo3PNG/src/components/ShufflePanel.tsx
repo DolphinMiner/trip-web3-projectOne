@@ -14,10 +14,17 @@ const PAGE_SIZE = 120;
 const DEFAULT_TOTAL = 1000;
 
 const ShufflePanel = () => {
-  const [total, setTotal] = useState(1000);
+  const [inputValue, setInputValue] = useState(1000);
+  const [total, setTotal] = useState(inputValue);
   const { entities, updateEntity, shuffleEntities } = useBatch(DEFAULT_TOTAL);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
+
+  useEffect(() => {
+    setCurIdx(-1);
+    setCurPage(1);
+    shuffleEntities(total);
+  }, [total]);
 
   const pageCount = useMemo(() => {
     return Math.ceil(entities.length / PAGE_SIZE);
@@ -30,9 +37,7 @@ const ShufflePanel = () => {
   }, [curPage]);
 
   const onUpdate = () => {
-    setCurIdx(-1);
-    setCurPage(1);
-    shuffleEntities(total);
+    setTotal(inputValue);
   };
 
   const renderTokenList = () => {
@@ -94,12 +99,12 @@ const ShufflePanel = () => {
           size={"small"}
           label="Tokens"
           focused
-          value={total}
-          onChange={(e) => setTotal(parseInt(e.target.value || 0))}
+          value={inputValue}
+          onChange={(e) => setInputValue(parseInt(e.target.value || 0))}
         />
         <Button
           variant="contained"
-          disabled={total === entities.length}
+          disabled={inputValue === entities.length}
           onClick={onUpdate}
         >
           Update
