@@ -44,7 +44,7 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-const useBatchV2 = (total: number = DEFAULT_TOTAL) => {
+const useBatch = (total: number = DEFAULT_TOTAL) => {
   const initialState = generateState(total);
   const [entities, dispatch] = useReducer(reducer, initialState);
 
@@ -70,4 +70,4 @@ const useBatchV2 = (total: number = DEFAULT_TOTAL) => {
   };
 };
 
-export default useBatchV2;
+export default useBatch;
