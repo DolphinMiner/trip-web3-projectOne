@@ -46,14 +46,21 @@ const ShufflePanel = () => {
   };
 
   const onDownload = async () => {
-    const _dataURL = await convertTo(entities[0]);
-    if (typeof _dataURL === "string") {
-      setDataURL(_dataURL);
-    }
-
     const isSuccess = await batchDownload(entities);
     console.log(isSuccess);
   };
+
+  useEffect(() => {
+    if (curIdx === -1) {
+      setDataURL("");
+    } else {
+      convertTo(entities[curIdx]).then((_dataURL) => {
+        if (typeof _dataURL === "string") {
+          setDataURL(_dataURL);
+        }
+      });
+    }
+  }, [curIdx]);
 
   const renderTokenToolBar = () => {
     return (
