@@ -13,7 +13,9 @@ export const layers = [
   "eyeglass",
 ] as const;
 
-export const attributes: Record<string, Record<string, number>> = {
+type SuppliedAttributes = Record<string, Record<string, number>>;
+
+export const attributes: SuppliedAttributes = {
   ...Object.keys(pngSource).reduce((layerAcc, layerName) => {
     const layerStyles = pngSource[layerName];
     return {
