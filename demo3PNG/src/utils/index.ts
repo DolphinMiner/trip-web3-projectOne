@@ -52,12 +52,15 @@ export const getAttributesWithSupply = (
     const len = attrStyles.length;
     const perSupply = len >= 0 ? Math.floor(total / len) : 0;
     const modSupply = len >= 0 ? total % len : 0;
+    // 用于添加modSupply
+    const specialStyleName = random(attrStyles);
     return {
       ...accAttrs,
-      [attrName]: attrStyles.reduce((accStyles, styleName, index) => {
+      [attrName]: attrStyles.reduce((accStyles, styleName) => {
         return {
           ...accStyles,
-          [styleName]: index === 0 ? perSupply + modSupply : perSupply,
+          [styleName]:
+            styleName === specialStyleName ? perSupply + modSupply : perSupply,
         };
       }, {} as Record<string, number>),
     };
@@ -69,9 +72,9 @@ export const getAttributesWithSupply = (
  * @param {Record<string, Array<string>>} attributes e.g. {skin: ['default', 'white']}
  * @returns {Array<Record<string, string>>} e.g. [{skin: 'default'}, {skin: 'white'}, {skin: 'default'}]
  */
-export const batchShuffle = (
+export const batchShuffleWithSupply = (
   total: number,
-  attributes: Record<string, Array<string>>
+  attributes: Record<string, Array<string>> = configs.attributes
 ): Array<Record<string, string>> => {
   const suppliedAttributes = getAttributesWithSupply(total, attributes);
   const entities = new Array(total).fill(0).map((_, index) => {

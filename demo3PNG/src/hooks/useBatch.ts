@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { DEFAULT_TOTAL } from "../constants";
 import { Attributes } from "../types";
-import { shuffle } from "../utils";
+import { batchShuffleWithSupply, shuffle } from "../utils";
 
 type State = Array<Attributes>;
 type Action =
@@ -20,8 +20,7 @@ type Action =
     };
 
 const generateState = (total: number = DEFAULT_TOTAL): State => {
-  // TODO: shuffle based on supply
-  return new Array(total).fill(0).map(() => shuffle());
+  return batchShuffleWithSupply(total);
 };
 
 const reducer = (state: State, action: Action): State => {
