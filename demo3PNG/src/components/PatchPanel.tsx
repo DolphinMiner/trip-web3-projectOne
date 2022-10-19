@@ -76,12 +76,9 @@ const PatchPanel = () => {
     );
   };
 
-  return (
-    <Grid className={styles.patchPanelContainer} container spacing={0}>
-      <Grid item xs={"auto"} className={styles.leftContainer}>
-        {renderStickyList()}
-      </Grid>
-      <Grid item xs className={styles.rightContainer}>
+  const renderPreview = () => {
+    return (
+      <>
         <div className={styles.avatarContainer} ref={avatarRef}>
           <Avatar
             source={configs.pngSource}
@@ -97,6 +94,17 @@ const PatchPanel = () => {
             Download
           </Button>
         </div>
+      </>
+    );
+  };
+
+  return (
+    <Grid className={styles.patchPanelContainer} container spacing={0}>
+      <Grid item xs={"auto"} className={styles.leftContainer}>
+        {renderStickyList()}
+      </Grid>
+      <Grid item xs className={styles.rightContainer}>
+        {renderPreview()}
       </Grid>
     </Grid>
   );
