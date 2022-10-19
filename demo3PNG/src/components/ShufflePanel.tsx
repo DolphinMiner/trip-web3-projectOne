@@ -10,7 +10,6 @@ import { Pagination, Stack, TextField } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import { DEFAULT_TOTAL } from "../constants";
-import { getSuppliedAttributes } from "../utils";
 
 const PAGE_SIZE = 120;
 
@@ -20,11 +19,6 @@ const ShufflePanel = () => {
   const { entities, updateEntity, shuffleEntities } = useBatch(DEFAULT_TOTAL);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
-
-  useEffect(() => {
-    const suppliedAttributes = getSuppliedAttributes(total);
-    console.log(suppliedAttributes);
-  }, [total]);
 
   useEffect(() => {
     setCurIdx(-1);
