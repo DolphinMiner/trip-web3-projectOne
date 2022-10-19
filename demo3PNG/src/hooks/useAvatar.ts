@@ -10,7 +10,7 @@ type Action = {
 const initialState = Object.keys(configs.attributes).reduce((acc, attr) => {
   return {
     ...acc,
-    [attr]: Object.keys(configs.attributes[attr])[0],
+    [attr]: configs.attributes[attr][0],
   };
 }, {} as Attributes);
 
