@@ -14,9 +14,9 @@ import { DEFAULT_TOTAL } from "../constants";
 const PAGE_SIZE = 120;
 
 const ShufflePanel = () => {
-  const [inputValue, setInputValue] = useState(1000);
-  const [total, setTotal] = useState(inputValue);
-  const { entities, updateEntity, shuffleEntities } = useBatch(DEFAULT_TOTAL);
+  const [formedTotal, setFormedTotal] = useState(DEFAULT_TOTAL);
+  const [total, setTotal] = useState(formedTotal);
+  const { entities, updateEntity, shuffleEntities } = useBatch(total);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
 
@@ -37,7 +37,7 @@ const ShufflePanel = () => {
   }, [curPage]);
 
   const onUpdate = () => {
-    setTotal(inputValue);
+    setTotal(formedTotal);
   };
 
   const renderTokenList = () => {
@@ -99,12 +99,12 @@ const ShufflePanel = () => {
           size={"small"}
           label="Tokens"
           focused
-          value={inputValue}
-          onChange={(e) => setInputValue(parseInt(e.target.value || 0))}
+          value={formedTotal}
+          onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
         />
         <Button
           variant="contained"
-          disabled={inputValue === entities.length}
+          disabled={formedTotal === entities.length}
           onClick={onUpdate}
         >
           Update
