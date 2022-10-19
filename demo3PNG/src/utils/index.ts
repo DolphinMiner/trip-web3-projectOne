@@ -51,3 +51,7 @@ export const download = async (attributes: Attributes, ele: HTMLDivElement) => {
     console.log("Failed to download", e);
   }
 };
+
+export function random<T>(options: T[]): T | undefined {
+  return options[Math.floor(Math.random() * options.length)];
+}
