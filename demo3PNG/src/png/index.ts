@@ -5,11 +5,11 @@ export const pngSource = {
     white: require("./skin/white.png"),
   },
   accessory: {
-    none: "",
     earphones: require("./accessory/earphones.png"),
     earring1: require("./accessory/earring1.png"),
     earring2: require("./accessory/earring2.png"),
     earring3: require("./accessory/earring3.png"),
+    none: "",
   },
   eye: {
     cry: require("./eye/cry.png"),
@@ -48,10 +48,10 @@ export const pngSource = {
     shorthairwaved: require("./hair/shorthairwaved.png"),
   },
   eyeglass: {
-    none: "",
     fancy: require("./eyeglass/fancy.png"),
     harry: require("./eyeglass/harry.png"),
     nerd: require("./eyeglass/nerd.png"),
+    none: "",
     old: require("./eyeglass/old.png"),
     rambo: require("./eyeglass/rambo.png"),
   },
