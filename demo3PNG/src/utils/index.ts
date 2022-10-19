@@ -4,15 +4,32 @@ import JSZip from "jszip";
 import configs from "../configs";
 import { Attributes } from "../types";
 
-export const shuffle = (): Attributes => {
-  const { pngSource } = configs;
-  return Object.keys(pngSource).reduce((acc, cur) => {
-    const collection = Object.keys(pngSource[cur]);
+export const getSuppliedAttributes = (total: number) => {
+  return Object.keys(configs.attributes).reduce((accAttrs, attrName) => {
+    const attrStyles = configs.attributes[attrName];
+    const len = attrStyles.length;
+    const perSupply = len >= 0 ? Math.floor(total / len) : 0;
+    const modSupply = len >= 0 ? total % len : 0;
     return {
-      ...acc,
-      [cur]: collection[Math.floor(Math.random() * collection.length)],
+      ...accAttrs,
+      [attrName]: attrStyles.reduce((accStyles, styleName, index) => {
+        return {
+          ...accStyles,
+          [styleName]: index === 0 ? perSupply + modSupply : perSupply,
+        };
+      }, {} as Record<string, number>),
     };
-  }, {});
+  }, {} as Record<string, Record<string, number>>);
+};
+
+export const shuffle = () => {
+  return Object.keys(configs.attributes).reduce((accAttrs, attrName) => {
+    const collection = configs.attributes[attrName];
+    return {
+      ...accAttrs,
+      [attrName]: collection[Math.floor(Math.random() * collection.length)],
+    };
+  }, {} as Record<string, string>);
 };
 
 export const download = async (attributes: Attributes, ele: HTMLDivElement) => {
