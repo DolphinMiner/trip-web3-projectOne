@@ -101,8 +101,8 @@ export const batchShuffleWithSupply = (
 
 export const convertTo = (
   entity: Attributes,
-  rtn?: "blob" | "dataURL"
-): Blob | string => {
+  rtn?: "blob" | "dataURL" = "dataURL"
+) => {
   const sources = configs.layers
     .map((layerName) => {
       const layerStyle = entity[layerName];
@@ -117,10 +117,27 @@ export const convertTo = (
 
 export const batchDownload = (
   entities: Array<Attributes>
-): Promise<string[]> => {
+): Promise<boolean> => {
   const tasks = entities.map((entity) => {
-    return convertTo(entity, "dataURL");
+    return convertTo(entity, "blob") as Promise<Blob>;
   });
 
-  return Promise.all(tasks);
+  return Promise.all(tasks)
+    .then((imageBlobs) => {
+      const zip = new JSZip();
+      imageBlobs.forEach((imageBlob, index) => {
+        const jsonBlob = new Blob([JSON.stringify(entities[index])], {
+          type: "text/plain;charset=utf-8",
+        });
+        zip.file(`/image/${index}.png`, imageBlob);
+        zip.file(`/json/${index}.json`, jsonBlob);
+      });
+
+      return zip.generateAsync({ type: "blob" }).then((zipBlob) => {
+        saveAs(zipBlob, "tokens.zip");
+      });
+    })
+    .catch((err) => {
+      return false;
+    });
 };

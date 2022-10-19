@@ -12,7 +12,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { DEFAULT_TOTAL } from "../constants";
 import DownloadIcon from "@mui/icons-material/Download";
 import Image from "next/image";
-import { batchDownload } from "../utils";
+import { batchDownload, convertTo } from "../utils";
 
 const PAGE_SIZE = 120;
 
@@ -45,11 +45,14 @@ const ShufflePanel = () => {
     setTotal(formedTotal);
   };
 
-  const onDownload = () => {
-    batchDownload(entities).then((dataURLs) => {
-      console.log(dataURLs);
-      setDataURL(dataURLs[0]);
-    });
+  const onDownload = async () => {
+    const _dataURL = await convertTo(entities[0]);
+    if (typeof _dataURL === "string") {
+      setDataURL(_dataURL);
+    }
+
+    const isSuccess = await batchDownload(entities);
+    console.log(isSuccess);
   };
 
   const renderTokenToolBar = () => {
