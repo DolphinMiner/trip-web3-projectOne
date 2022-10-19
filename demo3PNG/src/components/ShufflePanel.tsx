@@ -6,7 +6,7 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs from "../configs";
-import { Input, Pagination, Stack, TextField } from "@mui/material";
+import { Pagination, Stack, TextField } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -35,69 +35,88 @@ const ShufflePanel = () => {
     shuffleEntities(total);
   };
 
+  const renderTokenList = () => {
+    return (
+      <div className={styles.avatarListContainer}>
+        <div className={styles.gridContainer}>
+          {entities.slice(startIdx, endIdx).map((entity, idx) => {
+            const actualIdx = idx + startIdx;
+            return (
+              <div key={actualIdx} className={styles.gridItem}>
+                <div className={styles.innerContainer}>
+                  <div
+                    className={classnames({
+                      [styles.avatarContainer]: true,
+                      [styles.active]: actualIdx === curIdx,
+                    })}
+                  >
+                    <Avatar
+                      source={configs.pngSource}
+                      layers={configs.layers}
+                      attributes={entity}
+                      className={styles.avatar}
+                      onClick={() => {
+                        setCurIdx(actualIdx === curIdx ? -1 : actualIdx);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.description}>{`Token #${
+                    actualIdx + 1
+                  }`}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const renderTokenPagination = () => {
+    return (
+      <Stack className={styles.pageContainer} spacing={2} padding={"10px"}>
+        <Pagination
+          count={pageCount}
+          page={curPage}
+          onChange={(e, value) => {
+            setCurPage(value);
+          }}
+          shape="rounded"
+        />
+      </Stack>
+    );
+  };
+
+  const renderSupplyUpdateRow = () => {
+    return (
+      <Stack direction={"row"} spacing={2}>
+        <TextField
+          size={"small"}
+          label="Tokens"
+          focused
+          value={total}
+          onChange={(e) => setTotal(parseInt(e.target.value || 0))}
+        />
+        <Button
+          variant="contained"
+          disabled={total === entities.length}
+          onClick={onUpdate}
+        >
+          Update
+        </Button>
+      </Stack>
+    );
+  };
+
   return (
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
       <Grid item xs={"auto"} className={styles.leftContainer}>
-        <Stack direction={"row"} spacing={2}>
-          <TextField
-            size={"small"}
-            label="Tokens"
-            focused
-            value={total}
-            onChange={(e) => setTotal(parseInt(e.target.value || 0))}
-          />
-          <Button
-            variant="contained"
-            disabled={total === entities.length}
-            onClick={onUpdate}
-          >
-            Update
-          </Button>
-        </Stack>
+        {renderSupplyUpdateRow()}
+        {/* TODO: more action */}
       </Grid>
       <Grid item xs className={styles.rightContainer}>
-        <div className={styles.avatarListContainer}>
-          <div className={styles.gridContainer}>
-            {entities.slice(startIdx, endIdx).map((entity, idx) => {
-              const actualIdx = idx + startIdx;
-              return (
-                <div key={actualIdx} className={styles.gridItem}>
-                  <div className={styles.innerContainer}>
-                    <div
-                      className={classnames({
-                        [styles.avatarContainer]: true,
-                        [styles.active]: actualIdx === curIdx,
-                      })}
-                    >
-                      <Avatar
-                        source={configs.pngSource}
-                        layers={configs.layers}
-                        attributes={entity}
-                        className={styles.avatar}
-                        onClick={() => {
-                          setCurIdx(actualIdx === curIdx ? -1 : actualIdx);
-                        }}
-                      />
-                    </div>
-                    <div className={styles.description}>{`Token #${
-                      actualIdx + 1
-                    }`}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <Stack className={styles.pageContainer} spacing={2} padding={"10px"}>
-          <Pagination
-            count={pageCount}
-            page={curPage}
-            onChange={(e, value) => {
-              setCurPage(value);
-            }}
-            shape="rounded"
-          />
-        </Stack>
+        {renderTokenList()}
+        {renderTokenPagination()}
       </Grid>
     </Grid>
   );
