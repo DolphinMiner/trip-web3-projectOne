@@ -110,5 +110,6 @@
   font-size: 14px;
   color: rgb(107,114, 128);
   box-sizing: border-box;
-  text-align: center;
+  padding-left: 4px;
+  text-align: left;
 }
