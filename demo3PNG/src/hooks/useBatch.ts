@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { DEFAULT_TOTAL } from "../constants";
 import { Attributes } from "../types";
 import { shuffle } from "../utils";
 
@@ -17,8 +18,6 @@ type Action =
         total: number;
       };
     };
-
-const DEFAULT_TOTAL = 1000;
 
 const generateState = (total: number = DEFAULT_TOTAL): State => {
   // TODO: shuffle based on supply

@@ -9,9 +9,9 @@ import configs from "../configs";
 import { Pagination, Stack, TextField } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
+import { DEFAULT_TOTAL } from "../constants";
 
 const PAGE_SIZE = 120;
-const DEFAULT_TOTAL = 1000;
 
 const ShufflePanel = () => {
   const [inputValue, setInputValue] = useState(1000);
