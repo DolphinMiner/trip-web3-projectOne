@@ -38,44 +38,47 @@ const PatchPanel = () => {
     onShuffle();
   }, []);
 
-  return (
-    <Grid className={styles.patchPanelContainer} container spacing={0}>
-      <Grid item xs={"auto"} className={styles.leftContainer}>
-        <List
-          className={styles.listContainer}
-          sx={{
-            bgcolor: "background.paper",
-          }}
-        >
-          {configs.layers.map((layer) => (
-            <li key={`section-${layer}`}>
-              <ul>
-                <ListSubheader>{`${layer.toUpperCase()}`}</ListSubheader>
-                {Object.keys(configs.attributes[layer]).map((layerStyle) => (
-                  <ListItem key={`item-${layer}-${layerStyle}`}>
-                    <ListItemButton
-                      role={undefined}
-                      onClick={() => setAttributes({ [layer]: layerStyle })}
-                      dense
-                    >
-                      <ListItemIcon style={{ minWidth: 30 }}>
-                        <Checkbox
-                          edge="start"
-                          checked={layerStyle === attributes[layer]}
-                          tabIndex={-1}
-                          disableRipple
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary={`${layerStyle}`} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </List>
-      </Grid>
-      <Grid item xs className={styles.rightContainer}>
+  const renderStickyList = () => {
+    return (
+      <List
+        className={styles.listContainer}
+        sx={{
+          bgcolor: "background.paper",
+        }}
+      >
+        {configs.layers.map((layer) => (
+          <li key={`section-${layer}`}>
+            <ul>
+              <ListSubheader>{`${layer.toUpperCase()}`}</ListSubheader>
+              {Object.keys(configs.attributes[layer]).map((layerStyle) => (
+                <ListItem key={`item-${layer}-${layerStyle}`}>
+                  <ListItemButton
+                    role={undefined}
+                    onClick={() => setAttributes({ [layer]: layerStyle })}
+                    dense
+                  >
+                    <ListItemIcon style={{ minWidth: 30 }}>
+                      <Checkbox
+                        edge="start"
+                        checked={layerStyle === attributes[layer]}
+                        tabIndex={-1}
+                        disableRipple
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={`${layerStyle}`} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </List>
+    );
+  };
+
+  const renderPreview = () => {
+    return (
+      <>
         <div className={styles.avatarContainer} ref={avatarRef}>
           <Avatar
             source={configs.pngSource}
@@ -91,6 +94,17 @@ const PatchPanel = () => {
             Download
           </Button>
         </div>
+      </>
+    );
+  };
+
+  return (
+    <Grid className={styles.patchPanelContainer} container spacing={0}>
+      <Grid item xs={"auto"} className={styles.leftContainer}>
+        {renderStickyList()}
+      </Grid>
+      <Grid item xs className={styles.rightContainer}>
+        {renderPreview()}
       </Grid>
     </Grid>
   );

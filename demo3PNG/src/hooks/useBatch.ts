@@ -1,67 +1,70 @@
-import React, { useReducer } from "react";
-import configs from "../configs";
+import { useReducer } from "react";
 import { Attributes } from "../types";
 import { shuffle } from "../utils";
 
-const BATCH_NUMBER = 50;
+type State = Array<Attributes>;
+type Action =
+  | {
+      type: "update";
+      payload: {
+        index: number;
+        entity: Attributes;
+      };
+    }
+  | {
+      type: "shuffle";
+      payload: {
+        total: number;
+      };
+    };
 
-type Action = NextBatchAction | SelectedAction;
+const DEFAULT_TOTAL = 1000;
 
-type NextBatchAction = {
-  type: "onNextBatch";
+const generateState = (total: number = DEFAULT_TOTAL): State => {
+  // TODO: shuffle based on supply
+  return new Array(total).fill(0).map(() => shuffle());
 };
 
-type SelectedAction = {
-  type: "onSelected";
-  payload: number;
-};
-
-type BatchState = {
-  entities: Array<Attributes>;
-  selected: Array<Boolean>;
-};
-
-const generateNewBatch = (): BatchState => {
-  const entities = new Array(BATCH_NUMBER).fill(0).map(() => {
-    return shuffle();
-  });
-  const selected = new Array(BATCH_NUMBER).fill(true);
-
-  return {
-    entities,
-    selected,
-  };
-};
-
-const initialState: BatchState = generateNewBatch();
-
-const reducer = (state = initialState, action: Action) => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "onSelected":
-      const newSelected = state.selected.slice(0);
-      newSelected[action.payload] = !newSelected[action.payload];
-      return { ...state, selected: newSelected };
-    case "onNextBatch":
-      return generateNewBatch();
+    case "update":
+      return state.map((entity, index) => {
+        if (index === action.payload.index) {
+          return {
+            ...entity,
+            ...action.payload.entity,
+          };
+        }
+        return entity;
+      });
+    case "shuffle":
+      return generateState(action.payload.total);
     default:
       return state;
   }
 };
 
-const useBatch = () => {
-  const [batchState, dispatch] = useReducer(reducer, initialState);
-  const { entities, selected } = batchState;
+const useBatch = (total: number = DEFAULT_TOTAL) => {
+  const initialState = generateState(total);
+  const [entities, dispatch] = useReducer(reducer, initialState);
+
   return {
     entities,
-    selected,
-    onNextBatch: () =>
+    updateEntity: (index: number, entity: Attributes) => {
       dispatch({
-        type: "onNextBatch",
-      }),
-    onSelected: (payload: number) => {
+        type: "update",
+        payload: {
+          index,
+          entity,
+        },
+      });
+    },
+    shuffleEntities: (total: number = DEFAULT_TOTAL) => {
       dispatch({
-        type: "onSelected",
-        payload,
+        type: "shuffle",
+        payload: {
+          total,
+        },
       });
     },
   };
