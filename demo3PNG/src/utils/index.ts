@@ -3,6 +3,7 @@ import { toBlob } from "html-to-image";
 import JSZip from "jszip";
 import configs from "../configs";
 import { Attributes } from "../types";
+import mergeImages from "./mergeImages";
 
 export const shuffle = () => {
   return Object.keys(configs.attributes).reduce((accAttrs, attrName) => {
@@ -96,4 +97,30 @@ export const batchShuffleWithSupply = (
     }, {} as Record<string, string>);
   });
   return entities;
+};
+
+export const convertTo = (
+  entity: Attributes,
+  rtn?: "blob" | "dataURL"
+): Blob | string => {
+  const sources = configs.layers
+    .map((layerName) => {
+      const layerStyle = entity[layerName];
+      const source = configs.pngSource[layerName]?.[layerStyle];
+      return source;
+    })
+    .filter((v) => !!v)
+    .map((source) => source.default || source);
+
+  return mergeImages(sources, { rtn });
+};
+
+export const batchDownload = (
+  entities: Array<Attributes>
+): Promise<string[]> => {
+  const tasks = entities.map((entity) => {
+    return convertTo(entity, "dataURL");
+  });
+
+  return Promise.all(tasks);
 };
