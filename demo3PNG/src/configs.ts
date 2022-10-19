@@ -13,10 +13,6 @@ export const layers = [
   "eyeglass",
 ] as const;
 
-type AttributeName = string;
-type AttributeStyle = string;
-type AttributeCollection = Record<AttributeName, Array<AttributeStyle>>;
-
 export const attributes = {
   // visible attributes
   ...Object.keys(pngSource).reduce((layerAcc, layerName) => {
@@ -25,7 +21,7 @@ export const attributes = {
       ...layerAcc,
       [layerName]: Object.keys(layerStyles),
     };
-  }, {} as AttributeCollection),
+  }, {} as Record<string, Array<string>>),
 
   // invisible attributes
   // ...
