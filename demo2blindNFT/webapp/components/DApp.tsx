@@ -5,11 +5,13 @@ import {
   useAccount,
   useBalance,
   useConnect,
+  useContract,
   useContractRead,
   useContractWrite,
   useSigner,
 } from "wagmi";
 
+import { getMerkleProof } from "../utils/merkleTree";
 import TripNFTArtifact from "../contracts/TripNFT.json";
 import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
@@ -32,28 +34,32 @@ const greetContractConfig = {
 const DApp = () => {
   // 当前用户的地址
   const { address: currentAddress, isConnected } = useAccount();
-  // 用户余额
-  const { data: balanceData } = useBalance({ addressOrName: currentAddress });
-  // 以太坊网络提供方provider与singer
-  const { data: signer, isError, isLoading } = useSigner();
   // NFT Contract Object
   const { writeAsync: mintAsync, error: mintError } = useContractWrite({
     ...nftContractConfig,
     mode: "recklesslyUnprepared",
-    functionName: "mintNft",
+    functionName: "publicMint",
   });
+  // 通过读取是否在白名单内(还需继续联调)
+  const merkleProof = currentAddress && getMerkleProof(currentAddress);
+  const { data: isInWhiteList } = useContractRead({
+    ...nftContractConfig,
+    functionName: "isValidUser",
+    args: [merkleProof],
+    overrides: { from: currentAddress },
+  });
+
   // 通过读取合约字段活动铸造售价
   const { data: mintPrice } = useContractRead({
     ...nftContractConfig,
     functionName: "mintPrice",
   });
-  // TODO：之后改为读取合约的白名单字段
-  const isInWhiteList = true;
   // 本地调试用，查看是否正确连接至合约
-  const { data: greetMsg } = useContractRead({
-    ...greetContractConfig,
-    functionName: "greet",
-  });
+  // const { data: greetMsg } = useContractRead({
+  //   ...greetContractConfig,
+  //   functionName: "greet",
+  // });
+  const greetMsg = "Hello from local msg.";
   // 倒计时时钟指针
   let countDownPointer: ReturnType<typeof setInterval> | null;
   // 倒计时文案
@@ -88,7 +94,7 @@ const DApp = () => {
 
     try {
       const tx = await mintAsync({
-        recklesslySetUnpreparedArgs: [1, currentAddress],
+        recklesslySetUnpreparedArgs: [1],
         recklesslySetUnpreparedOverrides: {
           from: currentAddress,
           value: mintPrice, // 传入合约里的售价
