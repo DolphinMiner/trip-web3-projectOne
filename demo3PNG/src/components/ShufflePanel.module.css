@@ -18,6 +18,11 @@
   height: 40px;
   flex-shrink: 0;
 }
+.previewAvatar {
+  width: calc(300px - 1px - 20px) !important;
+  height: calc(300px - 1px - 20px) !important;
+  flex-shrink: 0;
+}
 .tokenDefine {
   margin-top: 10px;
   flex: 1;
@@ -145,6 +150,7 @@
   border: 2px solid transparent;
   border-radius: 8px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .active {
@@ -155,7 +161,6 @@
   width: 100% !important;
   height: 100% !important;
   background-color: #eee;
-  cursor: pointer;
 }
 
 .description {

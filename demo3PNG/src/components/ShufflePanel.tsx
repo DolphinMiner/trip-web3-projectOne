@@ -41,8 +41,6 @@ const ShufflePanel = () => {
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
 
-  const [dataURL, setDataURL] = useState("");
-
   const dnaCollection = useMemo(() => {
     return entities.reduce((acc, entity, index) => {
       const dna = createDNA(entity);
@@ -174,80 +172,71 @@ const ShufflePanel = () => {
   };
 
   const renderSelectedToken = () => {
-    if (!dataURL || curIdx === -1) return null;
+    if (curIdx === -1) return null;
 
     const dna = createDNA(entities[curIdx]);
 
     return (
-      <div className={styles.tokenDefine}>
-        <Image src={dataURL} width={360} height={360} alt="preview" />
+      <>
+        <div className={styles.tokenDefine}>
+          <Avatar
+            source={configs.pngSource}
+            layers={configs.layers}
+            attributes={entities[curIdx]}
+            className={styles.previewAvatar}
+          />
+          {dnaCollection[dna].length !== 1 ? (
+            <div className={styles.dnaWarning}>
+              <span>{"Warning, token is not unique!"}</span>
+              <br />
+              <span>
+                Has the same traits as Token{" "}
+                {dnaCollection[dna]
+                  .filter((idx) => idx !== curIdx)
+                  .map((idx) => `#${idx + 1}`)
+                  .join(",")}
+              </span>
+            </div>
+          ) : null}
 
-        {dnaCollection[dna].length !== 1 ? (
-          <div className={styles.dnaWarning}>
-            <span>{"Warning, token is not unique!"}</span>
-            <br />
-            <span>
-              Has the same traits as Token{" "}
-              {dnaCollection[dna]
-                .filter((idx) => idx !== curIdx)
-                .map((idx) => `#${idx + 1}`)
-                .join(",")}
-            </span>
+          <Box sx={{ width: "100%", marginTop: "20px" }}>
+            <Stack spacing={2}>
+              {configs.layers.map((layer) => {
+                const id = `layer-${layer}`;
+                const labelId = `${id}-label`;
+                const selectId = `${id}-select`;
+                return (
+                  <FormControl key={id} fullWidth>
+                    <InputLabel id={labelId}>{layer}</InputLabel>
+                    <Select
+                      size="small"
+                      labelId={labelId}
+                      id={selectId}
+                      value={entities[curIdx][layer]}
+                      label={layer}
+                      onChange={(e) => {
+                        updateEntity(curIdx, { [layer]: e.target.value });
+                      }}
+                    >
+                      {configs.attributes[layer].map((v) => (
+                        <MenuItem key={v} value={v}>
+                          {v}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                );
+              })}
+            </Stack>
+          </Box>
+          <div className={styles.dna}>
+            <span>{`DNA\n`}</span>
+            <span>{createDNA(entities[curIdx])}</span>
           </div>
-        ) : null}
-
-        <Box sx={{ width: "100%", marginTop: "20px" }}>
-          <Stack spacing={2}>
-            {configs.layers.map((layer) => {
-              const id = `layer-${layer}`;
-              const labelId = `${id}-label`;
-              const selectId = `${id}-select`;
-              return (
-                <FormControl key={id} fullWidth>
-                  <InputLabel id={labelId}>{layer}</InputLabel>
-                  <Select
-                    size="small"
-                    labelId={labelId}
-                    id={selectId}
-                    value={entities[curIdx][layer]}
-                    label={layer}
-                    onChange={(e) => {
-                      updateEntity(curIdx, { [layer]: e.target.value });
-                    }}
-                  >
-                    {configs.attributes[layer].map((v) => (
-                      <MenuItem key={v} value={v}>
-                        {v}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              );
-            })}
-          </Stack>
-        </Box>
-        <div className={styles.dna}>
-          <span>{`DNA\n`}</span>
-          <span>{createDNA(entities[curIdx])}</span>
         </div>
-      </div>
+      </>
     );
   };
-
-  useEffect(() => {
-    if (curIdx === -1) {
-      setDataURL("");
-      return;
-    }
-
-    const entity = entities[curIdx];
-    convertTo(entity).then((_dataURL) => {
-      if (typeof _dataURL === "string") {
-        setDataURL(_dataURL);
-      }
-    });
-    return;
-  }, [curIdx, entities]);
 
   useEffect(() => {
     setCurIdx(-1);
