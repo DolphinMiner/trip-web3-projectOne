@@ -1,57 +1,17 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./App.module.css";
-import Avatar from "./components/Avatar";
-import { download, shuffle } from "./utils";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import ShufflePanel from "./components/ShufflePanel";
-import configs from "./configs";
-import useAvatar from "./hooks/useAvatar";
+import PatchPanel from "./components/PatchPanel";
 
 const App = () => {
-  const avatarRef = useRef<HTMLDivElement | null>(null);
-  const { attributes, setAttributes } = useAvatar();
   const [selectedPanel, setSelectedPanel] = useState<"patch" | "shuffle">(
     "patch"
   );
 
-  const onShuffle = () => {
-    const payload = shuffle();
-    setAttributes(payload);
-    console.log(payload);
-  };
-
-  const onDownload = () => {
-    if (!avatarRef.current) {
-      return;
-    }
-    download(attributes, avatarRef.current);
-  };
-
-  useEffect(() => {
-    onShuffle();
-  }, []);
-
   const renderPatchPanel = () => {
-    return (
-      <>
-        <div className={styles.container} ref={avatarRef}>
-          <Avatar
-            source={configs.pngSource}
-            layers={configs.layers}
-            attributes={attributes}
-          />
-        </div>
-        <div className={styles.btnContainer}>
-          <Button variant="contained" onClick={onShuffle}>
-            Shuffle
-          </Button>
-          <Button variant="contained" onClick={onDownload}>
-            Download
-          </Button>
-        </div>
-      </>
-    );
+    return <PatchPanel />;
   };
 
   const renderShufflePanel = () => {
