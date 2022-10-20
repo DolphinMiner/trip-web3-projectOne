@@ -16,6 +16,7 @@
 }
 .totalSupply {
   height: 40px;
+  flex-shrink: 0;
 }
 .tokenDefine {
   margin-top: 10px;
