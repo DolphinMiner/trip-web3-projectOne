@@ -6,7 +6,17 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs, { attributes } from "../configs";
-import { IconButton, Pagination, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import { DEFAULT_TOTAL } from "../constants";
@@ -21,11 +31,8 @@ const PAGE_SIZE = 120;
 const createDNA = (entity: Attributes): string => {
   const hash = CryptoJS.SHA1(JSON.stringify(entity));
   const dna = hash.toString(CryptoJS.enc.Hex);
-  console.log(entity, dna);
   return dna;
 };
-
-const cachedDataURL = new WeakMap();
 
 const ShufflePanel = () => {
   const [formedTotal, setFormedTotal] = useState(DEFAULT_TOTAL);
@@ -147,7 +154,7 @@ const ShufflePanel = () => {
 
   const renderSupplyUpdateRow = () => {
     return (
-      <Stack direction={"row"} spacing={2}>
+      <Stack className={styles.totalSupply} direction={"row"} spacing={2}>
         <TextField
           size={"small"}
           label="Tokens"
@@ -170,15 +177,60 @@ const ShufflePanel = () => {
     if (!dataURL || curIdx === -1) return null;
 
     const dna = createDNA(entities[curIdx]);
+
     return (
-      <>
+      <div className={styles.tokenDefine}>
         <Image src={dataURL} width={360} height={360} alt="preview" />
+
+        {dnaCollection[dna].length !== 1 ? (
+          <div className={styles.dnaWarning}>
+            <span>{"Warning, token is not unique!"}</span>
+            <br />
+            <span>
+              Has the same traits as Token{" "}
+              {dnaCollection[dna]
+                .filter((idx) => idx !== curIdx)
+                .map((idx) => `#${idx + 1}`)
+                .join(",")}
+            </span>
+          </div>
+        ) : null}
+
+        <Box sx={{ width: "100%", marginTop: "20px" }}>
+          <Stack spacing={2}>
+            {configs.layers.map((layer) => {
+              const id = `layer-${layer}`;
+              const labelId = `${id}-label`;
+              const selectId = `${id}-select`;
+              return (
+                <FormControl key={id} fullWidth>
+                  <InputLabel id={labelId}>{layer}</InputLabel>
+                  <Select
+                    size="small"
+                    labelId={labelId}
+                    id={selectId}
+                    value={entities[curIdx][layer]}
+                    label={layer}
+                    onChange={(e) => {
+                      updateEntity(curIdx, { [layer]: e.target.value });
+                    }}
+                  >
+                    {configs.attributes[layer].map((v) => (
+                      <MenuItem key={v} value={v}>
+                        {v}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              );
+            })}
+          </Stack>
+        </Box>
         <div className={styles.dna}>
           <span>{`DNA\n`}</span>
           <span>{createDNA(entities[curIdx])}</span>
         </div>
-        {dnaCollection[dna].length !== 1 ? <p>duplicate</p> : null}
-      </>
+      </div>
     );
   };
 
@@ -189,19 +241,13 @@ const ShufflePanel = () => {
     }
 
     const entity = entities[curIdx];
-    if (cachedDataURL.has(entity)) {
-      setDataURL(cachedDataURL.get(entity));
-      return;
-    }
-
     convertTo(entity).then((_dataURL) => {
       if (typeof _dataURL === "string") {
         setDataURL(_dataURL);
-        cachedDataURL.set(entity, _dataURL);
       }
     });
     return;
-  }, [curIdx]);
+  }, [curIdx, entities]);
 
   useEffect(() => {
     setCurIdx(-1);
