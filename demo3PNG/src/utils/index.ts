@@ -53,15 +53,12 @@ export const getAttributesWithSupply = (
     const len = attrStyles.length;
     const perSupply = len >= 0 ? Math.floor(total / len) : 0;
     const modSupply = len >= 0 ? total % len : 0;
-    // 用于添加modSupply
-    const specialStyleName = random(attrStyles);
     return {
       ...accAttrs,
-      [attrName]: attrStyles.reduce((accStyles, styleName) => {
+      [attrName]: attrStyles.reduce((accStyles, styleName, index) => {
         return {
           ...accStyles,
-          [styleName]:
-            styleName === specialStyleName ? perSupply + modSupply : perSupply,
+          [styleName]: perSupply + (index < modSupply ? 1 : 0),
         };
       }, {} as Record<string, number>),
     };
