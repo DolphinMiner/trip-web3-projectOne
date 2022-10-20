@@ -12,6 +12,8 @@ import {
 } from "wagmi";
 
 import { getMerkleProof } from "../utils/merkleTree";
+// import { Modal, Button } from "antd";
+import 'antd/dist/antd.css';
 import TripNFTArtifact from "../contracts/TripNFT.json";
 import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
@@ -103,8 +105,21 @@ const DApp = () => {
 
       const receipt = await tx.wait();
       console.log({ receipt });
+      // Modal.success({
+      //   title: "Mint成功！",
+      //   content: "点击OK前往OpenSea查看",
+      //   onOk: () => {
+      //     window.open("https://testnets.opensea.io/zh-CN/collections","_blank")
+      //   },
+      //   centered: true,
+      // })
     } catch (error) {
       console.error(error);
+      // Modal.error({
+      //   title: "Mint failed!",
+      //   content: "Something went wrong...",
+      //   centered: true,
+      // })
     } finally {
       setMintLoading(false);
     }
