@@ -1,6 +1,4 @@
-import Image from "next/image";
-import dolphin from "../public/dolphin.png";
-import bg_right from "../public/sea_bg_right.png";
+/* eslint-disable @next/next/no-img-element */
 
 const BgImage = () => {
   return (
@@ -9,13 +7,13 @@ const BgImage = () => {
         {/* sea background */}
         <div className="block relative overflow-hidden w-full h-full ">
           <div className="absolute -bottom-15 -right-10">
-            <Image src={bg_right} alt="bg_right" width={680} height={870} />
+            <img src="/sea_bg_right.png" alt="bg_right" width="680" height="870" />
           </div>
         </div>
 
         {/* dolphin */}
         <div className="absolute -bottom-10 -right-20">
-          <Image src={dolphin} alt="dolphin" width={580} height={470} />
+          <img src="/dolphin.png" alt="dolphin" width="580" height="470" />
         </div>
       </div>
     </div>
