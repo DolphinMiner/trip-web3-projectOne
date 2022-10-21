@@ -12,7 +12,7 @@ const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS;
 
 module.exports = {
   solidity: "0.8.10",
-  gas: 500000,
+  gasLimit: 500000,
 // 配置部署的网络，这里我配置了两个测试环境ropsten和goerli
   networks: {
     hardhat: {
