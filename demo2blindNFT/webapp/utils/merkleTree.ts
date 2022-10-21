@@ -11,7 +11,7 @@ const WHITE_LIST = [
 const leaves = WHITE_LIST.map((x) => keccak256(x));
 const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 const root = tree.getHexRoot();
-console.log("root", root);
+// console.log("root", root);
 
 const getMerkleProof = (address: string) => {
   const leaf = keccak256(address);

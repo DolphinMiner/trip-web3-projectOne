@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 import {
   useAccount,
@@ -13,7 +13,7 @@ import {
 
 import { getMerkleProof } from "../utils/merkleTree";
 // import { Modal, Button } from "antd";
-import 'antd/dist/antd.css';
+import "antd/dist/antd.css";
 import TripNFTArtifact from "../contracts/TripNFT.json";
 import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
@@ -33,16 +33,20 @@ const greetContractConfig = {
   contractInterface: TestGreetingArtifact.abi,
 };
 
+// 售卖阶段
+enum SALE_STATE {
+  CLOSED = 0,
+  PRE_MINT = 1,
+  PUBLIC_MINT = 2,
+}
+
 const DApp = () => {
   // 当前用户的地址
   const { address: currentAddress, isConnected } = useAccount();
-  // NFT Contract Object
-  const { writeAsync: mintAsync, error: mintError } = useContractWrite({
-    ...nftContractConfig,
-    mode: "recklesslyUnprepared",
-    functionName: "publicMint",
-  });
-  // 通过读取是否在白名单内(还需继续联调)
+
+  /*  == 合约的读与写 ==  */
+
+  // 通过读取是否在白名单内
   const merkleProof = currentAddress && getMerkleProof(currentAddress);
   const { data: isInWhiteList } = useContractRead({
     ...nftContractConfig,
@@ -50,17 +54,38 @@ const DApp = () => {
     args: [merkleProof],
     overrides: { from: currentAddress },
   });
-
+  // 售卖时间段
+  const { data: saleStageBigInt } = useContractRead({
+    ...nftContractConfig,
+    functionName: "saleStage",
+  }) as { data: any | undefined };
+  const saleStage: SALE_STATE = parseInt(saleStageBigInt || 0);
   // 通过读取合约字段活动铸造售价
   const { data: mintPrice } = useContractRead({
     ...nftContractConfig,
     functionName: "mintPrice",
+  }) as { data: BigNumber | undefined };
+  // public mint
+  const { writeAsync: preMintAsync, error: preMintError } = useContractWrite({
+    ...nftContractConfig,
+    mode: "recklesslyUnprepared",
+    functionName: "preMint",
   });
+  // public mint
+  const { writeAsync: publicMintAsync, error: publicMintError } =
+    useContractWrite({
+      ...nftContractConfig,
+      mode: "recklesslyUnprepared",
+      functionName: "publicMint",
+    });
   // 本地调试用，查看是否正确连接至合约
   // const { data: greetMsg } = useContractRead({
   //   ...greetContractConfig,
   //   functionName: "greet",
   // });
+
+  /*  == End ==  */
+
   const greetMsg = "Hello from local msg.";
   // 倒计时时钟指针
   let countDownPointer: ReturnType<typeof setInterval> | null;
@@ -89,17 +114,35 @@ const DApp = () => {
 
   // 铸造请求
   const requestMint = async () => {
-    // 还未读取到合约方法
-    if (!mintAsync) return;
+    // 还未读取到合约内容 或 售卖还未开启
+    if (!saleStage) return;
 
     setMintLoading(true);
 
+    // 需要调用的方法
+    let mintFnAsync;
+    // 需要传入的价格
+    let sendValue: BigNumber = ethers.utils.parseEther("0");
+    // 需要传给合约的参数
+    let args = [];
+    switch (saleStage) {
+      case SALE_STATE.PRE_MINT:
+        mintFnAsync = preMintAsync;
+        args = [1, merkleProof];
+        break;
+      case SALE_STATE.PUBLIC_MINT:
+        mintFnAsync = publicMintAsync;
+        sendValue = mintPrice || sendValue;
+        args = [1];
+        break;
+    }
+
     try {
-      const tx = await mintAsync({
-        recklesslySetUnpreparedArgs: [1],
+      const tx = await mintFnAsync({
+        recklesslySetUnpreparedArgs: args,
         recklesslySetUnpreparedOverrides: {
           from: currentAddress,
-          value: mintPrice, // 传入合约里的售价
+          value: sendValue, // 传入合约里的售价
         },
       });
 
@@ -162,11 +205,18 @@ const DApp = () => {
   };
 
   const renderMintButton = () => {
-    const isAble = currentAddress && isInWhiteList && !isMintLoading;
+    // 是否开启预售
+    const isOnPreMint = saleStage === SALE_STATE.PRE_MINT && isInWhiteList;
+    // 是否开启公售
+    const insOnPublicMint =
+      saleStage === SALE_STATE.PUBLIC_MINT && currentAddress;
+    // 是否能铸造
+    const isAble = (isOnPreMint || insOnPublicMint) && !isMintLoading;
+    // 按钮文案
     const btnText = !currentAddress
       ? "Connect wallet first."
-      : !isInWhiteList
-      ? "You are not qualified to buy."
+      : !isAble
+      ? "Out of store."
       : isMintLoading
       ? "Minting..."
       : "MINT!";
