@@ -171,70 +171,76 @@ const ShufflePanel = () => {
     );
   };
 
-  const renderSelectedToken = () => {
+  const renderAttributeDefine = () => {
+    return (
+      <div className={styles.attributeDefine}>
+        <div></div>
+      </div>
+    );
+  };
+
+  const renderTokenDefine = () => {
     if (curIdx === -1) return null;
 
     const dna = createDNA(entities[curIdx]);
 
     return (
-      <>
-        <div className={styles.tokenDefine}>
-          <Avatar
-            source={configs.pngSource}
-            layers={configs.layers}
-            attributes={entities[curIdx]}
-            className={styles.previewAvatar}
-          />
-          {dnaCollection[dna].length !== 1 ? (
-            <div className={styles.dnaWarning}>
-              <span>{"Warning, token is not unique!"}</span>
-              <br />
-              <span>
-                Has the same traits as Token{" "}
-                {dnaCollection[dna]
-                  .filter((idx) => idx !== curIdx)
-                  .map((idx) => `#${idx + 1}`)
-                  .join(",")}
-              </span>
-            </div>
-          ) : null}
-
-          <Box sx={{ width: "100%", marginTop: "20px" }}>
-            <Stack spacing={2}>
-              {configs.layers.map((layer) => {
-                const id = `layer-${layer}`;
-                const labelId = `${id}-label`;
-                const selectId = `${id}-select`;
-                return (
-                  <FormControl key={id} fullWidth>
-                    <InputLabel id={labelId}>{layer}</InputLabel>
-                    <Select
-                      size="small"
-                      labelId={labelId}
-                      id={selectId}
-                      value={entities[curIdx][layer]}
-                      label={layer}
-                      onChange={(e) => {
-                        updateEntity(curIdx, { [layer]: e.target.value });
-                      }}
-                    >
-                      {configs.attributes[layer].map((v) => (
-                        <MenuItem key={v} value={v}>
-                          {v}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                );
-              })}
-            </Stack>
-          </Box>
-          <div className={styles.dna}>
-            <span>{`DNA\n`}</span>
-            <span>{createDNA(entities[curIdx])}</span>
+      <div className={styles.tokenDefine}>
+        <Avatar
+          source={configs.pngSource}
+          layers={configs.layers}
+          attributes={entities[curIdx]}
+          className={styles.previewAvatar}
+        />
+        {dnaCollection[dna].length !== 1 ? (
+          <div className={styles.dnaWarning}>
+            <span>{"Warning, token is not unique!"}</span>
+            <br />
+            <span>
+              Has the same traits as Token{" "}
+              {dnaCollection[dna]
+                .filter((idx) => idx !== curIdx)
+                .map((idx) => `#${idx + 1}`)
+                .join(",")}
+            </span>
           </div>
+        ) : null}
+
+        <Box sx={{ width: "100%", marginTop: "20px" }}>
+          <Stack spacing={2}>
+            {configs.layers.map((layer) => {
+              const id = `layer-${layer}`;
+              const labelId = `${id}-label`;
+              const selectId = `${id}-select`;
+              return (
+                <FormControl key={id} fullWidth>
+                  <InputLabel id={labelId}>{layer}</InputLabel>
+                  <Select
+                    size="small"
+                    labelId={labelId}
+                    id={selectId}
+                    value={entities[curIdx][layer]}
+                    label={layer}
+                    onChange={(e) => {
+                      updateEntity(curIdx, { [layer]: e.target.value });
+                    }}
+                  >
+                    {configs.attributes[layer].map((v) => (
+                      <MenuItem key={v} value={v}>
+                        {v}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              );
+            })}
+          </Stack>
+        </Box>
+        <div className={styles.dna}>
+          <span>{`DNA\n`}</span>
+          <span>{createDNA(entities[curIdx])}</span>
         </div>
-      </>
+      </div>
     );
   };
 
@@ -252,7 +258,7 @@ const ShufflePanel = () => {
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
       <Grid item xs={"auto"} className={styles.leftContainer}>
         {renderSupplyUpdateRow()}
-        {renderSelectedToken()}
+        {curIdx === -1 ? renderAttributeDefine() : renderTokenDefine()}
       </Grid>
       <Grid item xs className={styles.rightContainer}>
         {renderTokenToolBar()}

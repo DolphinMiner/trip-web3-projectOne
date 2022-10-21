@@ -18,15 +18,26 @@
   height: 40px;
   flex-shrink: 0;
 }
-.previewAvatar {
-  width: calc(300px - 1px - 20px) !important;
-  height: calc(300px - 1px - 20px) !important;
-  flex-shrink: 0;
+.attributeDefine {
+  margin-top: 10px;
+  flex: 1;
+  overflow: auto;
+}
+.attributeDefine > div {
+  width: 100%;
+  height: 800px;
+  background: red;
 }
 .tokenDefine {
   margin-top: 10px;
   flex: 1;
   overflow: auto;
+  background: green;
+}
+.previewAvatar {
+  width: calc(300px - 1px - 20px) !important;
+  height: calc(300px - 1px - 20px) !important;
+  flex-shrink: 0;
 }
 .dnaWarning {
   margin-top: 10px;
@@ -171,7 +182,7 @@
   height: 30px;
   line-height: 30px;
   font-size: 14px;
-  color: rgb(107,114, 128);
+  color: rgb(107, 114, 128);
   box-sizing: border-box;
   padding-left: 4px;
   text-align: left;
