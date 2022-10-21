@@ -29,12 +29,13 @@
   flex: 1;
   overflow: scroll;
   width: 100%;
+  /* 100vh - header - border - pageContainer */
   max-height: calc(100vh - 70px - 1px - 52px);
+  border-bottom: 1px solid #eee;
 }
 
 .gridContainer {
   width: 100%;
-  border-bottom: 1px solid #eee;
   display: grid;
   padding: 10px;
   gap: 10px;
@@ -109,5 +110,6 @@
   font-size: 14px;
   color: rgb(107,114, 128);
   box-sizing: border-box;
-  text-align: center;
+  padding-left: 4px;
+  text-align: left;
 }

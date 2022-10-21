@@ -12,14 +12,13 @@ import {
 } from "wagmi";
 
 import { getMerkleProof } from "../utils/merkleTree";
-// import { Modal, Button } from "antd";
-import "antd/dist/antd.css";
 import TripNFTArtifact from "../contracts/TripNFT.json";
 import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
 import BgImage from "./BgImage";
 
 import styles from "../styles/DApp.module.css";
+import MintDialog from "./MintDialog";
 
 // Mint合约的配置
 // TODO: 依据不同环境不同配置（加入生产环境配置）
@@ -93,6 +92,11 @@ const DApp = () => {
   const [countDownText, setCountDownText] = useState("--:--:--");
   // mint按钮状态
   const [isMintLoading, setMintLoading] = useState(false);
+  // mint结果弹窗开关
+  const [isShowDialog, setShowDialog] = useState(false);
+  // mint弹窗对应状态
+  const [isShowSuccess, setShowSuccess] = useState(false);
+
 
   // 连接钱包
   const { connect, connectors } = useConnect();
@@ -148,21 +152,12 @@ const DApp = () => {
 
       const receipt = await tx.wait();
       console.log({ receipt });
-      // Modal.success({
-      //   title: "Mint成功！",
-      //   content: "点击OK前往OpenSea查看",
-      //   onOk: () => {
-      //     window.open("https://testnets.opensea.io/zh-CN/collections","_blank")
-      //   },
-      //   centered: true,
-      // })
+      setShowSuccess(true);
+      setShowDialog(true)
     } catch (error) {
       console.error(error);
-      // Modal.error({
-      //   title: "Mint failed!",
-      //   content: "Something went wrong...",
-      //   centered: true,
-      // })
+      setShowSuccess(false);
+      setShowDialog(true)
     } finally {
       setMintLoading(false);
     }
@@ -256,6 +251,11 @@ const DApp = () => {
 
         {renderMintButton()}
       </div>
+      <MintDialog
+        isShowDialog={isShowDialog}
+        isShowSuccess={isShowSuccess}
+        setShowDialog={setShowDialog}
+      />
     </div>
   );
 };

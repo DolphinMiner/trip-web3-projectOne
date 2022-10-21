@@ -50,7 +50,7 @@ const PatchPanel = () => {
           <li key={`section-${layer}`}>
             <ul>
               <ListSubheader>{`${layer.toUpperCase()}`}</ListSubheader>
-              {Object.keys(configs.attributes[layer]).map((layerStyle) => (
+              {(configs.attributes[layer] || []).map((layerStyle) => (
                 <ListItem key={`item-${layer}-${layerStyle}`}>
                   <ListItemButton
                     role={undefined}

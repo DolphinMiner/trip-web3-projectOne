@@ -5,19 +5,26 @@ import Checkbox from "@mui/material/Checkbox";
 import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
-import configs from "../configs";
+import configs, { attributes } from "../configs";
 import { Pagination, Stack, TextField } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
+import { DEFAULT_TOTAL } from "../constants";
 
 const PAGE_SIZE = 120;
-const DEFAULT_TOTAL = 1000;
 
 const ShufflePanel = () => {
-  const [total, setTotal] = useState(1000);
-  const { entities, updateEntity, shuffleEntities } = useBatch(DEFAULT_TOTAL);
+  const [formedTotal, setFormedTotal] = useState(DEFAULT_TOTAL);
+  const [total, setTotal] = useState(formedTotal);
+  const { entities, updateEntity, shuffleEntities } = useBatch(total);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
+
+  useEffect(() => {
+    setCurIdx(-1);
+    setCurPage(1);
+    shuffleEntities(total);
+  }, [total]);
 
   const pageCount = useMemo(() => {
     return Math.ceil(entities.length / PAGE_SIZE);
@@ -30,9 +37,7 @@ const ShufflePanel = () => {
   }, [curPage]);
 
   const onUpdate = () => {
-    setCurIdx(-1);
-    setCurPage(1);
-    shuffleEntities(total);
+    setTotal(formedTotal);
   };
 
   const renderTokenList = () => {
@@ -94,12 +99,12 @@ const ShufflePanel = () => {
           size={"small"}
           label="Tokens"
           focused
-          value={total}
-          onChange={(e) => setTotal(parseInt(e.target.value || 0))}
+          value={formedTotal}
+          onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
         />
         <Button
           variant="contained"
-          disabled={total === entities.length}
+          disabled={formedTotal === entities.length}
           onClick={onUpdate}
         >
           Update
