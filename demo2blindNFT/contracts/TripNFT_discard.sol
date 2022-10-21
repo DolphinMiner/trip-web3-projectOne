@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract TripNFTV2 is Ownable, ERC721Enumerable {
+contract TripNFT_discard is Ownable, ERC721Enumerable {
     using Strings for uint256;
     using SafeMath for uint256;
 
@@ -28,7 +28,7 @@ contract TripNFTV2 is Ownable, ERC721Enumerable {
     uint256 public constant BOX_SUPPLY = 8888;
 
     // 铸造Nft的价格
-    uint256 public  mintPrice = 10000000000000000; //0.01 ETH
+    uint256 public  mintPrice = 0.01 ether; //0.01 ETH
 
     // 每个账户最多拥有nft的数量
     uint256 public maxBalance = 5;

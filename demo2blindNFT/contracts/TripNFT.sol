@@ -5,203 +5,335 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract TripNFT is Ownable, ERC721Enumerable {
     using Strings for uint256;
+    using SafeMath for uint256;
 
-    // 是否准许nft开卖-开关
-    bool public _isSaleActive = true;
+    // 白名单merkleTree的根hash
+    bytes32 public merkleRootHash =
+        0xfdbb9776475fc02fbd67aded2b6edb467ef1c653380995853a76d68cfa0f72a8;
 
-    // 初始化盲盒，等到一定时机可以随机开箱，变成true
-    bool public _revealed = false;
+    // nft售卖开关
+    bool public saleIsActive = false;
+    // 1 预售 2 公售
+    uint256 public saleStage = 0;
 
-    // nft的总数量
-    uint256 public constant MAX_SUPPLY = 50;
+    // 盲盒开关
+    bool public revealedState = false;
+
+    // 合约发行的nft总数量10000个，盲盒可开8888个，剩余为限定
+    uint256 public constant MAX_SUPPLY = 1000;
+
+    // 盲盒限定的个数
+    uint256 public constant BOX_SUPPLY = 880;
 
     // 铸造Nft的价格
-    uint256 public mintPrice = 0 ether;
+    uint256 public mintPrice = 10000000000000000; //0.01 ETH
 
-    // 铸造的钱包最多只能有5个nft数量
+    // 每个账户最多拥有nft的数量
     uint256 public maxBalance = 5;
 
-    // 一次mint的nft的数量
-    uint256 public maxMint = 1;
+    // 单次mint nft的数量
+    uint256 public maxMint = 2;
 
-    // 盲盒开关打开后，需要显示开箱的图片的base地址，如ipfs://ashijfpsdafa/(1.png,2.png,3.png)根据tokenID定位盲盒
-    string public baseURI = "";
+    // 元数据的baseURI
+    string public baseURI =
+        "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk";
 
-    // 盲盒图片的meta,json地址
-    string public notRevealedUri="ipfs://QmRzUk7SgUgU928GkYFe5yerLQzVke1AVx9jhimAziBcAU";
+    // 特殊URI
+    string public specialURI = "";
 
-    // 默认地址的扩展类型
+    // 盲盒封面的元数据
+    string public unrevealedURI =
+        "ipfs://QmRzUk7SgUgU928GkYFe5yerLQzVke1AVx9jhimAziBcAU";
+
+    // 元数据的扩展类型
     string public baseExtension = ".json";
 
-
     // map tokenId 与 tokenURI的映射
-    mapping(uint256 => string) private _tokenURIs;
+    mapping(uint256 => string) private tokenURIs;
 
-    // 散列数组的范围 这里定义为[0,100]
-    // [1,20] 返回 1    20概率
-    // [21,40] 返回 2   20概率
-    // [41,55] 返回 3   15概率
-    // [56,65] 返回 4   10概率
-    // [66,75] 返回 5   10概率
-    // [76,85] 返回 6   10概率
-    // [86,95] 返回 7   10概率
-    // [96,100] 返回 8   5概率
-    uint public Hash_Array = 100;
+    // 预留的售卖地址,默认为合约部署地址
+    address private reserveAddress;
 
-    // 构造器
-    constructor()
-    ERC721("TripMagicNFT", "TMN") {}// 实现了ERC721的父类构造器，是子类继承的一种实现方式
-
-    // 外部地址进行铸造nft的函数调用
-    function mintNft(uint256 tokenQuantity, address recipient) public payable {
-        // 校验总供应量+每次铸造的数量<= nft的总数量
-        require(
-            totalSupply() + tokenQuantity <= MAX_SUPPLY,
-            "Sale would exceed max supply"
-        );
-        // 校验是否开启开卖状态
-        require(_isSaleActive, "Sale must be active to mint NicMetas");
-        // 校验铸造的钱包地址中的nft的数量 + 本次铸造的数量 <= 该钱包最大拥有的nft的数量
-        require(
-        // balanceOf(msg.sender) 查看调用合约账户拥有的nft数量
-        // 限制每个用户拥有的nft数量不能超过设定值
-            balanceOf(msg.sender) + tokenQuantity <= maxBalance,
-            "Sale would exceed max balance"
-        );
-        // 校验本次铸造的数量*铸造的价格 <= 本次消息附带的eth的数量
-        // 校验用户是否有足够金额支付nft价格
-        require(
-            tokenQuantity * mintPrice <= msg.value,
-            "Not enough ether sent"
-        );
-        // 校验本次铸造的数量 <= 本次铸造的最大数量
-        require(tokenQuantity <= maxMint, "Can only mint 1 tokens at a time");
-        // 以上校验条件满足，进行nft的铸造
-        // 调用铸造方法
-        _mintNftMeta(tokenQuantity, recipient);
+    // 合约构造函数
+    constructor() ERC721("YouYouNFT", "YOUYOU") {
+        reserveAddress = msg.sender;
     }
 
-    // 进行铸造
-    function _mintNftMeta(uint256 tokenQuantity,address recipient) internal {
-        for (uint256 i = 0; i < tokenQuantity; i++) {
+    /**
+     * @dev 判断合约调用账户是否在白名单中
+     * @param merkleProof: 合约调用账户的 merkleProof
+     * @return bool : 是否是白名单用户
+     */
+    function isValidUser(bytes32[] calldata merkleProof)
+        public
+        view
+        returns (bool)
+    {
+        // 生成当前要校验节点的hash值
+        bytes32 leafNode = keccak256(abi.encodePacked(msg.sender));
+        // 校验是否为白名单用户
+        return MerkleProof.verify(merkleProof, merkleRootHash, leafNode);
+    }
+
+    /**
+     * @dev 白名单用户免费mint nft (接收方为合约的直接调用账户)
+     * @param numberOfTokens: mint nft 的数量
+     * @param merkleProof: 合约调用账户的 merkleProof
+     */
+    function preMint(uint256 numberOfTokens, bytes32[] calldata merkleProof)
+        public
+        payable
+    {
+        // 校验msg.sender是否是白名单用户
+        require(
+            isValidUser(merkleProof) == true,
+            "msg.sender is not in whitelist"
+        );
+
+        // 校验当前合约账户中的nft数量 + 铸造的数量 <= nft的最大供应数量
+        require(
+            totalSupply() + numberOfTokens <= MAX_SUPPLY,
+            "Sale would exceed max supply"
+        );
+
+        // 校验nft是否开始售卖
+        require(saleIsActive, "Sale must be active to mint NicMetas");
+
+        // 校验msg.sender所拥有的的nft数量需要小于每个账户nft的限制个数
+        require(
+            balanceOf(msg.sender) + numberOfTokens <= maxBalance,
+            "Sale would exceed max balance"
+        );
+
+        // 校验本次铸造的数量 <= 本次铸造的最大数量
+        require(numberOfTokens <= maxMint, "exceed max mint at a time");
+
+        // 以上校验条件满足，进行nft的铸造
+        for (uint256 i = 0; i < numberOfTokens; i++) {
+            // mintIndex是铸造nft的序号
+            uint256 mintIndex = totalSupply();
 
             if (totalSupply() < MAX_SUPPLY) {
-
-                //  mintIndex是铸造nft的序号，按照总供应量从0开始累加
-                uint256 tokenId = totalSupply();
-
-                // 计算概率，随机数生成
-                uint nonce = uint(keccak256(abi.encodePacked(msg.sender,block.timestamp))) % Hash_Array;
-                if(nonce == 0){
-                    // 天选之人，那么你就得问号图片吧！！！哈哈哈
-                    _tokenURIs[tokenId] = "ipfs://Qme8ZKMgMLPYyra51gChJn4HxgpWm8oeKFV2NPjGtBd1pz";
-                }
-                // fixme solidity 字符串拼接问题
-                if(nonce >= 1 && nonce <= 20) {
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/1.json" ;
-                }else if(nonce >= 21 && nonce <= 40){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/2.json" ;
-                }else if(nonce >= 41 && nonce <= 55){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/3.json" ;
-                }else if(nonce >= 56 && nonce <= 65){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/4.json" ;
-                }else if(nonce >= 66 && nonce <= 75){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/5.json" ;
-                }else if(nonce >= 76 && nonce <= 85){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/6.json" ;
-                }else if(nonce >= 86 && nonce <= 95){
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/7.json" ;
-                }else{
-                    _tokenURIs[tokenId] = "ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk/8.json" ;
-                }
                 // 调用ERC721.sol的_safeMint方法 为recipient账户分配这个tokenId
-                _safeMint(recipient, tokenId);
+                _safeMint(msg.sender, mintIndex);
             }
         }
     }
 
-    // 返回每个nft地址的Uri，这里包含了nft的整个信息，包括名字，描述，属性等
-    // OpenSea等交易市场就是通过这个接口实现获取到token的URI
+    /**
+     * @dev 公售 (接收方为合约的直接调用账户)
+     * @param numberOfTokens: mint nft 的数量
+     */
+    function publicMint(uint256 numberOfTokens) public payable {
+        // 校验本次铸造的数量 * 铸造的价格 <= 本次交易附带的金额
+        require(
+            numberOfTokens.mul(mintPrice) <= msg.value,
+            "Not enough ether sent"
+        );
+        // 校验当前合约账户中的nft数量 + 铸造的数量 <= nft的最大供应数量
+        require(
+            totalSupply() + numberOfTokens <= MAX_SUPPLY,
+            "Sale would exceed max supply"
+        );
+
+        // 校验nft是否开始售卖
+        require(saleIsActive, "Sale must be active to mint NicMetas");
+
+        // 校验msg.sender所拥有的的nft数量需要小于每个账户nft的限制个数
+        require(
+            numberOfTokens + balanceOf(msg.sender) <= maxBalance,
+            "Sale would exceed max balance"
+        );
+
+        // 校验本次铸造的数量 <= 本次铸造的最大数量
+        require(numberOfTokens <= maxMint, "exceed max mint at a time");
+
+        for (uint256 i = 0; i < numberOfTokens; i++) {
+            // mintIndex是铸造nft的序号
+            uint256 mintIndex = totalSupply();
+
+            if (totalSupply() < MAX_SUPPLY) {
+                // 调用ERC721.sol的_safeMint方法 为msg.sender账户分配这个tokenId
+                _safeMint(msg.sender, mintIndex);
+            }
+        }
+    }
+
+    /**
+     * @dev 返回tokenId 对应的 tokenURI
+     * @param tokenId : tokenId
+     * @return string : tokenURI
+     */
     function tokenURI(uint256 tokenId)
-    public
-    view
-    virtual
-    override
-    returns (string memory)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
     {
+        // 校验tokenId存在
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        // 盲盒还没开启，那么默认是一张黑色背景图片或者其他图片
-        if (_revealed == false) {
-            return notRevealedUri;
+        // 如果未开启盲盒则返回盲盒封面URI
+        if (revealedState == false) {
+            return unrevealedURI;
         }
-
-        string memory tokenUri = _tokenURIs[tokenId];
-        // 返回map中计算出的tokenId对应的uri
-        return tokenUri;
+        // 获取tokenId对应的tokenURI
+        string memory URI = tokenURIs[tokenId];
+        // 获取baseURI
+        string memory base = _baseURI();
+        // 如果tokenURI不为空，则返回specialURI拼接的URI
+        if (bytes(URI).length > 0) {
+            return
+                string(
+                    abi.encodePacked(
+                        base,
+                        "/",
+                        URI,
+                        "/",
+                        tokenId.toString(),
+                        baseExtension
+                    )
+                );
+        }
+        // 返回baseURI、tokenId 和 baseExtension 的拼接字符串
+        return
+            string(
+                abi.encodePacked(base, "/", tokenId.toString(), baseExtension)
+            );
     }
 
-    // internal
+    /**
+     * @dev 将剩余的盲盒nft数量mint掉，用于openSea售卖
+     */
+    function reserveNFT() public onlyOwner {
+        for (uint256 i = 0; i < 50; i++) {
+            uint256 mintIndex = totalSupply();
+            _safeMint(reserveAddress, mintIndex);
+        }
+    }
+
+    /**
+     * @dev mint特殊nft (100个，对应tokenId为 9900-9999)
+     */
+    function reserveSpecialNFT() public onlyOwner {
+        for (uint256 i = 9900; i < 10000; i++) {
+            uint256 mintIndex = i;
+            _safeMint(reserveAddress, mintIndex);
+            _setTokenURI(mintIndex, specialURI);
+        }
+    }
+
+    /**
+     * @dev 将合约账户中的以太币转到指定账户中
+     * @param to : 接收的地址
+     */
+    function withdrawMoney(address to) public onlyOwner {
+        payable(to).transfer(address(this).balance);
+    }
+
+    /**
+     * @dev 设置tokenID的元数据URL
+     */
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI)
+        internal
+        virtual
+    {
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI set of nonexistent token"
+        );
+        tokenURIs[tokenId] = _tokenURI;
+    }
+
+    /**
+     * @dev 返回baseURI
+     * @return string : baseURI
+     */
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
     }
 
-
-    // 合约部署者可以调用修改，打开售卖开关
+    /**
+     * @dev 修改售卖状态
+     */
     function flipSaleActive() public onlyOwner {
-        _isSaleActive = !_isSaleActive;
+        saleIsActive = !saleIsActive;
     }
 
-    // 合约部署者可以调用修改，开启盲盒开关
+    /**
+     * @dev 修改盲盒状态
+     */
     function flipReveal() public onlyOwner {
-        _revealed = !_revealed;
+        revealedState = !revealedState;
     }
 
-    // 合约部署者可以修改，nft的mint价格
+    /**
+     * @dev 修改mintPrice
+     */
     function setMintPrice(uint256 _mintPrice) public onlyOwner {
         mintPrice = _mintPrice;
     }
-    // 合约部署者可以修改，设置没有开奖前的URI
-    function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
-        notRevealedUri = _notRevealedURI;
+
+    /**
+     * @dev 设置盲盒封面URI
+     */
+    function setNotRevealedURI(string memory _unrevealedURI) public onlyOwner {
+        unrevealedURI = _unrevealedURI;
     }
-    // 合约部署者可以修改，设置基本的URI
+
+    /**
+     * @dev 设置baseURI
+     * @param _newBaseURI : baseURI
+     */
     function setBaseURI(string memory _newBaseURI) public onlyOwner {
         baseURI = _newBaseURI;
     }
-    // 合约部署者可以修改，设置默认地址的扩展类型
+
+    /**
+     * @dev 设置元数据的扩展类型
+     */
     function setBaseExtension(string memory _newBaseExtension)
-    public
-    onlyOwner
+        public
+        onlyOwner
     {
         baseExtension = _newBaseExtension;
     }
-    // 合约部署者可以修改，设置每个账户可以拥有的最大nft数量
+
+    /**
+     * @dev 每个账户最多拥有nft的数量
+     */
     function setMaxBalance(uint256 _maxBalance) public onlyOwner {
         maxBalance = _maxBalance;
     }
-    // 合约部署者可以修改，设置一次mint nft的最大数量
+
+    /**
+     * @dev 设置一次mint nft的最大数量
+     */
     function setMaxMint(uint256 _maxMint) public onlyOwner {
         maxMint = _maxMint;
     }
-    // 合约部署者可以提出合约账户中的金额
-    function withdraw(address to) public onlyOwner {
-        uint256 balance = address(this).balance;
-        payable(to).transfer(balance);
+
+    /**
+     * @dev 设置rootHash
+     */
+    function setRootHash(bytes32 _merkleRootHash) public onlyOwner {
+        merkleRootHash = _merkleRootHash;
     }
-    function getMyBaseUrl() public view returns (string memory){
-        return baseURI;
+
+    function setSaleStage(uint256 _stage) public onlyOwner {
+        saleStage = _stage;
     }
-    function getMyNotRevealedUri() public view returns(string memory){
-        return notRevealedUri;
-    }
-    fallback () payable external {}
-    receive () payable external {}
+
+    fallback() external payable {}
+
+    receive() external payable {}
 }

@@ -6,78 +6,78 @@ const CONTRACT_NAME_LIST = ["TripNFT", "TestGreeting"];
 
 // 部署合约的脚本
 async function main() {
-  const [deployer] = await ethers.getSigners();
+    const [deployer] = await ethers.getSigners();
 
-  console.log(
-    "Deploying contracts with the account:",
-    await deployer.getAddress()
-  );
+    console.log(
+        "Deploying contracts with the account:",
+        await deployer.getAddress()
+    );
 
-  console.log("Account balance:", (await deployer.getBalance()).toString());
+    console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const contractsList = [];
+    const contractsList = [];
 
-  await Promise.all(
-    CONTRACT_NAME_LIST.map((name) => getDeployed(name, contractsList))
-  );
+    await Promise.all(
+        CONTRACT_NAME_LIST.map((name) => getDeployed(name, contractsList))
+    );
 
-  saveFrontendFiles(contractsList);
+    saveFrontendFiles(contractsList);
 }
 
 async function getDeployed(name, contractsList) {
-  // deploy
-  const factory = await ethers.getContractFactory(name);
-  const contract = await factory.deploy();
-  await contract.deployed();
+    // deploy
+    const factory = await ethers.getContractFactory(name);
+    const contract = await factory.deploy();
+    await contract.deployed();
 
-  console.log(name + " deployed to:", contract.address);
+    console.log(name + " deployed to:", contract.address);
 
-  // save to list
-  contractsList.push({
-    contract,
-    name,
-  });
+    // save to list
+    contractsList.push({
+        contract,
+        name,
+    });
 }
 
 function saveFrontendFiles(contractsList) {
-  const fs = require("fs");
-  const contractsDir = path.join(__dirname, "..", "webapp", "contracts");
+    const fs = require("fs");
+    const contractsDir = path.join(__dirname, "..", "webapp", "contracts");
 
-  // write address
+    // write address
 
-  if (!fs.existsSync(contractsDir)) {
-    fs.mkdirSync(contractsDir);
-  }
+    if (!fs.existsSync(contractsDir)) {
+        fs.mkdirSync(contractsDir);
+    }
 
-  const addressObj = {};
-  contractsList.forEach(({ name, contract }) => {
-    addressObj[name] = contract.address;
-  });
-
-  fs.writeFileSync(
-    path.join(contractsDir, "contract-address.json"),
-    JSON.stringify(addressObj, undefined, 2)
-  );
-
-  // === end of write address
-
-  // write artifacts
-
-  contractsList.forEach(({ name }) => {
-    const TokenArtifact = artifacts.readArtifactSync(name);
+    const addressObj = {};
+    contractsList.forEach(({ name, contract }) => {
+        addressObj[name] = contract.address;
+    });
 
     fs.writeFileSync(
-      path.join(contractsDir, name + ".json"),
-      JSON.stringify(TokenArtifact, null, 2)
+        path.join(contractsDir, "contract-address.json"),
+        JSON.stringify(addressObj, undefined, 2)
     );
-  });
 
-  // === end of write artifacts
+    // === end of write address
+
+    // write artifacts
+
+    contractsList.forEach(({ name }) => {
+        const TokenArtifact = artifacts.readArtifactSync(name);
+
+        fs.writeFileSync(
+            path.join(contractsDir, name + ".json"),
+            JSON.stringify(TokenArtifact, null, 2)
+        );
+    });
+
+    // === end of write artifacts
 }
 
 main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
