@@ -61,7 +61,7 @@ const ShufflePanel = () => {
     return [startIdx, endIdx];
   }, [curPage]);
 
-  const onUpdate = () => {
+  const onResetTotal = () => {
     setTotal(formedTotal);
   };
 
@@ -163,9 +163,9 @@ const ShufflePanel = () => {
         <Button
           variant="contained"
           disabled={formedTotal === entities.length}
-          onClick={onUpdate}
+          onClick={onResetTotal}
         >
-          Update
+          Reset
         </Button>
       </Stack>
     );
@@ -251,7 +251,7 @@ const ShufflePanel = () => {
   }, [total]);
 
   useEffect(() => {
-    onUpdate();
+    onResetTotal();
   }, []);
 
   return (
