@@ -6,10 +6,13 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs, { attributes } from "../configs";
-import { Pagination, Stack, TextField } from "@mui/material";
+import { IconButton, Pagination, Stack, TextField } from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import { DEFAULT_TOTAL } from "../constants";
+import DownloadIcon from "@mui/icons-material/Download";
+import Image from "next/image";
+import { batchDownload, convertTo } from "../utils";
 
 const PAGE_SIZE = 120;
 
@@ -19,6 +22,8 @@ const ShufflePanel = () => {
   const { entities, updateEntity, shuffleEntities } = useBatch(total);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
+
+  const [dataURL, setDataURL] = useState("");
 
   useEffect(() => {
     setCurIdx(-1);
@@ -38,6 +43,51 @@ const ShufflePanel = () => {
 
   const onUpdate = () => {
     setTotal(formedTotal);
+  };
+
+  const onDownload = async () => {
+    const isSuccess = await batchDownload(entities);
+    console.log(isSuccess);
+  };
+
+  useEffect(() => {
+    if (curIdx === -1) {
+      setDataURL("");
+    } else {
+      convertTo(entities[curIdx]).then((_dataURL) => {
+        if (typeof _dataURL === "string") {
+          setDataURL(_dataURL);
+        }
+      });
+    }
+  }, [curIdx]);
+
+  const renderTokenToolBar = () => {
+    return (
+      <div className={styles.infoBar}>
+        <div className={styles.textContainer}>
+          <span>{`Showing `}</span>
+          <span className={styles.fontMedium}>{`${startIdx + 1} `}</span>
+          <span>{`to `}</span>
+          <span className={styles.fontMedium}>{`${endIdx} `}</span>
+          <span>{`of `}</span>
+          <span className={styles.fontMedium}>{`${total} `}</span>
+          <span>{`tokens`}</span>
+        </div>
+
+        <div className={styles.downloadIconContainer}>
+          <IconButton
+            disabled={entities.length === 0}
+            color="primary"
+            aria-label="download tokens"
+            component="label"
+            onClick={onDownload}
+          >
+            <DownloadIcon />
+          </IconButton>
+        </div>
+      </div>
+    );
   };
 
   const renderTokenList = () => {
@@ -94,22 +144,27 @@ const ShufflePanel = () => {
 
   const renderSupplyUpdateRow = () => {
     return (
-      <Stack direction={"row"} spacing={2}>
-        <TextField
-          size={"small"}
-          label="Tokens"
-          focused
-          value={formedTotal}
-          onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
-        />
-        <Button
-          variant="contained"
-          disabled={formedTotal === entities.length}
-          onClick={onUpdate}
-        >
-          Update
-        </Button>
-      </Stack>
+      <>
+        <Stack direction={"row"} spacing={2}>
+          <TextField
+            size={"small"}
+            label="Tokens"
+            focused
+            value={formedTotal}
+            onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
+          />
+          <Button
+            variant="contained"
+            disabled={formedTotal === entities.length}
+            onClick={onUpdate}
+          >
+            Update
+          </Button>
+        </Stack>
+        {dataURL ? (
+          <Image src={dataURL} width={360} height={360} alt="preview" />
+        ) : null}
+      </>
     );
   };
 
@@ -120,6 +175,7 @@ const ShufflePanel = () => {
         {/* TODO: more action */}
       </Grid>
       <Grid item xs className={styles.rightContainer}>
+        {renderTokenToolBar()}
         {renderTokenList()}
         {renderTokenPagination()}
       </Grid>

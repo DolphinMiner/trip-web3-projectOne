@@ -3,6 +3,7 @@ import { toBlob } from "html-to-image";
 import JSZip from "jszip";
 import configs from "../configs";
 import { Attributes } from "../types";
+import mergeImages from "./mergeImages";
 
 export const shuffle = () => {
   return Object.keys(configs.attributes).reduce((accAttrs, attrName) => {
@@ -52,15 +53,12 @@ export const getAttributesWithSupply = (
     const len = attrStyles.length;
     const perSupply = len >= 0 ? Math.floor(total / len) : 0;
     const modSupply = len >= 0 ? total % len : 0;
-    // 用于添加modSupply
-    const specialStyleName = random(attrStyles);
     return {
       ...accAttrs,
-      [attrName]: attrStyles.reduce((accStyles, styleName) => {
+      [attrName]: attrStyles.reduce((accStyles, styleName, index) => {
         return {
           ...accStyles,
-          [styleName]:
-            styleName === specialStyleName ? perSupply + modSupply : perSupply,
+          [styleName]: perSupply + (index < modSupply ? 1 : 0),
         };
       }, {} as Record<string, number>),
     };
@@ -96,4 +94,47 @@ export const batchShuffleWithSupply = (
     }, {} as Record<string, string>);
   });
   return entities;
+};
+
+export const convertTo = (
+  entity: Attributes,
+  rtn?: "blob" | "dataURL" = "dataURL"
+) => {
+  const sources = configs.layers
+    .map((layerName) => {
+      const layerStyle = entity[layerName];
+      const source = configs.pngSource[layerName]?.[layerStyle];
+      return source;
+    })
+    .filter((v) => !!v)
+    .map((source) => source.default || source);
+
+  return mergeImages(sources, { rtn });
+};
+
+export const batchDownload = (
+  entities: Array<Attributes>
+): Promise<boolean> => {
+  const tasks = entities.map((entity) => {
+    return convertTo(entity, "blob") as Promise<Blob>;
+  });
+
+  return Promise.all(tasks)
+    .then((imageBlobs) => {
+      const zip = new JSZip();
+      imageBlobs.forEach((imageBlob, index) => {
+        const jsonBlob = new Blob([JSON.stringify(entities[index])], {
+          type: "text/plain;charset=utf-8",
+        });
+        zip.file(`/image/${index}.png`, imageBlob);
+        zip.file(`/json/${index}.json`, jsonBlob);
+      });
+
+      return zip.generateAsync({ type: "blob" }).then((zipBlob) => {
+        saveAs(zipBlob, "tokens.zip");
+      });
+    })
+    .catch((err) => {
+      return false;
+    });
 };
