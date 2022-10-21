@@ -6,7 +6,7 @@
     "dev": "cross-env PROVIDER_MODE=local env-cmd -f ../.env next dev",
     "dev:goerli": "cross-env PROVIDER_MODE=goerli env-cmd -f ../.env next dev",
     "build": "next build",
-    "start": "cross-env PROVIDER_MODE=goerli next start",
+    "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",
     "serve": "serve out"
