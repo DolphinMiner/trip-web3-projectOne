@@ -17,8 +17,13 @@ const ALCHEMY_PROJECT_KEY = process.env.ALCHEMY_PROJECT_KEY;
 
 let client: any;
 
+console.log('process.env.PROVIDER_MODE', process.env.PROVIDER_MODE)
+console.log('ALCHEMY_PROJECT_KEY', ALCHEMY_PROJECT_KEY)
+
 // Connect to different network (goerli/localhost) according to different environment variables.
 if (process.env.PROVIDER_MODE === "goerli") {
+
+  console.log('goerli')
 
   // Goerli test network
 
@@ -37,6 +42,7 @@ if (process.env.PROVIDER_MODE === "goerli") {
 } else {
 
   // localhost network
+  console.log('localhost')
 
   const { chains, provider, webSocketProvider } = configureChains(
     defaultChains,
