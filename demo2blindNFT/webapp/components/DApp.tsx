@@ -47,18 +47,22 @@ const DApp = () => {
 
   // 通过读取是否在白名单内
   const merkleProof = currentAddress && getMerkleProof(currentAddress);
-  const { data: isInWhiteList } = useContractRead({
+  console.log('merkleProof', merkleProof, "currentAddress", currentAddress)
+  const { data: isInWhiteList, error: validUserErr } = useContractRead({
     ...nftContractConfig,
     functionName: "isValidUser",
     args: [merkleProof],
     overrides: { from: currentAddress },
   });
+  console.log('isInWhiteList', isInWhiteList, 'err', validUserErr)
   // 售卖时间段
-  const { data: saleStageBigInt } = useContractRead({
+  const { data: saleStageBigInt, error: saleStageErr } = useContractRead({
     ...nftContractConfig,
     functionName: "saleStage",
   }) as { data: any | undefined };
+  console.log('saleStageBigInt', saleStageBigInt, "err", saleStageErr)
   const saleStage: SALE_STATE = parseInt(saleStageBigInt || 0);
+  console.log('saleStage', saleStage)
   // 通过读取合约字段活动铸造售价
   const { data: mintPrice } = useContractRead({
     ...nftContractConfig,
@@ -202,11 +206,14 @@ const DApp = () => {
   const renderMintButton = () => {
     // 是否开启预售
     const isOnPreMint = saleStage === SALE_STATE.PRE_MINT && isInWhiteList;
+    console.log("isOnPreMint", isOnPreMint);
     // 是否开启公售
     const insOnPublicMint =
       saleStage === SALE_STATE.PUBLIC_MINT && currentAddress;
+    console.log("isOnPublicMint", insOnPublicMint)
     // 是否能铸造
     const isAble = (isOnPreMint || insOnPublicMint) && !isMintLoading;
+    console.log('isAble', isAble)
     // 按钮文案
     const btnText = !currentAddress
       ? "Connect wallet first."
