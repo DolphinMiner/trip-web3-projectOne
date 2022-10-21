@@ -13,19 +13,18 @@ export const layers = [
   "eyeglass",
 ] as const;
 
-export const attributes: Record<string, Record<string, number>> = {
+export const attributes = {
+  // visible attributes
   ...Object.keys(pngSource).reduce((layerAcc, layerName) => {
     const layerStyles = pngSource[layerName];
     return {
       ...layerAcc,
-      [layerName]: Object.keys(layerStyles).reduce((styleAcc, styleName) => {
-        return {
-          ...styleAcc,
-          [styleName]: 1,
-        };
-      }, {}),
+      [layerName]: Object.keys(layerStyles),
     };
-  }, {}),
+  }, {} as Record<string, Array<string>>),
+
+  // invisible attributes
+  // ...
 };
 
 const configs = {
