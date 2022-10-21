@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "antd": "^4.23.6",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.10",
     "count-time-down": "^1.0.5",
     "env-cmd": "^10.1.0",
     "ethers": "^5.7.1",
