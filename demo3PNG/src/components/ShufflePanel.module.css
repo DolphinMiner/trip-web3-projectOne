@@ -26,13 +26,13 @@
 .attributeDefine > div {
   width: 100%;
   height: 800px;
-  background: red;
+  /* background: red; */
 }
 .tokenDefine {
   margin-top: 10px;
   flex: 1;
   overflow: auto;
-  background: green;
+  /* background: green; */
 }
 .previewAvatar {
   width: calc(300px - 1px - 20px) !important;
