@@ -1,14 +1,15 @@
+
 const {MerkleTree} = require('merkletreejs');
 const keccak256 = require('keccak256');
 require("@nomiclabs/hardhat-ethers");
 const hre = require("hardhat");
-const config = require("../../hardhat.config");
+const config = require("../hardhat.config");
 
 // NFT合约部署成功后的地址
 const CONTRACT_ADDRESS = config.mintConfig.contractAddress;
 
 // 合约abi接口
-const contractInterface = require("../../artifacts/contracts/TripNFT.sol/TripNFTV2.json").abi;
+const contractInterface = require("../artifacts/contracts/TripNFT.sol/TripNFT.json").abi;
 
 // 直接构建测试环境
 const provider = new hre.ethers.providers.InfuraProvider(config.mintConfig.network, config.mintConfig.infuraKey);
@@ -23,14 +24,10 @@ const contractWithSigner = contract.connect(wallet);
 // 白名单列表用于构造merkleTree
 let whitelistAddress = [
     "0x30a5f84d70dd09cf9B58DcE7754F9EB7F65B7C5a",
-    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
-    "0x976EA74026E726554dB657fA54763abd0C3a0aa9",
-    "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
-]
+    "0xeEc3998ad6EF7F18c1426ad044C77FB735cfA173",
+    "0x2CB679CB4f51A53d7D92EaE4FE2234721FF48984",
+    "0x4172C5361d3f5fB26089dEf410652506910a6B2a",
+];
 
 // 构造节点
 const leafNodes = whitelistAddress.map((addr) => {
@@ -60,21 +57,28 @@ console.log('hexProof' + '\n' + hexProof);
 // test white list
 async function main() {
 
-    // 调用合约修改售卖状态
-    await contractWithSigner.flipSaleActive();
+    // // first
+    // // 调用合约修改售卖状态
+    // await contractWithSigner.flipSaleActive();
+    // // 设置售卖阶段
+    // await contractWithSigner.setSaleStage(1);
+    // // 调用合约的isValidUser方法传入hexProof
+    // const isValid = await contractWithSigner.isValidUser(hexProof);
+    // console.log(isValid);
 
-    // 调用合约的isValidUser方法传入hexProof
-    const isValid = await contractWithSigner.isValidUser(hexProof);
-    console.log(isValid);
-
+    // second
+    //查询售卖阶段
+    const stage = await contractWithSigner.saleStage();
+    console.log(stage);
     // 查询售卖状态
     const state = await contractWithSigner.saleIsActive();
     console.log(state);
 
-    // preMint 两个nft
-    const mintTx = await contractWithSigner.PreMint(2,hexProof);
-    const tx = await mintTx.wait();
-    console.log("铸造的NFT区块地址：", tx.blockHash);
+    // // last
+    // // preMint 两个nft
+    // const mintTx = await contractWithSigner.PreMint(2,hexProof);
+    // const tx = await mintTx.wait();
+    // console.log("铸造的NFT区块地址：", tx.blockHash);
 
 }
 
