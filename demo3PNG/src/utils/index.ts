@@ -112,6 +112,20 @@ export const convertTo = (
   return mergeImages(sources, { rtn });
 };
 
+const formatMetadata = (entity: Attributes, index: number) => {
+  return {
+    attributes: Object.keys(entity).map((key) => {
+      return {
+        trait_type: key,
+        value: entity[key],
+      };
+    }),
+    description: "The world's most beautiful avatar.",
+    image: `ipfs://YourImageURI/${index}.jpg`,
+    name: `#${index}`,
+  };
+};
+
 export const batchDownload = (
   entities: Array<Attributes>
 ): Promise<boolean> => {
@@ -123,9 +137,12 @@ export const batchDownload = (
     .then((imageBlobs) => {
       const zip = new JSZip();
       imageBlobs.forEach((imageBlob, index) => {
-        const jsonBlob = new Blob([JSON.stringify(entities[index])], {
-          type: "text/plain;charset=utf-8",
-        });
+        const jsonBlob = new Blob(
+          [JSON.stringify(formatMetadata(entities[index], index))],
+          {
+            type: "text/plain;charset=utf-8",
+          }
+        );
         zip.file(`/image/${index}.png`, imageBlob);
         zip.file(`/json/${index}.json`, jsonBlob);
       });
