@@ -13,7 +13,6 @@ import {
 
 import { getMerkleProof } from "../utils/merkleTree";
 import TripNFTArtifact from "../contracts/TripNFT.json";
-import TestGreetingArtifact from "../contracts/TestGreeting.json";
 import contractAddress from "../contracts/contract-address.json";
 import BgImage from "./BgImage";
 
@@ -25,11 +24,6 @@ import MintDialog from "./MintDialog";
 const nftContractConfig = {
   addressOrName: contractAddress.TripNFT,
   contractInterface: TripNFTArtifact.abi,
-};
-
-const greetContractConfig = {
-  addressOrName: contractAddress.TestGreeting,
-  contractInterface: TestGreetingArtifact.abi,
 };
 
 // 售卖阶段
@@ -77,11 +71,6 @@ const DApp = () => {
       mode: "recklesslyUnprepared",
       functionName: "publicMint",
     });
-  // 本地调试用，查看是否正确连接至合约
-  // const { data: greetMsg } = useContractRead({
-  //   ...greetContractConfig,
-  //   functionName: "greet",
-  // });
 
   /*  == End ==  */
 
