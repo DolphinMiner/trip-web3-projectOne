@@ -18,7 +18,23 @@ const ALCHEMY_PROJECT_KEY = process.env.ALCHEMY_PROJECT_KEY;
 let client: any;
 
 // Connect to different network (goerli/localhost) according to different environment variables.
-if (process.env.PROVIDER_MODE === "goerli") {
+if (process.env.PROVIDER_MODE === "production") {
+
+  //production network
+// TODO: check provider for mainnet network
+
+  const { chains, provider, webSocketProvider } = configureChains(
+    defaultChains,
+    [publicProvider()]
+  );
+
+  client = createClient({
+    autoConnect: true,
+    connectors: [new MetaMaskConnector({ chains })],
+    provider,
+    webSocketProvider,
+  });
+} else if (process.env.PROVIDER_MODE === "goerli") {
 
   // Goerli test network
 
@@ -56,8 +72,6 @@ if (process.env.PROVIDER_MODE === "goerli") {
     webSocketProvider,
   });
 }
-
-// TODO: mainnet network
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
