@@ -24,8 +24,9 @@ if (process.env.PROVIDER_MODE === "production") {
 
   const { chains, provider, webSocketProvider } = configureChains(
     defaultChains,
-    [publicProvider()]
+    [alchemyProvider({ apiKey: ALCHEMY_PROJECT_KEY }), publicProvider()]
   );
+
 
   client = createClient({
     autoConnect: true,

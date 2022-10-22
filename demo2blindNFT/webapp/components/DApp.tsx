@@ -35,22 +35,11 @@ const isInProduction = process.env.PROVIDER_MODE === "production"
 
 const { TripNFTArtifact, contractAddress } = getNFTConfigs(isInProduction)
 
-console.log('isInProduction', isInProduction);
-
-console.log('TripNFTArtifact', TripNFTArtifact);
-console.log('contractAddress', contractAddress);
-
 // Mint合约的配置
 const nftContractConfig = {
   addressOrName: contractAddress.TripNFT,
   contractInterface: TripNFTArtifact.abi,
 };
-// const nftContractConfig = {
-//   addressOrName: contractAddress.TripNFT,
-//   contractInterface: TripNFTArtifact.abi,
-// }
-
-console.log('nftContractConfig', nftContractConfig)
 
 // 售卖阶段
 enum SALE_STATE {
@@ -73,14 +62,12 @@ const DApp = () => {
     args: [merkleProof],
     overrides: { from: currentAddress },
   });
-  console.log('isInWhiteList', isInWhiteList)
   // 售卖时间段
   const { data: saleStageBigInt, error: saleStageErr } = useContractRead({
     ...nftContractConfig,
     functionName: "saleStage",
   }) as { data: any | undefined };
   const saleStage: SALE_STATE = parseInt(saleStageBigInt || 0);
-  console.log('saleStage', saleStage);
   // 通过读取合约字段活动铸造售价
   const { data: mintPrice } = useContractRead({
     ...nftContractConfig,
