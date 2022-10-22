@@ -101,6 +101,9 @@ contract TripNFT is Ownable, ERC721Enumerable {
             "Sale would exceed max supply"
         );
 
+        // 校验售卖状态
+        require(saleStage == 1 ,"Not in preMint time");
+
         // 校验nft是否开始售卖
         require(saleIsActive, "Sale must be active to mint NicMetas");
 
@@ -140,6 +143,9 @@ contract TripNFT is Ownable, ERC721Enumerable {
             totalSupply() + numberOfTokens <= MAX_SUPPLY,
             "Sale would exceed max supply"
         );
+
+        // 校验售卖状态
+        require(saleStage == 2 ,"Not in publicMint time");
 
         // 校验nft是否开始售卖
         require(saleIsActive, "Sale must be active to mint NicMetas");
@@ -329,6 +335,9 @@ contract TripNFT is Ownable, ERC721Enumerable {
         merkleRootHash = _merkleRootHash;
     }
 
+    /**
+     * @dev 设置saleStage
+     */
     function setSaleStage(uint256 _stage) public onlyOwner {
         saleStage = _stage;
     }
