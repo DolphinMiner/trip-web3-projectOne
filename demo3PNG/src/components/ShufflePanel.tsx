@@ -158,7 +158,10 @@ const ShufflePanel = () => {
           label="Tokens"
           focused
           value={formedTotal}
-          onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
+          onChange={(e) => {
+            const value = parseInt(e.target.value || 0);
+            setFormedTotal(value >= 0 ? value : 0);
+          }}
         />
         <Button
           variant="contained"
