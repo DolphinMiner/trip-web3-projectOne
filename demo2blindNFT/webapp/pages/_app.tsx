@@ -21,6 +21,7 @@ let client: any;
 // Connect to different network (goerli/localhost) according to different environment variables.
 if (process.env.PROVIDER_MODE === "goerli") {
 
+  console.log('goerli')
 
   // Goerli test network
 
@@ -39,6 +40,8 @@ if (process.env.PROVIDER_MODE === "goerli") {
 } else {
 
   // localhost network
+
+  console.log('localhost network')
 
   const { chains, provider, webSocketProvider } = configureChains(
     defaultChains,
