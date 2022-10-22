@@ -8,7 +8,7 @@
   margin: 6px;
   padding: 8px 26px;
   text-align: center;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   transition: 0.5s;
   background-size: 200% auto;
   color: #aaa;
@@ -46,6 +46,12 @@
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+
+.titleText {
+  background: linear-gradient(to right, #24c6dc 0%, #514a9d 37%, #333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .mintDisable {
