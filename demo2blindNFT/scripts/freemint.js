@@ -67,18 +67,29 @@ async function main() {
     // console.log(isValid);
 
     // second
-    //查询售卖阶段
-    const stage = await contractWithSigner.saleStage();
-    console.log(stage);
-    // 查询售卖状态
-    const state = await contractWithSigner.saleIsActive();
-    console.log(state);
+    // //查询售卖阶段
+    // const stage = await contractWithSigner.saleStage();
+    // console.log(stage);
+    // // 查询售卖状态
+    // const state = await contractWithSigner.saleIsActive();
+    // console.log(state);
 
-    // // last
-    // // preMint 两个nft
-    // const mintTx = await contractWithSigner.PreMint(2,hexProof);
-    // const tx = await mintTx.wait();
-    // console.log("铸造的NFT区块地址：", tx.blockHash);
+    // last
+    // preMint 两个nft
+    const mintTx = await contractWithSigner.preMint(2,hexProof);
+    const tx = await mintTx.wait();
+    console.log("铸造的NFT区块地址：", tx.blockHash);
+
+    // setBaseURI
+     //await contractWithSigner.setBaseURI("ipfs://QmVv6YTXkAm6qaAyZuUT26Dwvw4Bi2xPypZ2FkCKBqWAA1");
+    // const uri = await contractWithSigner.baseURI();
+    // console.log(uri);
+    //await contractWithSigner.setBaseURI("ipfs://QmTKySihsR9BRUzsfWXKt3LeMCb1BSxpLQjndJLhiEe8pk");
+
+    // const URI0 = await contractWithSigner.tokenURI(0);
+    // const URI1 = await contractWithSigner.tokenURI(1);
+    // console.log(URI0);
+    // console.log(URI1);
 
 }
 
