@@ -3,6 +3,7 @@ import pngSource from "./png";
 export { default as pngSource } from "./png";
 
 export const layers = [
+  "background",
   "skin",
   "accessory",
   "eye",
