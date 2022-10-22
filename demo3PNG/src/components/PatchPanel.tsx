@@ -24,7 +24,6 @@ const PatchPanel = () => {
   const onShuffle = () => {
     const payload = shuffle();
     setAttributes(payload);
-    console.log(payload);
   };
 
   const onDownload = () => {

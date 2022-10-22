@@ -18,7 +18,9 @@
     "dotenv": "^16.0.2",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.1",
-    "hardhat": "^2.11.2"
+    "hardhat": "^2.11.2",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.32"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.0-rc.1"
