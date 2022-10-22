@@ -6,30 +6,50 @@ import styles from "./ShufflePanel.module.css";
 import useBatch from "../hooks/useBatch";
 import Avatar from "./Avatar";
 import configs, { attributes } from "../configs";
-import { IconButton, Pagination, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import classnames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import { DEFAULT_TOTAL } from "../constants";
 import DownloadIcon from "@mui/icons-material/Download";
 import Image from "next/image";
 import { batchDownload, convertTo } from "../utils";
+import { Attributes } from "../types";
+import CryptoJS from "crypto-js";
 
 const PAGE_SIZE = 120;
 
+const createDNA = (entity: Attributes): string => {
+  const hash = CryptoJS.SHA1(JSON.stringify(entity));
+  const dna = hash.toString(CryptoJS.enc.Hex);
+  return dna;
+};
+
 const ShufflePanel = () => {
   const [formedTotal, setFormedTotal] = useState(DEFAULT_TOTAL);
-  const [total, setTotal] = useState(formedTotal);
+  const [total, setTotal] = useState(0);
   const { entities, updateEntity, shuffleEntities } = useBatch(total);
   const [curIdx, setCurIdx] = useState(-1);
   const [curPage, setCurPage] = useState(1);
 
-  const [dataURL, setDataURL] = useState("");
-
-  useEffect(() => {
-    setCurIdx(-1);
-    setCurPage(1);
-    shuffleEntities(total);
-  }, [total]);
+  const dnaCollection = useMemo(() => {
+    return entities.reduce((acc, entity, index) => {
+      const dna = createDNA(entity);
+      return {
+        ...acc,
+        [dna]: (acc[dna] || []).concat(index),
+      };
+    }, {} as Record<string, Array<number>>);
+  }, [entities]);
 
   const pageCount = useMemo(() => {
     return Math.ceil(entities.length / PAGE_SIZE);
@@ -41,7 +61,7 @@ const ShufflePanel = () => {
     return [startIdx, endIdx];
   }, [curPage]);
 
-  const onUpdate = () => {
+  const onResetTotal = () => {
     setTotal(formedTotal);
   };
 
@@ -49,18 +69,6 @@ const ShufflePanel = () => {
     const isSuccess = await batchDownload(entities);
     console.log(isSuccess);
   };
-
-  useEffect(() => {
-    if (curIdx === -1) {
-      setDataURL("");
-    } else {
-      convertTo(entities[curIdx]).then((_dataURL) => {
-        if (typeof _dataURL === "string") {
-          setDataURL(_dataURL);
-        }
-      });
-    }
-  }, [curIdx]);
 
   const renderTokenToolBar = () => {
     return (
@@ -144,35 +152,113 @@ const ShufflePanel = () => {
 
   const renderSupplyUpdateRow = () => {
     return (
-      <>
-        <Stack direction={"row"} spacing={2}>
-          <TextField
-            size={"small"}
-            label="Tokens"
-            focused
-            value={formedTotal}
-            onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
-          />
-          <Button
-            variant="contained"
-            disabled={formedTotal === entities.length}
-            onClick={onUpdate}
-          >
-            Update
-          </Button>
-        </Stack>
-        {dataURL ? (
-          <Image src={dataURL} width={360} height={360} alt="preview" />
-        ) : null}
-      </>
+      <Stack className={styles.totalSupply} direction={"row"} spacing={2}>
+        <TextField
+          size={"small"}
+          label="Tokens"
+          focused
+          value={formedTotal}
+          onChange={(e) => setFormedTotal(parseInt(e.target.value || 0))}
+        />
+        <Button
+          variant="contained"
+          disabled={formedTotal === entities.length}
+          onClick={onResetTotal}
+        >
+          Reset
+        </Button>
+      </Stack>
     );
   };
+
+  const renderAttributeDefine = () => {
+    return (
+      <div className={styles.attributeDefine}>
+        <div></div>
+      </div>
+    );
+  };
+
+  const renderTokenDefine = () => {
+    if (curIdx === -1) return null;
+
+    const dna = createDNA(entities[curIdx]);
+
+    return (
+      <div className={styles.tokenDefine}>
+        <Avatar
+          source={configs.pngSource}
+          layers={configs.layers}
+          attributes={entities[curIdx]}
+          className={styles.previewAvatar}
+        />
+        {dnaCollection[dna].length !== 1 ? (
+          <div className={styles.dnaWarning}>
+            <span>{"Warning, token is not unique!"}</span>
+            <br />
+            <span>
+              Has the same traits as Token{" "}
+              {dnaCollection[dna]
+                .filter((idx) => idx !== curIdx)
+                .map((idx) => `#${idx + 1}`)
+                .join(",")}
+            </span>
+          </div>
+        ) : null}
+
+        <Box sx={{ width: "100%", marginTop: "20px" }}>
+          <Stack spacing={2}>
+            {configs.layers.map((layer) => {
+              const id = `layer-${layer}`;
+              const labelId = `${id}-label`;
+              const selectId = `${id}-select`;
+              return (
+                <FormControl key={id} fullWidth>
+                  <InputLabel id={labelId}>{layer}</InputLabel>
+                  <Select
+                    size="small"
+                    labelId={labelId}
+                    id={selectId}
+                    value={entities[curIdx][layer]}
+                    label={layer}
+                    onChange={(e) => {
+                      updateEntity(curIdx, { [layer]: e.target.value });
+                    }}
+                  >
+                    {configs.attributes[layer].map((v) => (
+                      <MenuItem key={v} value={v}>
+                        {v}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              );
+            })}
+          </Stack>
+        </Box>
+        <div className={styles.dna}>
+          <span>{`DNA\n`}</span>
+          <span>{createDNA(entities[curIdx])}</span>
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    setCurIdx(-1);
+    setCurPage(1);
+    shuffleEntities(total);
+  }, [total]);
+
+  useEffect(() => {
+    onResetTotal();
+  }, []);
 
   return (
     <Grid className={styles.shufflePanelContainer} container spacing={0}>
       <Grid item xs={"auto"} className={styles.leftContainer}>
         {renderSupplyUpdateRow()}
-        {/* TODO: more action */}
+        {curIdx === -1 ? renderAttributeDefine() : renderTokenDefine()}
       </Grid>
       <Grid item xs className={styles.rightContainer}>
         {renderTokenToolBar()}
