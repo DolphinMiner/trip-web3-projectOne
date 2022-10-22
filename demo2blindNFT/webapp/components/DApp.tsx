@@ -10,6 +10,7 @@ import {
   useContractWrite,
   useSigner,
 } from "wagmi";
+import classnames from "classnames";
 
 import { getMerkleProof } from "../utils/merkleTree";
 import TripNFTArtifact from "../contracts/TripNFT.json";
@@ -19,6 +20,7 @@ import BgImage from "./BgImage";
 
 import styles from "../styles/DApp.module.css";
 import MintDialog from "./MintDialog";
+import ExploMonCarousel from "./ExploMonCarousel";
 
 // Mint合约的配置
 // TODO: 依据不同环境不同配置（加入生产环境配置）
@@ -85,7 +87,7 @@ const DApp = () => {
 
   /*  == End ==  */
 
-  const greetMsg = "Hello from local msg.";
+  const greetMsg = "ExploMon on your land!";
   // 倒计时时钟指针
   let countDownPointer: ReturnType<typeof setInterval> | null;
   // 倒计时文案
@@ -96,7 +98,6 @@ const DApp = () => {
   const [isShowDialog, setShowDialog] = useState(false);
   // mint弹窗对应状态
   const [isShowSuccess, setShowSuccess] = useState(false);
-
 
   // 连接钱包
   const { connect, connectors } = useConnect();
@@ -153,11 +154,11 @@ const DApp = () => {
       const receipt = await tx.wait();
       console.log({ receipt });
       setShowSuccess(true);
-      setShowDialog(true)
+      setShowDialog(true);
     } catch (error) {
       console.error(error);
       setShowSuccess(false);
-      setShowDialog(true)
+      setShowDialog(true);
     } finally {
       setMintLoading(false);
     }
@@ -177,14 +178,15 @@ const DApp = () => {
 
   const renderConnector = () => {
     return (
-      <div>
+      <div className="absolute right-0 top-0">
         {isConnected ? (
           <button
             type="button"
             onClick={connectWallet}
             className={styles.walletWelcome}
           >
-            Welcome {`0x...${currentAddress?.substr(-4)}`}!
+            Welcome{" "}
+            {`${currentAddress?.substr(0, 4)}...${currentAddress?.substr(-4)}`}!
           </button>
         ) : (
           <button
@@ -217,7 +219,7 @@ const DApp = () => {
       : "MINT!";
 
     return (
-      <div className="mt-10">
+      <div className="mt-10 ml-8">
         <button
           className={isAble ? styles.mintAble : styles.mintDisable}
           type="button"
@@ -232,7 +234,7 @@ const DApp = () => {
   // 4. 初始化完毕后
   return (
     <div
-      className="container relative h-full w-full p-8 bg-white rounded-xl shadow-2xl"
+      className="relative h-640px w-1080px m-auto px-16 py-12 bg-white rounded-xl shadow-2xl"
       style={{
         backgroundImage: "linear-gradient(to top, #dfe9f3  0%, #ffffff 100%)",
       }}
@@ -242,11 +244,19 @@ const DApp = () => {
       <div className="relative">
         {renderConnector()}
 
-        <h1 className="text-black font-bold text-5xl mt-10">{greetMsg}</h1>
+        <h1
+          className={classnames([
+            "text-black font-bold text-5xl mt-0",
+            styles.titleText,
+          ])}
+        >
+          {greetMsg}
+        </h1>
 
-        <h1 className="text-black font-bold text-3xl mt-10">
-          Whitelist Sale Util In: <br />
-          {`${countDownText}`}
+        <ExploMonCarousel />
+
+        <h1 className="text-black font-bold text-3xl mt-16 ml-10">
+          Sale Ends In: {`${countDownText}`}
         </h1>
 
         {renderMintButton()}
