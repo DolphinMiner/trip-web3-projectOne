@@ -43,8 +43,6 @@ const nftContractConfig = {
   contractInterface: TripNFTArtifact.abi,
 };
 
-console.log('nftContractConfig', nftContractConfig);
-
 // 售卖阶段
 enum SALE_STATE {
   CLOSED = 0,
@@ -66,7 +64,6 @@ const DApp = () => {
     args: [merkleProof],
     overrides: { from: currentAddress },
   });
-  console.log("isInWhiteList", isInWhiteList, validUserErr);
   // 售卖时间段
   const { data: saleStageBigInt, error: saleStageErr } = useContractRead({
     ...nftContractConfig,

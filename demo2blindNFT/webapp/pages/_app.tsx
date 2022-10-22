@@ -34,8 +34,6 @@ if (process.env.PROVIDER_MODE === "production") {
     webSocketProvider,
   });
 
-  console.log("ALCHEMY_PROJECT_KEY", ALCHEMY_PROJECT_KEY);
-  console.log('client', client);
 } else if (process.env.PROVIDER_MODE === "goerli") {
 
   // Goerli test network
