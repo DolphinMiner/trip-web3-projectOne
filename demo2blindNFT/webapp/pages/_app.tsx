@@ -22,7 +22,6 @@ let client: any;
 
 if (process.env.PROVIDER_MODE === "production") {
 
-  console.log('production mode')
   const { chains, provider, webSocketProvider } = configureChains(
     defaultChains,
     [publicProvider()]
@@ -36,7 +35,6 @@ if (process.env.PROVIDER_MODE === "production") {
   });
 } else if (process.env.PROVIDER_MODE === "goerli") {
 
-  console.log('goerli mode')
   // Goerli test network
   const { chains, provider, webSocketProvider } = configureChains(
     defaultChains,
@@ -52,7 +50,6 @@ if (process.env.PROVIDER_MODE === "production") {
 
 } else {
 
-  console.log('localhost network')
 
   // localhost network
   const { chains, provider, webSocketProvider } = configureChains(
