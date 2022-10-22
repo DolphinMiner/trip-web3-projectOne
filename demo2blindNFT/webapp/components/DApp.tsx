@@ -12,28 +12,43 @@ import {
 } from "wagmi";
 
 import { getMerkleProof } from "../utils/merkleTree";
-import TripNFTArtifact from "../contracts/TripNFT.json";
-import contractAddress from "../contracts/contract-address.json";
-import TripNFTArtifact_AWS from "../contracts-aws/TripNFT.json"
-import contractAddress_AWS from "../contracts-aws/contract-address.json"
+// import TripNFTArtifact from "../contracts/TripNFT.json";
+// import contractAddress from "../contracts/contract-address.json";
+// import TripNFTArtifact_AWS from "../contracts-aws/TripNFT.json"
+// import contractAddress_AWS from "../contracts-aws/contract-address.json"
 import BgImage from "./BgImage";
 
 import styles from "../styles/DApp.module.css";
 import MintDialog from "./MintDialog";
 
+// 根据环境获取NFT配置函数
+const getNFTConfigs = (isInProduction: boolean) => {
+  const dir_suffix = isInProduction ? "-aws" : "";
+  return {
+    TripNFTArtifact: require(`../contracts${dir_suffix}/TripNFT.json`),
+    contractAddress: require(`../contracts${dir_suffix}/contract-address.json`),
+  }
+}
+
 // 检测当前环境
 const isInProduction = process.env.PROVIDER_MODE === "production"
 
+const { TripNFTArtifact, contractAddress } = getNFTConfigs(isInProduction)
+
 console.log('isInProduction', isInProduction);
 
+console.log('TripNFTArtifact', TripNFTArtifact);
+console.log('contractAddress', contractAddress);
+
 // Mint合约的配置
-const nftContractConfig = isInProduction ? {
-  addressOrName: contractAddress_AWS.TripNFT,
-  contractInterface: TripNFTArtifact_AWS.abi,
-} : {
+const nftContractConfig = {
   addressOrName: contractAddress.TripNFT,
   contractInterface: TripNFTArtifact.abi,
 };
+// const nftContractConfig = {
+//   addressOrName: contractAddress.TripNFT,
+//   contractInterface: TripNFTArtifact.abi,
+// }
 
 console.log('nftContractConfig', nftContractConfig)
 
