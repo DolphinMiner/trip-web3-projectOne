@@ -46,7 +46,7 @@ const ExploMonCarousel = () => {
       }
 
       // 设置大头像的内容
-      const nextBigHead = new Date().getSeconds() % 20;
+      const nextBigHead = new Date().getSeconds() % (SHOW_GROUP_1.length + SHOW_GROUP_2.length);
       setBigHead(nextBigHead);
 
       setMargin(runningMargin.current);
