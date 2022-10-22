@@ -70,6 +70,11 @@ const DApp = () => {
     functionName: "saleStage",
   }) as { data: any | undefined };
   const saleStage: SALE_STATE = parseInt(saleStageBigInt || 0);
+  // 是否可售
+  const { data: saleIsActive, error: saleIsActiveErr } = useContractRead({
+    ...nftContractConfig,
+    functionName: "saleIsActive",
+  }) as { data: Boolean | undefined}
   // 通过读取合约字段活动铸造售价
   const { data: mintPrice } = useContractRead({
     ...nftContractConfig,
@@ -212,7 +217,7 @@ const DApp = () => {
     const insOnPublicMint =
       saleStage === SALE_STATE.PUBLIC_MINT && currentAddress;
     // 是否能铸造
-    const isAble = (isOnPreMint || insOnPublicMint) && !isMintLoading;
+    const isAble = saleIsActive && (isOnPreMint || insOnPublicMint);
     // 按钮文案
     const btnText = !currentAddress
       ? "Connect wallet first."
