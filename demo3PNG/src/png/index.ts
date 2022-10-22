@@ -1,4 +1,11 @@
 export const pngSource = {
+  background: {
+    eeeeee: require("./background/eeeeee.png"),
+    d1d0fc: require("./background/d1d0fc.png"),
+    d5effd: require("./background/d5effd.png"),
+    e5fde2: require("./background/e5fde2.png"),
+    f5f6eb: require("./background/f5f6eb.png"),
+  },
   skin: {
     default: require("./skin/default.png"),
     black: require("./skin/black.png"),
