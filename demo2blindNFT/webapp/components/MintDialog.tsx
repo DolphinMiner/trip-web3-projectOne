@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
-const MintDialog = ({ isShowDialog, isShowSuccess, setShowDialog}: { isShowDialog: boolean, isShowSuccess: boolean, setShowDialog: () => void  }) => {
+const MintDialog = ({ isShowDialog, dialogStatus, setShowDialog}: { isShowDialog: boolean, dialogStatus: string, setShowDialog: () => void  }) => {
 
     const MintDialogStatus = {
         SUCCESS: 'SUCCESS',
         FAILURE: 'FAILURE',
+        CONNECT_WALLET_FAILED: 'CONNECT_WALLET_FAIL',
     }
     
     const MintDialogTitle = {
         [MintDialogStatus.SUCCESS]: "Mint Succeeded",
         [MintDialogStatus.FAILURE]: "Mint Failed",
+        [MintDialogStatus.CONNECT_WALLET_FAILED]: "Connect Wallet failed",
     }
     
     const MintDialogContent = {
         [MintDialogStatus.SUCCESS]: "Congratulations! You have successfully minted an NFT, click 'CONFIRM' to check it in your OpenSea collections.",
         [MintDialogStatus.FAILURE]: "Something went wrong, please try again.",
+        [MintDialogStatus.CONNECT_WALLET_FAILED]: "Connect MetaMask failed, please check if your MetaMask extension is installed.",
     }
 
     const handleDialogClose = () => {
@@ -23,8 +26,8 @@ const MintDialog = ({ isShowDialog, isShowSuccess, setShowDialog}: { isShowDialo
       };
     
     const handleDialogConfirm = () => {
-    isShowSuccess && window.open("https://testnets.opensea.io/zh-CN/account?tab=collected","_blank");
-    handleDialogClose();
+        (dialogStatus === MintDialogStatus.SUCCESS) && window.open("https://testnets.opensea.io/zh-CN/account?tab=collected","_blank");
+        handleDialogClose();
     }
 
     return (
@@ -35,12 +38,12 @@ const MintDialog = ({ isShowDialog, isShowSuccess, setShowDialog}: { isShowDialo
         aria-describedby="results for dialog-mint"
       >
         <DialogTitle id="dialog-mint-title">
-          {isShowSuccess ? MintDialogTitle[MintDialogStatus.SUCCESS] : MintDialogTitle[MintDialogStatus.FAILURE]}
+          {MintDialogTitle[dialogStatus]}
           {/* {MintDialogTitle[currentStatus]} */}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="dialog-mint-description">
-            {isShowSuccess ? MintDialogContent[MintDialogStatus.SUCCESS] : MintDialogContent[MintDialogStatus.FAILURE]}
+            {MintDialogContent[dialogStatus]}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

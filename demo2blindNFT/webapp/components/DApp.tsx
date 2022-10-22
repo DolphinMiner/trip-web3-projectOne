@@ -106,10 +106,18 @@ const DApp = () => {
   // mint结果弹窗开关
   const [isShowDialog, setShowDialog] = useState(false);
   // mint弹窗对应状态
-  const [isShowSuccess, setShowSuccess] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState('FAILURE');
 
   // 连接钱包
-  const { connect, connectors } = useConnect();
+  const { connect, connectors } = useConnect({
+    onSuccess(data) {
+      console.log('connectWallet Successful!')
+    },
+    onError(error) {
+      setShowDialog(true);
+      setDialogStatus('CONNECT_WALLET_FAIL')
+    },
+  });
 
   useEffect(() => {
     startCountDown();
@@ -123,7 +131,6 @@ const DApp = () => {
     // TODO: more wallet
     const MetaMaskConnector = connectors[0];
     await connect({ connector: MetaMaskConnector });
-    console.log("connectWallet Successful!");
   };
 
   // 铸造请求
@@ -162,11 +169,11 @@ const DApp = () => {
 
       const receipt = await tx.wait();
       console.log({ receipt });
-      setShowSuccess(true);
+      setDialogStatus('SUCCESS');
       setShowDialog(true);
     } catch (error) {
       console.error(error);
-      setShowSuccess(false);
+      setDialogStatus('FAILURE');
       setShowDialog(true);
     } finally {
       setMintLoading(false);
@@ -272,7 +279,7 @@ const DApp = () => {
       </div>
       <MintDialog
         isShowDialog={isShowDialog}
-        isShowSuccess={isShowSuccess}
+        dialogStatus={dialogStatus}
         setShowDialog={setShowDialog}
       />
     </div>
