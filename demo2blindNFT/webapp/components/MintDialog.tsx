@@ -23,7 +23,7 @@ const MintDialog = ({ isShowDialog, isShowSuccess, setShowDialog}: { isShowDialo
       };
     
     const handleDialogConfirm = () => {
-    isShowSuccess && window.open("https://testnets.opensea.io/zh-CN/collections","_blank");
+    isShowSuccess && window.open("https://testnets.opensea.io/zh-CN/account?tab=collected","_blank");
     handleDialogClose();
     }
 
