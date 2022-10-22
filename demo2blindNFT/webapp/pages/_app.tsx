@@ -27,13 +27,15 @@ if (process.env.PROVIDER_MODE === "production") {
     [alchemyProvider({ apiKey: ALCHEMY_PROJECT_KEY }), publicProvider()]
   );
 
-
   client = createClient({
     autoConnect: true,
     connectors: [new MetaMaskConnector({ chains })],
     provider,
     webSocketProvider,
   });
+
+  console.log("ALCHEMY_PROJECT_KEY", ALCHEMY_PROJECT_KEY);
+  console.log('client', client);
 } else if (process.env.PROVIDER_MODE === "goerli") {
 
   // Goerli test network
