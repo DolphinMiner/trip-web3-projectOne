@@ -14,10 +14,6 @@ import classnames from "classnames";
 
 import { getMerkleProof } from "../utils/merkleTree";
 import { MintDialogStatus } from "../constants";
-// import TripNFTArtifact from "../contracts/TripNFT.json";
-// import contractAddress from "../contracts/contract-address.json";
-// import TripNFTArtifact_AWS from "../contracts-aws/TripNFT.json"
-// import contractAddress_AWS from "../contracts-aws/contract-address.json"
 import BgImage from "./BgImage";
 
 import styles from "../styles/DApp.module.css";
