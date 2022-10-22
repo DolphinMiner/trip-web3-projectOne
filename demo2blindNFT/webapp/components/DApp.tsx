@@ -13,6 +13,7 @@ import {
 import classnames from "classnames";
 
 import { getMerkleProof } from "../utils/merkleTree";
+import { MintDialogStatus } from "../constants";
 // import TripNFTArtifact from "../contracts/TripNFT.json";
 // import contractAddress from "../contracts/contract-address.json";
 // import TripNFTArtifact_AWS from "../contracts-aws/TripNFT.json"
@@ -106,7 +107,7 @@ const DApp = () => {
   // mint结果弹窗开关
   const [isShowDialog, setShowDialog] = useState(false);
   // mint弹窗对应状态
-  const [dialogStatus, setDialogStatus] = useState('FAILURE');
+  const [dialogStatus, setDialogStatus] = useState(MintDialogStatus.FAILURE);
 
   // 连接钱包
   const { connect, connectors } = useConnect({
@@ -115,7 +116,7 @@ const DApp = () => {
     },
     onError(error) {
       setShowDialog(true);
-      setDialogStatus('CONNECT_WALLET_FAIL')
+      setDialogStatus(MintDialogStatus.CONNECT_WALLET_FAILED)
     },
   });
 
@@ -169,11 +170,11 @@ const DApp = () => {
 
       const receipt = await tx.wait();
       console.log({ receipt });
-      setDialogStatus('SUCCESS');
+      setDialogStatus(MintDialogStatus.SUCCESS);
       setShowDialog(true);
     } catch (error) {
       console.error(error);
-      setDialogStatus('FAILURE');
+      setDialogStatus(MintDialogStatus.FAILURE);
       setShowDialog(true);
     } finally {
       setMintLoading(false);

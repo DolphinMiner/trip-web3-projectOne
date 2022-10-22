@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { MintDialogStatus } from '../constants';
 
 const MintDialog = ({ isShowDialog, dialogStatus, setShowDialog}: { isShowDialog: boolean, dialogStatus: string, setShowDialog: () => void  }) => {
-
-    const MintDialogStatus = {
-        SUCCESS: 'SUCCESS',
-        FAILURE: 'FAILURE',
-        CONNECT_WALLET_FAILED: 'CONNECT_WALLET_FAIL',
-    }
     
     const MintDialogTitle = {
         [MintDialogStatus.SUCCESS]: "Mint Succeeded",
