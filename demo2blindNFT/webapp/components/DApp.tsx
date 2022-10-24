@@ -111,8 +111,8 @@ const DApp = () => {
       console.log('connectWallet Successful!')
     },
     onError(error) {
+      setDialogStatus(MintDialogStatus.CONNECT_WALLET_FAILED);
       setShowDialog(true);
-      setDialogStatus(MintDialogStatus.CONNECT_WALLET_FAILED)
     },
   });
 
@@ -130,13 +130,30 @@ const DApp = () => {
     await connect({ connector: MetaMaskConnector });
   };
 
-  // 铸造请求
-  const requestMint = async () => {
+
+  const handleMintClick = async () => {
     // 还未读取到合约内容 或 售卖还未开启
     if (!saleStage) return;
 
     setMintLoading(true);
+    const isSuccess = await requestMint();
 
+    if (isSuccess) {
+      setDialogStatus(MintDialogStatus.SUCCESS);
+      setShowDialog(true);
+    } else {
+      setDialogStatus(MintDialogStatus.FAILURE);
+      setShowDialog(true);
+    }
+
+    setMintLoading(false);
+
+  };
+
+  // 铸造请求
+  const requestMint = async () => {
+    // Mint是否成功
+    let isSuccess
     // 需要调用的方法
     let mintFnAsync;
     // 需要传入的价格
@@ -163,17 +180,14 @@ const DApp = () => {
           value: sendValue, // 传入合约里的售价
         },
       });
-
       const receipt = await tx.wait();
       console.log({ receipt });
-      setDialogStatus(MintDialogStatus.SUCCESS);
-      setShowDialog(true);
+      isSuccess = true;
     } catch (error) {
       console.error(error);
-      setDialogStatus(MintDialogStatus.FAILURE);
-      setShowDialog(true);
+      isSuccess = false;
     } finally {
-      setMintLoading(false);
+      return isSuccess
     }
   };
 
@@ -236,7 +250,7 @@ const DApp = () => {
         <button
           className={isAble ? styles.mintAble : styles.mintDisable}
           type="button"
-          onClick={() => isAble && requestMint()}
+          onClick={() => isAble && handleMintClick()}
         >
           <span className="font-bold text-xl">{btnText}</span>
         </button>
