@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 @RequestMapping("v1/nft")
 @RestController
 public class TripNFTController {
+
 	private static final Logger log = Logger.getLogger(TripNFTController.class);
 
 	@Resource

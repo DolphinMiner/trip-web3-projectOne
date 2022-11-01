@@ -25,7 +25,7 @@ public class TripNFTServiceImpl implements TripNFTService {
 	private Credentials myCredentials;
 
 	@Resource
-	Web3Config.Web3ConfigBase web3ConfigBase;
+	Web3Config web3Config;
 
 	/**
 	 * 获取合约名称
@@ -137,7 +137,7 @@ public class TripNFTServiceImpl implements TripNFTService {
 
 	private TripNFTContract loadTripNFTContract(){
 		return TripNFTContract.load(
-				web3ConfigBase.getContractAddress(),
+				web3Config.buildWeb3ConfigBase().getContractAddress(),
 				myWeb3j,
 				myCredentials,
 				new DefaultGasProvider());

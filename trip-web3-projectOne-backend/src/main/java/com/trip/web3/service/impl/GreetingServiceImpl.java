@@ -1,5 +1,6 @@
 package com.trip.web3.service.impl;
 
+import com.trip.web3.common.annotation.LogCollection;
 import com.trip.web3.contracts.TestGreetingContract;
 import com.trip.web3.service.GreetingService;
 import org.apache.log4j.Logger;
@@ -37,6 +38,7 @@ public class GreetingServiceImpl implements GreetingService {
 		return deploy.getContractAddress();
 	}
 
+	@LogCollection
 	@Override
 	public String greet() {
 		log.info("load Greeting contract ...");

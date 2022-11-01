@@ -1,5 +1,6 @@
 package com.trip.web3.common.config;
 
+import com.trip.web3.common.constants.Web3Constants;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ public class Web3Config {
 
 	@Bean(name = "myWeb3j")
 	public Web3j buildWeb3j(){
-		return Web3j.build(new HttpService("https://goerli.infura.io/v3/" + buildWeb3ConfigBase().infuraProjectKey));
+		return Web3j.build(new HttpService(Web3Constants.INFURA_IO_URL + buildWeb3ConfigBase().infuraProjectKey));
 	}
 
 	@Bean(name = "myCredentials")
@@ -23,9 +24,8 @@ public class Web3Config {
 		return Credentials.create(buildWeb3ConfigBase().privateKey);
 	}
 
-	@Bean(name = "web3ConfigBase")
 	public Web3ConfigBase buildWeb3ConfigBase(){
-		ResourceBundle bundle = ResourceBundle.getBundle("config");
+		ResourceBundle bundle = ResourceBundle.getBundle("web3Config");
 		return Web3ConfigBase.builder()
 				.ownerAddress(bundle.getString("OWNER_ADDRESS"))
 				.privateKey(bundle.getString("PRIVATE_KEY"))
