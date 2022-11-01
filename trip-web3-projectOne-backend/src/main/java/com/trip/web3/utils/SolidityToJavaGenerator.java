@@ -2,6 +2,7 @@ package com.trip.web3.utils;
 
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.json.JSONObject;
+import org.junit.Test;
 import org.web3j.codegen.SolidityFunctionWrapperGenerator;
 
 import java.io.BufferedOutputStream;
@@ -16,11 +17,12 @@ import java.util.stream.Stream;
  */
 public class SolidityToJavaGenerator {
 
-	public static void main(String[] args) {
-		genJavaFile("TripNFT");
+	@Test
+	public void generate() {
+		genJavaFile("TestGreeting");
 	}
 
-	public static void genJavaFile(String contractName){
+	public void genJavaFile(String contractName){
 		// 解析contracts，获取abi & bin
 		FileReader fileReader = new FileReader(String.format("./contracts/%s.json", contractName));
 		JSONObject contractJsonObj = new JSONObject(fileReader.readString());
@@ -46,7 +48,7 @@ public class SolidityToJavaGenerator {
 	 * @param abiFile
 	 * @param binFile
 	 */
-	private static void writeAbiAndBin(String abi, String bin, File abiFile, File binFile){
+	private void writeAbiAndBin(String abi, String bin, File abiFile, File binFile){
 		BufferedOutputStream abiBos = null;
 		BufferedOutputStream binBos = null;
 		try{
@@ -84,7 +86,7 @@ public class SolidityToJavaGenerator {
 	 * @param binFile
 	 * @param contractName
 	 */
-	private static void generateJavaFile(String abiFile, String binFile, String contractName){
+	private void generateJavaFile(String abiFile, String binFile, String contractName){
 		String generateFilePath = "./src/main/java/";
 		String javaFileName = contractName + "Contract";
 		String basePackageName = "com.trip.web3.contracts";
@@ -105,7 +107,7 @@ public class SolidityToJavaGenerator {
 	 * @param abiFile
 	 * @param binFile
 	 */
-	private static void removeAbiAndBin(File abiFile, File binFile){
+	private void removeAbiAndBin(File abiFile, File binFile){
 		if(abiFile.delete())
 			System.out.println("Successfully delete the ABI file.");
 		if(binFile.delete())

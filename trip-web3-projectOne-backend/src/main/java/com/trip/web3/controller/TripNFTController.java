@@ -14,18 +14,18 @@ public class TripNFTController {
 	private static final Logger log = Logger.getLogger(TripNFTController.class);
 
 	@Resource
-	TripNFTService tripNFTServiceImpl;
+	TripNFTService tripNFTService;
 
 	@GetMapping("/deploy")
 	public String deploy(){
 		log.info("TripNFTController =======  Deploy~~");
-		return tripNFTServiceImpl.deploy();
+		return tripNFTService.deploy();
 	}
 
 	@GetMapping("/name")
 	public String getContractName() {
 		log.info("TripNFTController =======  getContractName~~");
-		return tripNFTServiceImpl.getContractName();
+		return tripNFTService.getContractName();
 	}
 
 }

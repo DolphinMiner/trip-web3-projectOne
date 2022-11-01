@@ -2,10 +2,9 @@ package com.trip.web3.service.impl;
 
 import com.trip.web3.common.config.Web3Config;
 import com.trip.web3.contracts.TripNFTContract;
-import com.trip.web3.controller.TripNFTController;
 import com.trip.web3.service.TripNFTService;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.tx.gas.DefaultGasProvider;
@@ -14,17 +13,19 @@ import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.util.List;
 
-@Component
+@Service
 public class TripNFTServiceImpl implements TripNFTService {
+
+	private static final Logger log = Logger.getLogger(TripNFTServiceImpl.class);
 
 	@Resource
 	private Web3j myWeb3j;
+
 	@Resource
 	private Credentials myCredentials;
+
 	@Resource
 	Web3Config.Web3ConfigBase web3ConfigBase;
-
-	private static final Logger log = Logger.getLogger(TripNFTController.class);
 
 	/**
 	 * 获取合约名称
