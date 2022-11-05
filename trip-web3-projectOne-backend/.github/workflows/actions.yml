@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - main
-#    paths:
-#      - src/*
+    paths:
+      - src/*
+  pull_request:
+    paths:
+      - src/*
+    branches:
+      - main
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +25,11 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph

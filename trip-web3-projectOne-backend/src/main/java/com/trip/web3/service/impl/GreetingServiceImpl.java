@@ -1,12 +1,15 @@
 package com.trip.web3.service.impl;
 
 import com.trip.web3.common.annotation.LogCollection;
+import com.trip.web3.common.config.Web3Config;
+import com.trip.web3.common.constants.Web3Constants;
 import com.trip.web3.contracts.TestGreetingContract;
 import com.trip.web3.service.GreetingService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 
 import javax.annotation.Resource;
@@ -16,25 +19,25 @@ public class GreetingServiceImpl implements GreetingService {
 	private static final Logger log = Logger.getLogger(GreetingServiceImpl.class);
 
 	@Resource
-	private Web3j myWeb3j;
+	private TestGreetingContract testGreetingContract;
 
 	@Resource
-	private Credentials myCredentials;
-
-	private String contractAddress = "0xE7B68Ff1890c86b7dDAb381ebe5D9909ba17199f";
+	private Web3Config web3Config;
 
 	@Override
 	public String deploy() {
 		log.info("Deploying Greeting contract ...");
+		Web3j web3j =
+				Web3j.build(new HttpService(Web3Constants.INFURA_IO_URL + web3Config.buildWeb3ConfigBase().getInfuraProjectKey()));
+		Credentials credentials = Credentials.create(web3Config.buildWeb3ConfigBase().getPrivateKey());
 		TestGreetingContract deploy = null;
 		try {
-			deploy = TestGreetingContract.deploy(myWeb3j, myCredentials, new DefaultGasProvider()).send();
+			deploy = TestGreetingContract.deploy(web3j, credentials, new DefaultGasProvider()).send();
 		} catch (Exception e) {
 			log.error("合约部署异常：" + e.getMessage());
 			throw new RuntimeException(e);
 		}
 		log.info("Contract address:" + deploy.getContractAddress());
-		contractAddress = deploy.getContractAddress();
 		return deploy.getContractAddress();
 	}
 
@@ -42,11 +45,9 @@ public class GreetingServiceImpl implements GreetingService {
 	@Override
 	public String greet() {
 		log.info("load Greeting contract ...");
-		TestGreetingContract contract =
-				TestGreetingContract.load(contractAddress, myWeb3j, myCredentials, new DefaultGasProvider());
 		String resultGreet;
 		try {
-			resultGreet = contract.greet().send();
+			resultGreet = testGreetingContract.greet().send();
 		} catch (Exception e) {
 			log.error("调用合约异常：" + e.getMessage());
 			throw new RuntimeException(e);
@@ -54,13 +55,12 @@ public class GreetingServiceImpl implements GreetingService {
 		return resultGreet;
 	}
 
+	@LogCollection
 	@Override
 	public void setGreeting(String _newGreeting) {
 		log.info("load Greeting contract ...");
-		TestGreetingContract contract =
-				TestGreetingContract.load(contractAddress, myWeb3j, myCredentials, new DefaultGasProvider());
 		try {
-			contract.setGreeting(_newGreeting).send();
+			testGreetingContract.setGreeting(_newGreeting).send();
 		} catch (Exception e) {
 			log.error("调用合约异常：" + e.getMessage());
 			throw new RuntimeException(e);

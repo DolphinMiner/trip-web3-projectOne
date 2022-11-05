@@ -1,12 +1,14 @@
 package com.trip.web3.service.impl;
 
 import com.trip.web3.common.config.Web3Config;
+import com.trip.web3.common.constants.Web3Constants;
 import com.trip.web3.contracts.TripNFTContract;
 import com.trip.web3.service.TripNFTService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 
 import javax.annotation.Resource;
@@ -19,13 +21,10 @@ public class TripNFTServiceImpl implements TripNFTService {
 	private static final Logger log = Logger.getLogger(TripNFTServiceImpl.class);
 
 	@Resource
-	private Web3j myWeb3j;
-
+	private TripNFTContract tripNFTContract;
 	@Resource
-	private Credentials myCredentials;
+	private Web3Config web3Config;
 
-	@Resource
-	Web3Config web3Config;
 
 	/**
 	 * 获取合约名称
@@ -35,7 +34,7 @@ public class TripNFTServiceImpl implements TripNFTService {
 	@Override
 	public String getContractName() {
 		try {
-			return loadTripNFTContract().name().send();
+			return tripNFTContract.name().send();
 		} catch (Exception e) {
 			log.error("获取合约名称异常：" + e.getMessage());
 			throw new RuntimeException(e);
@@ -49,9 +48,12 @@ public class TripNFTServiceImpl implements TripNFTService {
 	@Override
 	public String deploy() {
 		log.info("Deploying TripNFTContract contract ...");
+		Web3j web3j =
+				Web3j.build(new HttpService(Web3Constants.INFURA_IO_URL + web3Config.buildWeb3ConfigBase().getInfuraProjectKey()));
+		Credentials credentials = Credentials.create(web3Config.buildWeb3ConfigBase().getPrivateKey());
 		TripNFTContract send = null;
 		try {
-			send = TripNFTContract.deploy(myWeb3j, myCredentials, new DefaultGasProvider()).send();
+			send = TripNFTContract.deploy(web3j, credentials, new DefaultGasProvider()).send();
 		} catch (Exception e) {
 			log.error("合约部署异常：" + e.getMessage());
 			throw new RuntimeException(e);
@@ -61,31 +63,31 @@ public class TripNFTServiceImpl implements TripNFTService {
 	}
 
 	public void isValidUser(List<byte[]> merkleProof){
-		loadTripNFTContract().isValidUser(merkleProof);
+		tripNFTContract.isValidUser(merkleProof);
 	}
 
 	public void preMint(BigInteger numberOfTokens, List<byte[]> merkleProof) {
-		loadTripNFTContract().preMint(numberOfTokens, merkleProof);
+		tripNFTContract.preMint(numberOfTokens, merkleProof);
 	}
 
 	public void publicMint(BigInteger numberOfTokens) {
-		loadTripNFTContract().publicMint(numberOfTokens);
+		tripNFTContract.publicMint(numberOfTokens);
 	}
 
 	public void tokenURI(BigInteger tokenId){
-		loadTripNFTContract().tokenURI(tokenId);
+		tripNFTContract.tokenURI(tokenId);
 	}
 
 	public void reserveNFT(){
-		loadTripNFTContract().reserveNFT();
+		tripNFTContract.reserveNFT();
 	}
 
 	public void reserveSpecialNFT(){
-		loadTripNFTContract().reserveSpecialNFT();
+		tripNFTContract.reserveSpecialNFT();
 	}
 
 	public void withdrawMoney(String to){
-		loadTripNFTContract().withdrawMoney(to);
+		tripNFTContract.withdrawMoney(to);
 	}
 
 	public void _setTokenURI(){
@@ -96,50 +98,43 @@ public class TripNFTServiceImpl implements TripNFTService {
 	}
 
 	public void flipSaleActive(){
-		loadTripNFTContract().flipSaleActive();
+		tripNFTContract.flipSaleActive();
 	}
 
 	public void flipReveal(){
-		loadTripNFTContract().flipReveal();
+		tripNFTContract.flipReveal();
 	}
 
 	public void setMintPrice(BigInteger _mintPrice){
-		loadTripNFTContract().setMintPrice(_mintPrice);
+		tripNFTContract.setMintPrice(_mintPrice);
 	}
 
 	public void setNotRevealedURI(String _unrevealedURI){
-		loadTripNFTContract().setNotRevealedURI(_unrevealedURI);
+		tripNFTContract.setNotRevealedURI(_unrevealedURI);
 	}
 
 	public void setBaseURI(String _newBaseURI){
-		loadTripNFTContract().setBaseURI(_newBaseURI);
+		tripNFTContract.setBaseURI(_newBaseURI);
 	}
 
 	public void setBaseExtension(String _newBaseExtension){
-		loadTripNFTContract().setBaseExtension(_newBaseExtension);
+		tripNFTContract.setBaseExtension(_newBaseExtension);
 	}
 
 	public void setMaxBalance(BigInteger _maxBalance){
-		loadTripNFTContract().setMaxBalance(_maxBalance);
+		tripNFTContract.setMaxBalance(_maxBalance);
 	}
 
 	public void setMaxMint(BigInteger _maxMint){
-		loadTripNFTContract().setMaxMint(_maxMint);
+		tripNFTContract.setMaxMint(_maxMint);
 	}
 
 	public void setRootHash(byte[] _merkleRootHash){
-		loadTripNFTContract().setRootHash(_merkleRootHash);
+		tripNFTContract.setRootHash(_merkleRootHash);
 	}
 
 	public void setSaleStage(BigInteger _stage){
-		loadTripNFTContract().setSaleStage(_stage);
+		tripNFTContract.setSaleStage(_stage);
 	}
 
-	private TripNFTContract loadTripNFTContract(){
-		return TripNFTContract.load(
-				web3Config.buildWeb3ConfigBase().getContractAddress(),
-				myWeb3j,
-				myCredentials,
-				new DefaultGasProvider());
-	}
 }
