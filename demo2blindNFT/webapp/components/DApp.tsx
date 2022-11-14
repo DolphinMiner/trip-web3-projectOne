@@ -166,7 +166,15 @@ const DApp = () => {
 
   const startCountDown = () => {
     countDownPointer = setInterval(() => {
-      const restTotalSeconds = (new Date("2022/10/25") - new Date()) / 1000;
+      // 固定的结束时间，永远指向当天的午夜
+      const nowStamp = new Date();
+      const timeLap =
+        24 * 60 * 60 -
+        nowStamp.getHours() * 60 * 60 -
+        nowStamp.getMinutes() * 60 -
+        nowStamp.getSeconds();
+
+      const restTotalSeconds = timeLap > 0 ? timeLap : 0;
       const seconds = Math.floor(restTotalSeconds % 60);
       const minutes = Math.floor((restTotalSeconds / 60) % 60);
       const hours = Math.floor((restTotalSeconds / 60 / 60) % 24);
