@@ -13,25 +13,31 @@ import {
 import classnames from "classnames";
 
 import { getMerkleProof } from "../utils/merkleTree";
-import TripNFTArtifact from "../contracts/TripNFT.json";
-import TestGreetingArtifact from "../contracts/TestGreeting.json";
-import contractAddress from "../contracts/contract-address.json";
+import { MintDialogStatus } from "../constants";
 import BgImage from "./BgImage";
 
 import styles from "../styles/DApp.module.css";
 import MintDialog from "./MintDialog";
 import ExploMonCarousel from "./ExploMonCarousel";
 
+// 根据环境获取NFT配置函数
+const getNFTConfigs = (isInProduction: boolean) => {
+  const dir_suffix = isInProduction ? "-aws" : "";
+  return {
+    TripNFTArtifact: require(`../contracts${dir_suffix}/TripNFT.json`),
+    contractAddress: require(`../contracts${dir_suffix}/contract-address.json`),
+  }
+}
+
+// 检测当前环境
+const isInProduction = process.env.PROVIDER_MODE === "production"
+
+const { TripNFTArtifact, contractAddress } = getNFTConfigs(isInProduction)
+
 // Mint合约的配置
-// TODO: 依据不同环境不同配置（加入生产环境配置）
 const nftContractConfig = {
   addressOrName: contractAddress.TripNFT,
   contractInterface: TripNFTArtifact.abi,
-};
-
-const greetContractConfig = {
-  addressOrName: contractAddress.TestGreeting,
-  contractInterface: TestGreetingArtifact.abi,
 };
 
 // 售卖阶段
@@ -49,18 +55,23 @@ const DApp = () => {
 
   // 通过读取是否在白名单内
   const merkleProof = currentAddress && getMerkleProof(currentAddress);
-  const { data: isInWhiteList } = useContractRead({
+  const { data: isInWhiteList, error: validUserErr } = useContractRead({
     ...nftContractConfig,
     functionName: "isValidUser",
     args: [merkleProof],
     overrides: { from: currentAddress },
   });
   // 售卖时间段
-  const { data: saleStageBigInt } = useContractRead({
+  const { data: saleStageBigInt, error: saleStageErr } = useContractRead({
     ...nftContractConfig,
     functionName: "saleStage",
   }) as { data: any | undefined };
   const saleStage: SALE_STATE = parseInt(saleStageBigInt || 0);
+  // 是否可售
+  const { data: saleIsActive, error: saleIsActiveErr } = useContractRead({
+    ...nftContractConfig,
+    functionName: "saleIsActive",
+  }) as { data: Boolean | undefined}
   // 通过读取合约字段活动铸造售价
   const { data: mintPrice } = useContractRead({
     ...nftContractConfig,
@@ -79,11 +90,6 @@ const DApp = () => {
       mode: "recklesslyUnprepared",
       functionName: "publicMint",
     });
-  // 本地调试用，查看是否正确连接至合约
-  // const { data: greetMsg } = useContractRead({
-  //   ...greetContractConfig,
-  //   functionName: "greet",
-  // });
 
   /*  == End ==  */
 
@@ -97,10 +103,18 @@ const DApp = () => {
   // mint结果弹窗开关
   const [isShowDialog, setShowDialog] = useState(false);
   // mint弹窗对应状态
-  const [isShowSuccess, setShowSuccess] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState(MintDialogStatus.FAILURE);
 
   // 连接钱包
-  const { connect, connectors } = useConnect();
+  const { connect, connectors } = useConnect({
+    onSuccess(data) {
+      console.log('connectWallet Successful!')
+    },
+    onError(error) {
+      setDialogStatus(MintDialogStatus.CONNECT_WALLET_FAILED);
+      setShowDialog(true);
+    },
+  });
 
   useEffect(() => {
     startCountDown();
@@ -114,16 +128,32 @@ const DApp = () => {
     // TODO: more wallet
     const MetaMaskConnector = connectors[0];
     await connect({ connector: MetaMaskConnector });
-    console.log("connectWallet Successful!");
   };
 
-  // 铸造请求
-  const requestMint = async () => {
+
+  const handleMintClick = async () => {
     // 还未读取到合约内容 或 售卖还未开启
     if (!saleStage) return;
 
     setMintLoading(true);
+    const isSuccess = await requestMint();
 
+    if (isSuccess) {
+      setDialogStatus(MintDialogStatus.SUCCESS);
+      setShowDialog(true);
+    } else {
+      setDialogStatus(MintDialogStatus.FAILURE);
+      setShowDialog(true);
+    }
+
+    setMintLoading(false);
+
+  };
+
+  // 铸造请求
+  const requestMint = async () => {
+    // Mint是否成功
+    let isSuccess
     // 需要调用的方法
     let mintFnAsync;
     // 需要传入的价格
@@ -150,17 +180,14 @@ const DApp = () => {
           value: sendValue, // 传入合约里的售价
         },
       });
-
       const receipt = await tx.wait();
       console.log({ receipt });
-      setShowSuccess(true);
-      setShowDialog(true);
+      isSuccess = true;
     } catch (error) {
       console.error(error);
-      setShowSuccess(false);
-      setShowDialog(true);
+      isSuccess = false;
     } finally {
-      setMintLoading(false);
+      return isSuccess
     }
   };
 
@@ -216,7 +243,7 @@ const DApp = () => {
     const insOnPublicMint =
       saleStage === SALE_STATE.PUBLIC_MINT && currentAddress;
     // 是否能铸造
-    const isAble = (isOnPreMint || insOnPublicMint) && !isMintLoading;
+    const isAble = saleIsActive && (isOnPreMint || insOnPublicMint);
     // 按钮文案
     const btnText = !currentAddress
       ? "Connect wallet first."
@@ -231,7 +258,7 @@ const DApp = () => {
         <button
           className={isAble ? styles.mintAble : styles.mintDisable}
           type="button"
-          onClick={() => isAble && requestMint()}
+          onClick={() => isAble && handleMintClick()}
         >
           <span className="font-bold text-xl">{btnText}</span>
         </button>
@@ -271,7 +298,7 @@ const DApp = () => {
       </div>
       <MintDialog
         isShowDialog={isShowDialog}
-        isShowSuccess={isShowSuccess}
+        dialogStatus={dialogStatus}
         setShowDialog={setShowDialog}
       />
     </div>

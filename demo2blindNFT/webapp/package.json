@@ -7,7 +7,9 @@
     "dev:goerli": "cross-env PROVIDER_MODE=goerli env-cmd -f ../.env next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export",
+    "serve": "serve out"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
