@@ -6,14 +6,14 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
-    <org.springframework.boot.version>2.2.2.RELEASE</org.springframework.boot.version>
+    <org.springframework.boot.version>2.7.8</org.springframework.boot.version>
     <org.web3j.version>5.0.0</org.web3j.version>
     <cn.hutool.version>5.8.8</cn.hutool.version>
     <lombok.version>1.18.24</lombok.version>
     <log4j.version>1.2.17</log4j.version>
-    <org.springframework.version>5.2.2.RELEASE</org.springframework.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <org.springframework.version>5.3.25</org.springframework.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -47,6 +47,12 @@
       <groupId>org.web3j</groupId>
       <artifactId>core</artifactId>
       <version>${org.web3j.version}</version>
+        <exclusions>
+            <exclusion>
+                <artifactId>jackson-databind</artifactId>
+                <groupId>com.fasterxml.jackson.core</groupId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <dependency>
       <groupId>org.web3j</groupId>
