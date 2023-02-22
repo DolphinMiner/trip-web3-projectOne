@@ -1,0 +1,72 @@
+{
+    "skin": [
+        {
+            "valueName": "black",
+            "valuePath": "",
+            "valueStore": "2000",
+            "bind": [
+                {
+                    "className": "eye",
+                    "classValue": "side"
+                },
+                {
+                    "className": "hair",
+                    "classValue": "hairbun"
+                }
+            ],
+            "exclude": [
+                {
+                    "className": "clothe",
+                    "classValue": "hoodie"
+                },
+                {
+                    "className": "clothe",
+                    "classValue": "overall"
+                }
+            ]
+        },
+        {
+            "valueName": "white",
+            "valuePath": "",
+            "valueStore": "500",
+            "bind": [
+                {
+                    "className": "eyeglass",
+                    "classValue": "side"
+                }
+            ],
+            "exclude": []
+        }
+    ],
+    "background": [
+        {
+            "valueName": "d1d0fc",
+            "valuePath": "",
+            "valueStore": "1000",
+            "bind": [
+                {
+                    "className": "mouth",
+                    "classValue": "eating"
+                }
+            ],
+            "exclude": [
+                {
+                    "className": "mouth",
+                    "classValue": "tongue"
+                }
+            ]
+        },
+        {
+            "valueName": "d5effd",
+            "valuePath": "",
+            "valueStore": "100",
+            "bind": [],
+            "exclude": [
+                {
+                    "className": "mouth",
+                    "classValue": "eating"
+                }
+            ]
+        }
+    ]
+}
