@@ -5,7 +5,7 @@
         "classValues": [
             {
                 "valueName": "d1d0fc",
-                "valuePath": "",
+                "valuePath": "../png/spring/background/d1d0fc.png",
                 "valueStore": 3000,
                 "bind": [
                     {
@@ -22,7 +22,7 @@
             },
             {
                 "valueName": "d5effd",
-                "valuePath": "",
+                "valuePath": "../png/spring/background/d5effd.png",
                 "valueStore": 1000,
                 "bind": [
                     {
@@ -39,14 +39,14 @@
             },
             {
                 "valueName": "e5fde2",
-                "valuePath": "",
+                "valuePath": "../png/spring/background/e5fde2.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "eeeeee",
-                "valuePath": "",
+                "valuePath": "../png/spring/background/eeeeee.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": [
@@ -58,7 +58,7 @@
             },
             {
                 "valueName": "f5f6eb",
-                "valuePath": "",
+                "valuePath": "../png/spring/background/f5f6eb.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
@@ -71,7 +71,7 @@
         "classValues": [
             {
                 "valueName": "black",
-                "valuePath": "",
+                "valuePath": "../png/spring/skin/black.png",
                 "valueStore": 4000,
                 "bind": [
                     {
@@ -92,14 +92,14 @@
             },
             {
                 "valueName": "default",
-                "valuePath": "",
+                "valuePath": "../png/spring/skin/default.png",
                 "valueStore": 1000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "white",
-                "valuePath": "",
+                "valuePath": "../png/spring/skin/white.png",
                 "valueStore": 5000,
                 "bind": [
                     {
@@ -126,35 +126,35 @@
         "classValues": [
            {
             "valueName": "angry",
-            "valuePath": "",
+            "valuePath": "../png/spring/eyebrow/angry.png",
             "valueStore": 2000,
             "bind": [],
             "exclude": []
            },
            {
             "valueName": "raised",
-            "valuePath": "",
+            "valuePath": "../png/spring/eyebrow/raised.png",
             "valueStore": 200,
             "bind": [],
             "exclude": []
            },
            {
             "valueName": "sad",
-            "valuePath": "",
+            "valuePath": "../png/spring/eyebrow/sad.png",
             "valueStore": 4000,
             "bind": [],
             "exclude": []
            },
            {
             "valueName": "unibrow",
-            "valuePath": "",
+            "valuePath": "../png/spring/eyebrow/unibrow.png",
             "valueStore": 2200,
             "bind": [],
             "exclude": []
            },
            {
             "valueName": "updown",
-            "valuePath": "",
+            "valuePath": "../png/spring/eyebrow/updown.png",
             "valueStore": 1300,
             "bind": [],
             "exclude": []
@@ -167,21 +167,21 @@
         "classValues": [
             {
                 "valueName": "cry",
-                "valuePath": "",
+                "valuePath": "../png/spring/eye/cry.png",
                 "valueStore": 800,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "default",
-                "valuePath": "",
+                "valuePath": "../png/spring/eye/default.png",
                 "valueStore": 300,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "hearts",
-                "valuePath": "",
+                "valuePath": "../png/spring/eye/hearts.png",
                 "valueStore": 1200,
                 "bind": [
                     {
@@ -193,21 +193,21 @@
             },
             {
                 "valueName": "side",
-                "valuePath": "",
+                "valuePath": "../png/spring/eye/side.png",
                 "valueStore": 4300,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "surprised",
-                "valuePath": "",
+                "valuePath": "../png/spring/eye/surprised.png",
                 "valueStore": 2300,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "wink",
-                "valuePath": "",
+                "valuePath": "../png/spring/eye/wink.png",
                 "valueStore": 1100,
                 "bind": [],
                 "exclude": []
@@ -220,35 +220,35 @@
         "classValues": [
             {
                 "valueName": "default",
-                "valuePath": "",
+                "valuePath": "../png/spring/mouth/default.png",
                 "valueStore": 7000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "eating",
-                "valuePath": "",
+                "valuePath": "../png/spring/mouth/eating.png",
                 "valueStore": 260,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "sad",
-                "valuePath": "",
+                "valuePath": "../png/spring/mouth/sad.png",
                 "valueStore": 450,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "tongue",
-                "valuePath": "",
+                "valuePath": "../png/spring/mouth/tongue.png",
                 "valueStore": 870,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "twinkle",
-                "valuePath": "",
+                "valuePath": "../png/spring/mouth/twinkle.png",
                 "valueStore": 1420,
                 "bind": [
                     {
@@ -266,14 +266,14 @@
         "classValues": [
             {
                 "valueName": "hairbun",
-                "valuePath": "",
+                "valuePath": "../png/spring/hair/hairbun.png",
                 "valueStore": 3000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "shorthaircurly",
-                "valuePath": "",
+                "valuePath": "../png/spring/hair/shorthaircurly.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": [
@@ -285,21 +285,21 @@
             },
             {
                 "valueName": "shorthairflat",
-                "valuePath": "",
+                "valuePath": "../png/spring/hair/shorthairflat.png",
                 "valueStore": 1000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "shorthairfrizzle",
-                "valuePath": "",
+                "valuePath": "../png/spring/hair/shorthairfrizzle.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "shorthairwaved",
-                "valuePath": "",
+                "valuePath": "../png/spring/hair/shorthairwaved.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
@@ -312,21 +312,21 @@
         "classValues": [
             {
                 "valueName": "blazer",
-                "valuePath": "",
+                "valuePath": "../png/spring/clothe/blazer.png",
                 "valueStore": 3400,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "hoodie",
-                "valuePath": "",
+                "valuePath": "../png/spring/clothe/hoodie.png",
                 "valueStore": 2400,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "overall",
-                "valuePath": "",
+                "valuePath": "../png/spring/clothe/overall.png",
                 "valueStore": 1000,
                 "bind": [],
                 "exclude": [
@@ -338,14 +338,14 @@
             },
             {
                 "valueName": "sweater",
-                "valuePath": "",
+                "valuePath": "../png/spring/clothe/sweater.png",
                 "valueStore": 670,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "vneck",
-                "valuePath": "",
+                "valuePath": "../png/spring/clothe/vneck.png",
                 "valueStore": 2530,
                 "bind": [],
                 "exclude": []
@@ -358,35 +358,35 @@
         "classValues": [
             {
                 "valueName": "fancy",
-                "valuePath": "",
+                "valuePath": "../png/spring/eyeglass/fancy.png",
                 "valueStore": 30,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "harry",
-                "valuePath": "",
+                "valuePath": "../png/spring/eyeglass/harry.png",
                 "valueStore": 3970,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "nerd",
-                "valuePath": "",
+                "valuePath": "../png/spring/eyeglass/nerd.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "old",
-                "valuePath": "",
+                "valuePath": "../png/spring/eyeglass/old.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "rambo",
-                "valuePath": "",
+                "valuePath": "../png/spring/eyeglass/rambo.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
@@ -399,70 +399,70 @@
         "classValues": [
             {
                 "valueName": "longhair",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhair.png",
                 "valueStore": 1000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "longhairbob",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhairbob.png",
                 "valueStore": 1500,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "longhaircurly",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhaircurly.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "longhaircurvy",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhaircurvy.png",
                 "valueStore": 500,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "longhairdread",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhairdread.png",
                 "valueStore": 1000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "longhairstraight",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhairstraight.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "longhairstraight2",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/longhairstraight2.png",
                 "valueStore": 800,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "miawallace",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/miawallace.png",
                 "valueStore": 300,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "nottoolong",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/nottoolong.png",
                 "valueStore": 600,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "shorthairshaggy",
-                "valuePath": "",
+                "valuePath": "../png/spring/hairBack/shorthairshaggy.png",
                 "valueStore": 300,
                 "bind": [],
                 "exclude": []
@@ -475,7 +475,7 @@
         "classValues": [
             {
                 "valueName": "fancy",
-                "valuePath": "",
+                "valuePath": "../png/spring/facialHair/fancy.png",
                 "valueStore": 3950,
                 "bind": [
                     {
@@ -487,7 +487,7 @@
             },
             {
                 "valueName": "light",
-                "valuePath": "",
+                "valuePath": "../png/spring/facialHair/light.png",
                 "valueStore": 2500,
                 "bind": [],
                 "exclude": [
@@ -499,7 +499,7 @@
             },
             {
                 "valueName": "magestic",
-                "valuePath": "",
+                "valuePath": "../png/spring/facialHair/magestic.png",
                 "valueStore": 50,
                 "bind": [],
                 "exclude": [
@@ -511,7 +511,7 @@
             },
             {
                 "valueName": "magnum",
-                "valuePath": "",
+                "valuePath": "../png/spring/facialHair/magnum.png",
                 "valueStore": 3500,
                 "bind": [],
                 "exclude": []
@@ -524,28 +524,28 @@
         "classValues": [
             {
                 "valueName": "earphones",
-                "valuePath": "",
+                "valuePath": "../png/spring/accessory/earphones.png",
                 "valueStore": 4000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "earring1",
-                "valuePath": "",
+                "valuePath": "../png/spring/accessory/earring1.png",
                 "valueStore": 2000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "earring2",
-                "valuePath": "",
+                "valuePath": "../png/spring/accessory/earring2.png",
                 "valueStore": 1500,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "earring3",
-                "valuePath": "",
+                "valuePath": "../png/spring/accessory/earring3.png",
                 "valueStore": 2500,
                 "bind": [],
                 "exclude": []
@@ -558,49 +558,49 @@
         "classValues": [
             {
                 "valueName": "airbender",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/airbender.png",
                 "valueStore": 800,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "front",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/front.png",
                 "valueStore": 700,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "harry",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/harry.png",
                 "valueStore": 1200,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "krilin",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/krilin.png",
                 "valueStore": 600,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "throat",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/throat.png",
                 "valueStore": 4500,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "tribal",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/tribal.png",
                 "valueStore": 500,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "tribal2",
-                "valuePath": "",
+                "valuePath": "../png/spring/tattoo/tribal2.png",
                 "valueStore": 1700,
                 "bind": [],
                 "exclude": []
