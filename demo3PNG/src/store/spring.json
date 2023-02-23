@@ -1,77 +1,521 @@
 [
     {
-        "className": "skin",
-        "classValues": [
-            {
-                "valueName": "black",
-                "valuePath": "",
-                "valueStore": "2000",
-                "bind": [
-                    {
-                        "className": "eye",
-                        "classValue": "side"
-                    },
-                    {
-                        "className": "hair",
-                        "classValue": "hairbun"
-                    }
-                ],
-                "exclude": [
-                    {
-                        "className": "clothe",
-                        "classValue": "hoodie"
-                    },
-                    {
-                        "className": "clothe",
-                        "classValue": "overall"
-                    }
-                ]
-            },
-            {
-                "valueName": "white",
-                "valuePath": "",
-                "valueStore": "500",
-                "bind": [
-                    {
-                        "className": "eyeglass",
-                        "classValue": "side"
-                    }
-                ],
-                "exclude": []
-            }
-        ]
-    },
-    {
+        "layerValue": 0,
         "className": "background",
         "classValues": [
             {
                 "valueName": "d1d0fc",
                 "valuePath": "",
-                "valueStore": "1000",
-                "bind": [
-                    {
-                        "className": "mouth",
-                        "classValue": "eating"
-                    }
-                ],
-                "exclude": [
-                    {
-                        "className": "mouth",
-                        "classValue": "tongue"
-                    }
-                ]
+                "valueStore": 1000,
+                "bind": [],
+                "exclude": []
             },
             {
                 "valueName": "d5effd",
                 "valuePath": "",
-                "valueStore": "100",
+                "valueStore": 100,
                 "bind": [],
-                "exclude": [
-                    {
-                        "className": "mouth",
-                        "classValue": "eating"
-                    }
-                ]
+                "exclude": []
+            },
+            {
+                "valueName": "e5fde2",
+                "valuePath": "",
+                "valueStore": 20,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "eeeeee",
+                "valuePath": "",
+                "valueStore": 20,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "f5f6eb",
+                "valuePath": "",
+                "valueStore": 20,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 1,
+        "className": "skin",
+        "classValues": [
+            {
+                "valueName": "black",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "default",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "white",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 2,
+        "className": "eyebrow",
+        "classValues": [
+           {
+            "valueName": "angry",
+            "valuePath": "",
+            "valueStore": 200,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "raised",
+            "valuePath": "",
+            "valueStore": 200,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "sad",
+            "valuePath": "",
+            "valueStore": 200,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "unibrow",
+            "valuePath": "",
+            "valueStore": 200,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "updown",
+            "valuePath": "",
+            "valueStore": 200,
+            "bind": [],
+            "exclude": []
+           }
+        ]
+    },
+    {
+        "layerValue": 3,
+        "className": "eye",
+        "classValues": [
+            {
+                "valueName": "cry",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "default",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "hearts",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "side",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "surprised",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "wink",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 4,
+        "className": "mouth",
+        "classValues": [
+            {
+                "valueName": "default",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "eating",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "sad",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "tongue",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "twinkle",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 5,
+        "className": "hair",
+        "classValues": [
+            {
+                "valueName": "hairbun",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthaircurly",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairflat",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairfrizzle",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairwaved",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 6,
+        "className": "clothe",
+        "classValues": [
+            {
+                "valueName": "blazer",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "hoodie",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "overall",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "sweater",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "vneck",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 7,
+        "className": "eyeglass",
+        "classValues": [
+            {
+                "valueName": "fancy",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "harry",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "nerd",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "old",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "rambo",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 8,
+        "className": "hairBack",
+        "classValues": [
+            {
+                "valueName": "longhair",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairbob",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhaircurly",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhaircurvy",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairdread",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairstraight",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairstraight2",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "miawallace",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "nottoolong",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairshaggy",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 9,
+        "className": "facialHair",
+        "classValues": [
+            {
+                "valueName": "fancy",
+                "valuePath": "",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "light",
+                "valuePath": "",
+                "valueStore": 500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "magestic",
+                "valuePath": "",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "magnum",
+                "valuePath": "",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 10,
+        "className": "accessory",
+        "classValues": [
+            {
+                "valueName": "earphones",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "earring1",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "earring2",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "earring3",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 11,
+        "className": "tattoo",
+        "classValues": [
+            {
+                "valueName": "airbender",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "front",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "harry",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "krilin",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "throat",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "tribal",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "tribal2",
+                "valuePath": "",
+                "valueStore": 0,
+                "bind": [],
+                "exclude": []
             }
         ]
     }
