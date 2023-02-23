@@ -93,14 +93,14 @@
             {
                 "valueName": "default",
                 "valuePath": "../png/spring/skin/default.png",
-                "valueStore": 1000,
+                "valueStore": 3000,
                 "bind": [],
                 "exclude": []
             },
             {
                 "valueName": "white",
                 "valuePath": "../png/spring/skin/white.png",
-                "valueStore": 5000,
+                "valueStore": 3000,
                 "bind": [
                     {
                         "className": "background",
@@ -182,7 +182,7 @@
             {
                 "valueName": "hearts",
                 "valuePath": "../png/spring/eye/hearts.png",
-                "valueStore": 1200,
+                "valueStore": 3000,
                 "bind": [
                     {
                         "className": "skin",
@@ -194,7 +194,7 @@
             {
                 "valueName": "side",
                 "valuePath": "../png/spring/eye/side.png",
-                "valueStore": 4300,
+                "valueStore": 2500,
                 "bind": [],
                 "exclude": []
             },
@@ -221,7 +221,7 @@
             {
                 "valueName": "default",
                 "valuePath": "../png/spring/mouth/default.png",
-                "valueStore": 7000,
+                "valueStore": 4420,
                 "bind": [],
                 "exclude": []
             },
@@ -249,7 +249,7 @@
             {
                 "valueName": "twinkle",
                 "valuePath": "../png/spring/mouth/twinkle.png",
-                "valueStore": 1420,
+                "valueStore": 4000,
                 "bind": [
                     {
                         "className": "skin",
@@ -476,7 +476,7 @@
             {
                 "valueName": "fancy",
                 "valuePath": "../png/spring/facialHair/fancy.png",
-                "valueStore": 3950,
+                "valueStore": 1000,
                 "bind": [
                     {
                         "className": "background",
@@ -488,7 +488,7 @@
             {
                 "valueName": "light",
                 "valuePath": "../png/spring/facialHair/light.png",
-                "valueStore": 2500,
+                "valueStore": 5450,
                 "bind": [],
                 "exclude": [
                     {
