@@ -156,7 +156,6 @@ export const newSuppliedAttributes = (total: number) => {
             break;
           }
         }
-        // console.log({relation})
         return {
           ...total,
           [currentItem]: currentStyleClassValue,

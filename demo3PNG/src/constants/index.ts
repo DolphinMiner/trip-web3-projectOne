@@ -1,1 +1,1 @@
-export const DEFAULT_TOTAL = 1;
+export const DEFAULT_TOTAL = 100;
