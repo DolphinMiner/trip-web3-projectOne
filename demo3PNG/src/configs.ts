@@ -1,6 +1,6 @@
-import pngSource from "./png";
+import pngSource from "./png/spring";
 
-export { default as pngSource } from "./png";
+export { default as pngSource } from "./png/spring";
 
 export const layers = [
   "background",

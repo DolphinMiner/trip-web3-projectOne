@@ -1,0 +1,610 @@
+[
+    {
+        "layerValue": 0,
+        "className": "background",
+        "classValues": [
+            {
+                "valueName": "d1d0fc",
+                "valuePath": "../png/spring/background/d1d0fc.png",
+                "valueStore": 3000,
+                "bind": [
+                    {
+                        "className": "skin",
+                        "classValue": "white"
+                    }
+                ],
+                "exclude": [
+                    {
+                        "className": "facialHair",
+                        "classValue": "magestic"
+                    }
+                ]
+            },
+            {
+                "valueName": "d5effd",
+                "valuePath": "../png/spring/background/d5effd.png",
+                "valueStore": 1000,
+                "bind": [
+                    {
+                        "className": "facialHair",
+                        "classValue": "fancy"
+                    }
+                ],
+                "exclude": [
+                    {
+                        "className": "facialHair",
+                        "classValue": "light"
+                    }
+                ]
+            },
+            {
+                "valueName": "e5fde2",
+                "valuePath": "../png/spring/background/e5fde2.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "eeeeee",
+                "valuePath": "../png/spring/background/eeeeee.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": [
+                    {
+                        "className": "skin",
+                        "classValue": "white"
+                    }
+                ]
+            },
+            {
+                "valueName": "f5f6eb",
+                "valuePath": "../png/spring/background/f5f6eb.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 1,
+        "className": "skin",
+        "classValues": [
+            {
+                "valueName": "black",
+                "valuePath": "../png/spring/skin/black.png",
+                "valueStore": 4000,
+                "bind": [
+                    {
+                        "className": "mouth",
+                        "classValue": "twinkle"
+                    }
+                ],
+                "exclude": [
+                    {
+                        "className": "hair",
+                        "classValue": "shorthaircurly"
+                    },
+                    {
+                        "className": "clothe",
+                        "classValue": "overall"
+                    }
+                ]
+            },
+            {
+                "valueName": "default",
+                "valuePath": "../png/spring/skin/default.png",
+                "valueStore": 3000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "white",
+                "valuePath": "../png/spring/skin/white.png",
+                "valueStore": 3000,
+                "bind": [
+                    {
+                        "className": "background",
+                        "classValue": "d1d0fc"
+                    },
+                    {
+                        "className": "eye",
+                        "classValue": "hearts"
+                    }
+                ],
+                "exclude": [
+                    {
+                        "className": "background",
+                        "classValue": "eeeeee"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "layerValue": 2,
+        "className": "eyebrow",
+        "classValues": [
+           {
+            "valueName": "angry",
+            "valuePath": "../png/spring/eyebrow/angry.png",
+            "valueStore": 2000,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "raised",
+            "valuePath": "../png/spring/eyebrow/raised.png",
+            "valueStore": 200,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "sad",
+            "valuePath": "../png/spring/eyebrow/sad.png",
+            "valueStore": 4000,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "unibrow",
+            "valuePath": "../png/spring/eyebrow/unibrow.png",
+            "valueStore": 2200,
+            "bind": [],
+            "exclude": []
+           },
+           {
+            "valueName": "updown",
+            "valuePath": "../png/spring/eyebrow/updown.png",
+            "valueStore": 1300,
+            "bind": [],
+            "exclude": []
+           }
+        ]
+    },
+    {
+        "layerValue": 3,
+        "className": "eye",
+        "classValues": [
+            {
+                "valueName": "cry",
+                "valuePath": "../png/spring/eye/cry.png",
+                "valueStore": 800,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "default",
+                "valuePath": "../png/spring/eye/default.png",
+                "valueStore": 300,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "hearts",
+                "valuePath": "../png/spring/eye/hearts.png",
+                "valueStore": 3000,
+                "bind": [
+                    {
+                        "className": "skin",
+                        "classValue": "white"
+                    }
+                ],
+                "exclude": []
+            },
+            {
+                "valueName": "side",
+                "valuePath": "../png/spring/eye/side.png",
+                "valueStore": 2500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "surprised",
+                "valuePath": "../png/spring/eye/surprised.png",
+                "valueStore": 2300,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "wink",
+                "valuePath": "../png/spring/eye/wink.png",
+                "valueStore": 1100,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 4,
+        "className": "mouth",
+        "classValues": [
+            {
+                "valueName": "default",
+                "valuePath": "../png/spring/mouth/default.png",
+                "valueStore": 4420,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "eating",
+                "valuePath": "../png/spring/mouth/eating.png",
+                "valueStore": 260,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "sad",
+                "valuePath": "../png/spring/mouth/sad.png",
+                "valueStore": 450,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "tongue",
+                "valuePath": "../png/spring/mouth/tongue.png",
+                "valueStore": 870,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "twinkle",
+                "valuePath": "../png/spring/mouth/twinkle.png",
+                "valueStore": 4000,
+                "bind": [
+                    {
+                        "className": "skin",
+                        "classValue": "black"
+                    }
+                ],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 5,
+        "className": "hair",
+        "classValues": [
+            {
+                "valueName": "hairbun",
+                "valuePath": "../png/spring/hair/hairbun.png",
+                "valueStore": 3000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthaircurly",
+                "valuePath": "../png/spring/hair/shorthaircurly.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": [
+                    {
+                        "className": "skin",
+                        "classValue": "black"
+                    }
+                ]
+            },
+            {
+                "valueName": "shorthairflat",
+                "valuePath": "../png/spring/hair/shorthairflat.png",
+                "valueStore": 1000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairfrizzle",
+                "valuePath": "../png/spring/hair/shorthairfrizzle.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairwaved",
+                "valuePath": "../png/spring/hair/shorthairwaved.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 6,
+        "className": "clothe",
+        "classValues": [
+            {
+                "valueName": "blazer",
+                "valuePath": "../png/spring/clothe/blazer.png",
+                "valueStore": 3400,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "hoodie",
+                "valuePath": "../png/spring/clothe/hoodie.png",
+                "valueStore": 2400,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "overall",
+                "valuePath": "../png/spring/clothe/overall.png",
+                "valueStore": 1000,
+                "bind": [],
+                "exclude": [
+                    {
+                        "className": "skin",
+                        "classValue": "black"
+                    }
+                ]
+            },
+            {
+                "valueName": "sweater",
+                "valuePath": "../png/spring/clothe/sweater.png",
+                "valueStore": 670,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "vneck",
+                "valuePath": "../png/spring/clothe/vneck.png",
+                "valueStore": 2530,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 7,
+        "className": "eyeglass",
+        "classValues": [
+            {
+                "valueName": "fancy",
+                "valuePath": "../png/spring/eyeglass/fancy.png",
+                "valueStore": 30,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "harry",
+                "valuePath": "../png/spring/eyeglass/harry.png",
+                "valueStore": 3970,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "nerd",
+                "valuePath": "../png/spring/eyeglass/nerd.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "old",
+                "valuePath": "../png/spring/eyeglass/old.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "rambo",
+                "valuePath": "../png/spring/eyeglass/rambo.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 8,
+        "className": "hairBack",
+        "classValues": [
+            {
+                "valueName": "longhair",
+                "valuePath": "../png/spring/hairBack/longhair.png",
+                "valueStore": 1000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairbob",
+                "valuePath": "../png/spring/hairBack/longhairbob.png",
+                "valueStore": 1500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhaircurly",
+                "valuePath": "../png/spring/hairBack/longhaircurly.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhaircurvy",
+                "valuePath": "../png/spring/hairBack/longhaircurvy.png",
+                "valueStore": 500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairdread",
+                "valuePath": "../png/spring/hairBack/longhairdread.png",
+                "valueStore": 1000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairstraight",
+                "valuePath": "../png/spring/hairBack/longhairstraight.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "longhairstraight2",
+                "valuePath": "../png/spring/hairBack/longhairstraight2.png",
+                "valueStore": 800,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "miawallace",
+                "valuePath": "../png/spring/hairBack/miawallace.png",
+                "valueStore": 300,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "nottoolong",
+                "valuePath": "../png/spring/hairBack/nottoolong.png",
+                "valueStore": 600,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "shorthairshaggy",
+                "valuePath": "../png/spring/hairBack/shorthairshaggy.png",
+                "valueStore": 300,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 9,
+        "className": "facialHair",
+        "classValues": [
+            {
+                "valueName": "fancy",
+                "valuePath": "../png/spring/facialHair/fancy.png",
+                "valueStore": 1000,
+                "bind": [
+                    {
+                        "className": "background",
+                        "classValue": "d5effd"
+                    }
+                ],
+                "exclude": []
+            },
+            {
+                "valueName": "light",
+                "valuePath": "../png/spring/facialHair/light.png",
+                "valueStore": 5450,
+                "bind": [],
+                "exclude": [
+                    {
+                        "className": "background",
+                        "classValue": "d5effd"
+                    }
+                ]
+            },
+            {
+                "valueName": "magestic",
+                "valuePath": "../png/spring/facialHair/magestic.png",
+                "valueStore": 50,
+                "bind": [],
+                "exclude": [
+                    {
+                        "className": "background",
+                        "classValue": "d1d0fc"
+                    }
+                ]
+            },
+            {
+                "valueName": "magnum",
+                "valuePath": "../png/spring/facialHair/magnum.png",
+                "valueStore": 3500,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 10,
+        "className": "accessory",
+        "classValues": [
+            {
+                "valueName": "earphones",
+                "valuePath": "../png/spring/accessory/earphones.png",
+                "valueStore": 4000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "earring1",
+                "valuePath": "../png/spring/accessory/earring1.png",
+                "valueStore": 2000,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "earring2",
+                "valuePath": "../png/spring/accessory/earring2.png",
+                "valueStore": 1500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "earring3",
+                "valuePath": "../png/spring/accessory/earring3.png",
+                "valueStore": 2500,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    },
+    {
+        "layerValue": 11,
+        "className": "tattoo",
+        "classValues": [
+            {
+                "valueName": "airbender",
+                "valuePath": "../png/spring/tattoo/airbender.png",
+                "valueStore": 800,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "front",
+                "valuePath": "../png/spring/tattoo/front.png",
+                "valueStore": 700,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "harry",
+                "valuePath": "../png/spring/tattoo/harry.png",
+                "valueStore": 1200,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "krilin",
+                "valuePath": "../png/spring/tattoo/krilin.png",
+                "valueStore": 600,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "throat",
+                "valuePath": "../png/spring/tattoo/throat.png",
+                "valueStore": 4500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "tribal",
+                "valuePath": "../png/spring/tattoo/tribal.png",
+                "valueStore": 500,
+                "bind": [],
+                "exclude": []
+            },
+            {
+                "valueName": "tribal2",
+                "valuePath": "../png/spring/tattoo/tribal2.png",
+                "valueStore": 1700,
+                "bind": [],
+                "exclude": []
+            }
+        ]
+    }
+]
