@@ -28,7 +28,7 @@ import CryptoJS from "crypto-js";
 
 const PAGE_SIZE = 120;
 
-const createDNA = (entity: Attributes): string => {
+export const createDNA = (entity: Attributes): string => {
   const hash = CryptoJS.SHA1(JSON.stringify(entity));
   const dna = hash.toString(CryptoJS.enc.Hex);
   return dna;

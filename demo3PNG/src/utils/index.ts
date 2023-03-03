@@ -1,9 +1,11 @@
 import { saveAs } from "file-saver";
 import { toBlob } from "html-to-image";
 import JSZip from "jszip";
+import { createDNA } from "../components/ShufflePanel";
 import configs from "../configs";
 import { Attributes } from "../types";
 import mergeImages from "./mergeImages";
+import store from "../store/spring.json";
 
 export const shuffle = () => {
   return Object.keys(configs.attributes).reduce((accAttrs, attrName) => {
@@ -94,6 +96,90 @@ export const batchShuffleWithSupply = (
     }, {} as Record<string, string>);
   });
   return entities;
+};
+
+export const newSuppliedAttributes = (total: number) => {
+  const result = [];
+  const dnaStore: string | string[] = [];
+  // 每一项的关系
+  const relation = new Array(total).fill(null).map(() => {
+    const item = {
+      bind: [],
+      exclude: [],
+    } as any;
+    return item;
+  });
+  // 收集所有属性
+  const attribute = store.map((storeItem) => {
+    return storeItem.className;
+  });
+  for (let index = 0; index < total; index++) {
+    const valueStorePool: any[] = [];
+    const resultItem = attribute.reduce(
+      (total, currentItem, arrributeIndex) => {
+        const currentStyle = store[arrributeIndex].classValues;
+        // 排除库存为0的属性
+        const optionalValueName = currentStyle
+          .map((item) => {
+            return item.valueStore > 0 ? item.valueName : null;
+          })
+          .filter((n) => n);
+        const relationItem = relation[index];
+        const currentBind = relationItem.bind;
+        const currentExclude = relationItem.exclude;
+        let currentStyleClassValue;
+        // 强绑定 bind 库中的元素
+        for (let i = 0; i < currentBind.length; i++) {
+          if (currentBind[i].className === currentItem) {
+            currentStyleClassValue = currentBind[i].classValue;
+            break;
+          }
+        }
+        if (!currentStyleClassValue) {
+          // 删除 exclude 库中互斥的元素
+          for (let i = 0; i < currentExclude.length; i++) {
+            currentExclude[i].className === currentExclude &&
+              optionalValueName.splice(
+                optionalValueName.indexOf(currentExclude[i].classValue),1);
+            break;
+          }
+          // 如果不存在强绑定的元素则进行随机匹配一个元素值
+          currentStyleClassValue = random(optionalValueName);
+        }
+        // 将当前元素的 bind 库和 exclude 库添加上去
+        for (let i = 0; i < currentStyle.length; i++) {
+          if (currentStyle[i].valueName === currentStyleClassValue) {
+            relationItem.exclude.push(...currentStyle[i].exclude);
+            relationItem.bind.push(...currentStyle[i].bind);
+            // 这一项存入StorePool中，后面验证dna通过再删库存
+            valueStorePool.push(currentStyle[i]);
+            break;
+          }
+        }
+        return {
+          ...total,
+          [currentItem]: currentStyleClassValue,
+        };
+      },
+      {}
+    );
+    // 对每一项生产dna
+    const dna = createDNA(resultItem);
+    if(dnaStore.includes(dna)) {
+      // 由于重复，该项的强绑互斥关系置空
+      relation[index].bind = [];
+      relation[index].exclude = [];
+      index--;
+    } else {
+      dnaStore.push(dna);
+      result.push(resultItem);
+      // 删库存
+      valueStorePool.forEach((currentStyle) => {
+        currentStyle.valueStore--;
+      });
+    }
+  }
+  return result;
 };
 
 export const convertTo = (
