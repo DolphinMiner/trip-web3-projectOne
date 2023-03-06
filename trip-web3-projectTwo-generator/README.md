@@ -18,7 +18,7 @@
 ## 说明
 
 1. 上传Zip包需要以图层Layer的名字命名,如图层为'Background',则上传文件名为'Background.zip'
-2. 上传Zip包内部只包含样式图片,不要有内嵌文件夹层级存在
+2. 上传Zip包内部只包含样式图片,不要有内嵌文件夹层级存在.打包资源可通过`zip -r Background.zip ./*.png`实现
 3. 请仔细编辑详细样式库存及约束关系,这将直接决定图片生成是否成功
 
 ## Getting Started

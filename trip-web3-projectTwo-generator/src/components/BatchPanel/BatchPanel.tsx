@@ -230,10 +230,43 @@ export default function BatchPanel({
                 }}
               />
             </div>
-            <div className={classNames([styles.button, styles.lock])}>
+            <div className={classNames([styles.button, styles.singleLock])}>
               <input
                 type="button"
-                value="Lock"
+                value="Single Lock"
+                disabled={!draftEntity || !isValidEntity(draftEntity)}
+                className={classNames({
+                  [styles.disabled]: !draftEntity || !isValidEntity(draftEntity),
+                })}
+                onClick={() => {
+                  // 校验当前是否存在选中entity
+                  if (!draftEntity) {
+                    alert('Please select one entity first!')
+                    return;
+                  }
+                  // 校验单个entity是否valid
+                  if (!isValidEntity(draftEntity)) {
+                    alert('The selected entity is invalid, please complete the style selection!')
+                    return;
+                  }
+                  // 校验当前entity是否和lockedEntities中DNA存在重合
+                  const curDNA = createDNA(draftEntity);
+                  const curIndex = lockedEntityDNAs.indexOf(curDNA);
+                  if (curIndex !== -1) {
+                    alert(`The selected entity is duplicate to No.${curIndex} lockedEntity!`)
+                    return;
+                  }
+
+                  onBatchLock([{...draftEntity}]);
+                  setDraftEntities(draftEntities.filter((entity) => entity !== draftEntity));
+                  setSelectedIndex(-1);
+                }}
+              />
+            </div>
+            <div className={classNames([styles.button, styles.batchLock])}>
+              <input
+                type="button"
+                value="Batch Lock"
                 disabled={draftEntities.length === 0}
                 className={classNames({
                   [styles.disabled]: draftEntities.length === 0,
@@ -279,9 +312,13 @@ export default function BatchPanel({
                           invalidIndexes: [dnaCollection[curDNA], index],
                         };
                       }
+                      dnaCollection[curDNA] = index;
                       return acc;
                     },
-                    { isValid: true, invalidIndexes: [] } as {
+                    {
+                      isValid: true,
+                      invalidIndexes: [],
+                    } as {
                       isValid: boolean;
                       invalidIndexes: number[];
                     }
@@ -353,7 +390,7 @@ export default function BatchPanel({
               {draftEntities.map((entity, index) => {
                 return (
                   <div
-                    key={createDNA(entity)}
+                    key={createDNA(entity) + index}
                     className={classNames([
                       styles.previewContainer,
                       { [styles.selected]: selectedIndex === index },
@@ -362,7 +399,7 @@ export default function BatchPanel({
                       if (index !== selectedIndex) {
                         setSelectedIndex(index);
                       } else {
-                        setSelectedIndex(-1)
+                        setSelectedIndex(-1);
                       }
                     }}
                   >

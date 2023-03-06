@@ -115,7 +115,11 @@
   width: 100px;
   margin-right: 10px;
 }
-.toolbar .button.lock {
+.toolbar .button.singleLock {
+  width: 100px;
+  margin-right: 10px;
+}
+.toolbar .button.batchLock {
   width: 100px;
   margin-right: auto;
 }
