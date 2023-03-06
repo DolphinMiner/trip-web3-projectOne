@@ -119,6 +119,35 @@ export default function BatchPanel({
     [dynamicInventory]
   );
 
+  useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        retryBatchShuffle(
+          {
+            layers,
+            restrictions,
+            inventory: dynamicInventory,
+            existedDNAs: lockedEntityDNAs,
+          },
+          { isFirst: true, timeout: 10000, total: shuffleTotal }
+        )
+          .then((nextDraftEntities) => {
+            setDraftEntities(nextDraftEntities);
+            setSelectedIndex(-1);
+          })
+          .catch((e) => {
+            console.log("retryBatchShuffle.e", e);
+            alert(
+              `Failed to shuffle! Please check the supply and restrictions!`
+            );
+          })
+          .then(() => {
+            setIsLoading(false);
+          });
+      }, 0);
+    }
+  }, [isLoading]);
+
   return (
     <>
       <div className={styles.container}>
@@ -224,28 +253,6 @@ export default function BatchPanel({
                 })}
                 onClick={() => {
                   setIsLoading(true);
-                  retryBatchShuffle(
-                    {
-                      layers,
-                      restrictions,
-                      inventory: dynamicInventory,
-                      existedDNAs: lockedEntityDNAs,
-                    },
-                    { isFirst: true, timeout: 10000, total: shuffleTotal }
-                  )
-                    .then((nextDraftEntities) => {
-                      setDraftEntities(nextDraftEntities);
-                      setSelectedIndex(-1);
-                    })
-                    .catch((e) => {
-                      console.log("retryBatchShuffle.e", e);
-                      alert(
-                        `Failed to shuffle! Please check the supply and restrictions!`
-                      );
-                    })
-                    .then(() => {
-                      setIsLoading(false);
-                    });
                 }}
               />
             </div>
@@ -412,6 +419,7 @@ export default function BatchPanel({
           <div className={styles.content}>
             <div className={styles.innerContainer}>
               {isLoading ? <div>Loading...</div> : null}
+
               {!isLoading && draftEntities.length === 0 ? (
                 <div>Try to click Shuffle button!</div>
               ) : null}
