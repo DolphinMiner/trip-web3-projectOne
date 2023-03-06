@@ -6,6 +6,15 @@
 + 有暂存区,用于支持保存用户手动拼接的结果
 + 需要持久化存储
 
+## TODO
+
++ [ ] 导出元数据
++ [ ] BatchPanel.draftEntities锁定时校验dna是否重合存在
++ [ ] BatchPanel手动设置一批数量，目前写死10个一批
++ [ ] Shuffle设置loading
++ [ ] 单独/批量锁定，目前只有全部批量锁定
++ [ ] 导入/导出配置，用于分享
+
 ## 说明
 
 1. 上传Zip包需要以图层Layer的名字命名,如图层为'Background',则上传文件名为'Background.zip'
