@@ -54,6 +54,7 @@ export default function BatchPanel({
 }: BatchPanelProps) {
   // for Shuffle
   const [isLoading, setIsLoading] = useState(false);
+  const [shuffleTotal, setShuffleTotal] = useState(10);
 
   // for LockedDrawer
   const [isOpen, setIsOpen] = useState(false);
@@ -202,6 +203,17 @@ export default function BatchPanel({
         </div>
         <div className={styles.right}>
           <div className={styles.toolbar}>
+            <StyleSelector
+              className={classNames([styles.selector, styles.shuffleTotal])}
+              value={shuffleTotal}
+              onChange={(v) => {
+                setShuffleTotal(parseInt(v));
+              }}
+              options={["10", "20", "50", "100"].map((v) => ({
+                text: v,
+                value: v,
+              }))}
+            />
             <div className={classNames([styles.button, styles.shuffle])}>
               <input
                 type="button"
@@ -219,7 +231,7 @@ export default function BatchPanel({
                       inventory: dynamicInventory,
                       existedDNAs: lockedEntityDNAs,
                     },
-                    { isFirst: true, timeout: 10000, total: 10 }
+                    { isFirst: true, timeout: 10000, total: shuffleTotal }
                   )
                     .then((nextDraftEntities) => {
                       setDraftEntities(nextDraftEntities);
