@@ -11,7 +11,7 @@
 + [ ] 导出元数据
 + [x] BatchPanel.draftEntities锁定时校验dna是否重合存在
 + [ ] BatchPanel手动设置一批数量，目前写死10个一批
-+ [ ] Shuffle设置loading
++ [x] Shuffle设置loading
 + [ ] 单独/批量锁定，目前只有全部批量锁定
 + [ ] 导入/导出配置，用于分享
 

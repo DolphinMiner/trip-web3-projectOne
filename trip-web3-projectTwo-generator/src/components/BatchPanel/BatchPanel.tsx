@@ -52,6 +52,9 @@ export default function BatchPanel({
   onBatchLock,
   onLockRelease,
 }: BatchPanelProps) {
+  // for Shuffle
+  const [isLoading, setIsLoading] = useState(false);
+
   // for LockedDrawer
   const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = () => {
@@ -203,11 +206,12 @@ export default function BatchPanel({
               <input
                 type="button"
                 value="Shuffle"
-                disabled={remainedSupply === 0}
+                disabled={remainedSupply === 0 || isLoading}
                 className={classNames({
-                  [styles.disabled]: remainedSupply === 0,
+                  [styles.disabled]: remainedSupply === 0 || isLoading,
                 })}
                 onClick={() => {
+                  setIsLoading(true);
                   retryBatchShuffle(
                     {
                       layers,
@@ -226,6 +230,9 @@ export default function BatchPanel({
                       alert(
                         `Failed to shuffle! Please check the supply and restrictions!`
                       );
+                    })
+                    .then(() => {
+                      setIsLoading(false);
                     });
                 }}
               />
@@ -234,31 +241,40 @@ export default function BatchPanel({
               <input
                 type="button"
                 value="Single Lock"
-                disabled={!draftEntity || !isValidEntity(draftEntity)}
+                disabled={
+                  isLoading || !draftEntity || !isValidEntity(draftEntity)
+                }
                 className={classNames({
-                  [styles.disabled]: !draftEntity || !isValidEntity(draftEntity),
+                  [styles.disabled]:
+                    isLoading || !draftEntity || !isValidEntity(draftEntity),
                 })}
                 onClick={() => {
                   // 校验当前是否存在选中entity
                   if (!draftEntity) {
-                    alert('Please select one entity first!')
+                    alert("Please select one entity first!");
                     return;
                   }
                   // 校验单个entity是否valid
                   if (!isValidEntity(draftEntity)) {
-                    alert('The selected entity is invalid, please complete the style selection!')
+                    alert(
+                      "The selected entity is invalid, please complete the style selection!"
+                    );
                     return;
                   }
                   // 校验当前entity是否和lockedEntities中DNA存在重合
                   const curDNA = createDNA(draftEntity);
                   const curIndex = lockedEntityDNAs.indexOf(curDNA);
                   if (curIndex !== -1) {
-                    alert(`The selected entity is duplicate to No.${curIndex} lockedEntity!`)
+                    alert(
+                      `The selected entity is duplicate to No.${curIndex} lockedEntity!`
+                    );
                     return;
                   }
 
-                  onBatchLock([{...draftEntity}]);
-                  setDraftEntities(draftEntities.filter((entity) => entity !== draftEntity));
+                  onBatchLock([{ ...draftEntity }]);
+                  setDraftEntities(
+                    draftEntities.filter((entity) => entity !== draftEntity)
+                  );
                   setSelectedIndex(-1);
                 }}
               />
@@ -267,9 +283,9 @@ export default function BatchPanel({
               <input
                 type="button"
                 value="Batch Lock"
-                disabled={draftEntities.length === 0}
+                disabled={isLoading || draftEntities.length === 0}
                 className={classNames({
-                  [styles.disabled]: draftEntities.length === 0,
+                  [styles.disabled]: isLoading || draftEntities.length === 0,
                 })}
                 onClick={() => {
                   // check all entities are valid
@@ -383,35 +399,37 @@ export default function BatchPanel({
           </div>
           <div className={styles.content}>
             <div className={styles.innerContainer}>
-              {draftEntities.length === 0 ? (
+              {isLoading ? <div>Loading...</div> : null}
+              {!isLoading && draftEntities.length === 0 ? (
                 <div>Try to click Shuffle button!</div>
               ) : null}
 
-              {draftEntities.map((entity, index) => {
-                return (
-                  <div
-                    key={createDNA(entity) + index}
-                    className={classNames([
-                      styles.previewContainer,
-                      { [styles.selected]: selectedIndex === index },
-                    ])}
-                    onClick={() => {
-                      if (index !== selectedIndex) {
-                        setSelectedIndex(index);
-                      } else {
-                        setSelectedIndex(-1);
-                      }
-                    }}
-                  >
-                    <Avatar
-                      entity={entity}
-                      layers={layers}
-                      inventorySrc={inventorySrc}
-                      className={styles.avatar}
-                    />
-                  </div>
-                );
-              })}
+              {!isLoading &&
+                draftEntities.map((entity, index) => {
+                  return (
+                    <div
+                      key={createDNA(entity) + index}
+                      className={classNames([
+                        styles.previewContainer,
+                        { [styles.selected]: selectedIndex === index },
+                      ])}
+                      onClick={() => {
+                        if (index !== selectedIndex) {
+                          setSelectedIndex(index);
+                        } else {
+                          setSelectedIndex(-1);
+                        }
+                      }}
+                    >
+                      <Avatar
+                        entity={entity}
+                        layers={layers}
+                        inventorySrc={inventorySrc}
+                        className={styles.avatar}
+                      />
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

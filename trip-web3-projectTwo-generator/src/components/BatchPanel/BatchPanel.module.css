@@ -84,7 +84,6 @@
 }
 .right .content {
   flex: 1;
-  background-color: antiquewhite;
   max-height: calc(100vh - 60px - 20px - 10px - 30px);
   overflow: auto;
 }
