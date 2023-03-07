@@ -1,55 +1,64 @@
 import { Style } from "@/src/types";
 import classNames from "classnames";
+import { ChangeEvent, useEffect } from "react";
 import styles from "./Selector.module.css";
 
-export type SelectorProps<T extends string | number | undefined> = {
-  value: T;
-  onSelect: (value: T) => void;
+const presetOptionValue = "";
+
+type OptionValue = string | number;
+type Option<T extends OptionValue> = {
+  label: string;
+  value: OptionValue;
+  disabled?: boolean;
+};
+
+export type SelectorProps<T extends OptionValue> = {
+  value: T | undefined;
+  onChange: (value: T) => void;
   onClear?: () => void;
-  options: Array<{
-    text: string;
-    value: T;
-    disabled?: boolean;
-  }>;
+  options: Array<Option<T>>;
   className?: string;
   usePresetOption?: boolean;
 };
-function StyleSelector<T extends string | number | undefined>({
+
+function Selector<T extends OptionValue>({
   value,
-  onSelect,
+  onChange,
   onClear,
   options,
   className,
   usePresetOption = true,
 }: SelectorProps<T>) {
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.currentTarget;
+    const index = usePresetOption ? selectedIndex - 1 : selectedIndex;
+    onChange(options[index].value);
+  };
+
   return (
     <div className={classNames([styles.selector, className])}>
-      <select>
+      <select
+        value={value === undefined ? presetOptionValue : value}
+        onChange={handleChange}
+      >
         {usePresetOption ? (
-          <option disabled selected={value === undefined} value="">
+          <option disabled selected value={presetOptionValue}>
             -- select an option --
           </option>
         ) : null}
 
-        {options.map(({ text, value, disabled }) => (
-          <option
-            key={value}
-            disabled={!!disabled}
-            value={value}
-            onClick={() => {
-              onSelect(value);
-            }}
-          >
-            {text}
+        {options.map(({ label, value, disabled }, index) => (
+          <option key={value + "_" + index} disabled={!!disabled} value={value}>
+            {label}
           </option>
         ))}
       </select>
 
-      {value !== undefined && onClear ? (
+      {usePresetOption && value !== undefined ? (
         <div
           className={styles.clear}
           onClick={() => {
-            onClear();
+            onClear && onClear();
           }}
         >
           x
@@ -59,4 +68,4 @@ function StyleSelector<T extends string | number | undefined>({
   );
 }
 
-export default StyleSelector;
+export default Selector;
