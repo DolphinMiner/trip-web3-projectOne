@@ -186,7 +186,7 @@ export default function BatchPanel({
                 return (
                   <div key={layer} className={styles.item}>
                     <div className={styles.label}>{layer}</div>
-                    <Selector<string>
+                    <StyleSelector
                       value={draftEntity[layer]}
                       onChange={(v) => {
                         setDraftEntities(
@@ -207,7 +207,7 @@ export default function BatchPanel({
                             if (index === selectedIndex) {
                               return {
                                 ...draftEntity,
-                                [layer]: undefined,
+                                [layer]: ENTITY_EMPTY_VALUE,
                               };
                             }
                             return draftEntity;
@@ -215,7 +215,7 @@ export default function BatchPanel({
                         );
                       }}
                       options={allLayerStyles.map((layerStyle) => ({
-                        label: `${layerStyle} (${dynamicInventory[layer][layerStyle]})`,
+                        text: `${layerStyle} (${dynamicInventory[layer][layerStyle]})`,
                         value: layerStyle,
                         disabled: !validLayerStyles.includes(layerStyle),
                       }))}
