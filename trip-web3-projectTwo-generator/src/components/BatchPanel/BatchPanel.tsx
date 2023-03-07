@@ -13,7 +13,7 @@ import type {
 } from "../../types";
 import Avatar from "../Avatar";
 import LayerPreview from "../LayerPreview";
-import { ENTITY_ACTION } from "../../constants";
+import { ENTITY_EMPTY_VALUE, ENTITY_ACTION } from "../../constants";
 import createOptions from "../../utils/createOptions";
 import createDNA from "../../utils/createDNA";
 import styles from "./BatchPanel.module.css";
@@ -24,13 +24,7 @@ import batchShuffle from "@/src/utils/batchShuffle";
 import retryBatchShuffle from "@/src/utils/retryBatchShuffle";
 import getRemainedSupply from "@/src/utils/getRemainedSupply";
 import Selector from "../Selector";
-
-const isValidEntity = (entity: Entity): boolean => {
-  return Object.keys(entity).reduce((acc, curLayer) => {
-    if (!acc) return acc;
-    return entity[curLayer] !== "";
-  }, true);
-};
+import isValidEntity from "@/src/utils/isValidEntity";
 
 export type BatchPanelProps = {
   layers: Array<Layer>;
@@ -74,7 +68,7 @@ export default function BatchPanel({
     if (!draftEntity) return [];
 
     return Object.keys(draftEntity)
-      .filter((entityLayer) => draftEntity[entityLayer] !== "")
+      .filter((entityLayer) => draftEntity[entityLayer] !== ENTITY_EMPTY_VALUE)
       .reduce((acc, entityLayer) => {
         return [...acc, `${entityLayer}.${draftEntity[entityLayer]}`];
       }, [] as Array<LayerWithStyle>);
@@ -89,7 +83,7 @@ export default function BatchPanel({
     }
     return Object.keys(draftEntity).reduce(
       (acc, entityLayer) => {
-        const isValid = draftEntity[entityLayer] !== "";
+        const isValid = draftEntity[entityLayer] !== ENTITY_EMPTY_VALUE;
         return {
           ...acc,
           allValid: acc.allValid && isValid,

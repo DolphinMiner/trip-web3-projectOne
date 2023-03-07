@@ -14,36 +14,6 @@ export const ENTITY_ACTION = {
   TO_LOCKED,
 };
 
-// TODO: dynamic - 层级顺序关系,决定渲染
-export const layerOrder: Array<Layer> = ["A", "B", "C", "D"];
-// TODO: dynamic - 总库存量/期望结果数量
-export const totalSupply = 2;
-// TODO: dynamic - 库存详情
-export const inventory: Inventory = {
-  A: {
-    gold: 1,
-    x: 1,
-  },
-  B: {
-    gold: 1,
-    x: 1,
-  },
-  C: {
-    gold: 1,
-    x: 1,
-  },
-  D: {
-    gold: 1,
-    x: 1,
-  },
-};
-// TODO: dynamic - 限制条件关系集和
-export const restrictions: Array<Restriction> = [
-  ["A.gold", "B.gold", DEPENDENT],
-  ["A.gold", "C.gold", DEPENDENT],
-  ["B.gold", "D.gold", EXCLUSIVE],
-];
-
 // 初始化: 1. projectName; 2. totalSupply; 3. add layers and styles;
 export const INIT = "INIT";
 // 添加图层: 1. add layers and styles within totalSupply
@@ -75,3 +45,5 @@ export const LSK = {
   RESTRICTIONS: "RESTRICTIONS",
   LOCKED_ENTITIES: "LOCKED_ENTITIES",
 };
+
+export const ENTITY_EMPTY_VALUE = "";

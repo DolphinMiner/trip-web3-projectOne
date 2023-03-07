@@ -1,3 +1,4 @@
+import { ENTITY_EMPTY_VALUE } from "../constants";
 import { Entity, Layer } from "../types";
 
 const createEntity = (
@@ -7,7 +8,7 @@ const createEntity = (
   return layers.reduce((entity, layer) => {
     return {
       ...entity,
-      [layer]: initEntity[layer] || "",
+      [layer]: initEntity[layer] || ENTITY_EMPTY_VALUE,
     };
   }, {} as Entity);
 };
