@@ -23,6 +23,7 @@ import StyleSelector from "../StyleSelector";
 import batchShuffle from "@/src/utils/batchShuffle";
 import retryBatchShuffle from "@/src/utils/retryBatchShuffle";
 import getRemainedSupply from "@/src/utils/getRemainedSupply";
+import Selector from "../Selector";
 
 const isValidEntity = (entity: Entity): boolean => {
   return Object.keys(entity).reduce((acc, curLayer) => {
@@ -191,7 +192,7 @@ export default function BatchPanel({
                 return (
                   <div key={layer} className={styles.item}>
                     <div className={styles.label}>{layer}</div>
-                    <StyleSelector
+                    <Selector<string>
                       value={draftEntity[layer]}
                       onChange={(v) => {
                         setDraftEntities(
@@ -212,7 +213,7 @@ export default function BatchPanel({
                             if (index === selectedIndex) {
                               return {
                                 ...draftEntity,
-                                [layer]: "",
+                                [layer]: undefined,
                               };
                             }
                             return draftEntity;
@@ -220,7 +221,7 @@ export default function BatchPanel({
                         );
                       }}
                       options={allLayerStyles.map((layerStyle) => ({
-                        text: `${layerStyle} (${dynamicInventory[layer][layerStyle]})`,
+                        label: `${layerStyle} (${dynamicInventory[layer][layerStyle]})`,
                         value: layerStyle,
                         disabled: !validLayerStyles.includes(layerStyle),
                       }))}
@@ -232,16 +233,17 @@ export default function BatchPanel({
         </div>
         <div className={styles.right}>
           <div className={styles.toolbar}>
-            <StyleSelector
+            <Selector<number>
               className={classNames([styles.selector, styles.shuffleTotal])}
               value={shuffleTotal}
               onChange={(v) => {
-                setShuffleTotal(parseInt(v));
+                setShuffleTotal(v);
               }}
-              options={["10", "20", "50", "100"].map((v) => ({
-                text: v,
+              options={[10, 20, 50, 100].map((v) => ({
+                label: v + "",
                 value: v,
               }))}
+              usePresetOption={false}
             />
             <div className={classNames([styles.button, styles.shuffle])}>
               <input
