@@ -8,7 +8,7 @@ const presetOptionValue = "";
 type OptionValue = string | number;
 type Option<T extends OptionValue> = {
   label: string;
-  value: OptionValue;
+  value: T;
   disabled?: boolean;
 };
 
