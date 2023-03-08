@@ -5,5 +5,6 @@ export { default as InitPanel } from "./InitPanel";
 export { default as LayerPanel } from "./LayerPanel";
 export { default as LayerPreview } from "./LayerPreview";
 export { default as ManualPanel } from "./ManualPanel";
+export { default as OverviewPanel } from "./OverviewPanel";
 export { default as RestrictionPanel } from "./RestrictionPanel";
 export { default as StepBar } from "./StepBar";

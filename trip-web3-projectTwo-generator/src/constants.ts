@@ -24,6 +24,8 @@ export const RESTRICTION = "RESTRICTION";
 export const MANUAL = "MANUAL";
 // 批量随机
 export const BATCH = "BATCH";
+// 总览及导出
+export const OVERVIEW = 'OVERVIEW'
 // 操作步骤
 export const STEPS = [
   { code: INIT, text: "初始化" },
@@ -31,6 +33,7 @@ export const STEPS = [
   { code: RESTRICTION, text: "添加限制" },
   { code: MANUAL, text: "手动拼接" },
   { code: BATCH, text: "自动随机" },
+  { code: OVERVIEW, text: "总览" },
 ] as const;
 
 // keys of localStorage

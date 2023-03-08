@@ -5,6 +5,7 @@ import {
   InitPanel,
   LayerPanel,
   ManualPanel,
+  OverviewPanel,
   RestrictionPanel,
   StepBar,
 } from "./components";
@@ -15,6 +16,7 @@ import {
   LAYER,
   LSK,
   MANUAL,
+  OVERVIEW,
   RESTRICTION,
   STEPS,
 } from "./constants";
@@ -382,6 +384,17 @@ export default function App() {
             }}
           />
         ) : null}
+
+        {/* 总览及下载 */}
+        {
+          OVERVIEW === currentStepCode ? (
+            <OverviewPanel
+              layers={layers}
+              lockedEntities={lockedEntities}
+              inventorySrc={inventorySrc}
+            />
+          ) : null
+        }
       </div>
     </main>
   );
