@@ -21,6 +21,7 @@ const download = (
   entities: Array<Entity>,
   layers: Array<Layer>,
   inventorySrc: Inventory<string>,
+  offset?: number = 0
 ): Promise<boolean> => {
   const tasks = entities.map((entity) => {
     return convertTo(entity, layers, inventorySrc, "blob") as Promise<Blob>;
@@ -35,12 +36,14 @@ const download = (
             type: "text/plain;charset=utf-8",
           }
         );
-        zip.file(`/image/${index}.png`, imageBlob);
-        zip.file(`/json/${index}.json`, jsonBlob);
+        zip.file(`/image/${offset + index}.png`, imageBlob);
+        zip.file(`/json/${offset + index}.json`, jsonBlob);
       });
 
       return zip.generateAsync({ type: "blob" }).then((zipBlob) => {
-        saveAs(zipBlob, "tokens.zip");
+        saveAs(zipBlob, `tokens.${offset}.zip`);
+      }).then(() => {
+        return true;
       });
     })
     .catch((err) => {

@@ -1,8 +1,11 @@
+import promiseList from "promise-limit";
 import { Entity, Inventory, Layer } from "@/src/types";
 import classNames from "classnames";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./OverviewPanel.module.css";
 import download from "@/src/utils/download";
+
+const limit = promiseList(1);
 
 export type OverviewPanelProps = {
   layers: Array<Layer>;
@@ -17,7 +20,41 @@ const OverviewPanel = ({
   inventorySrc,
   onRelease,
 }: OverviewPanelProps) => {
+  const perBatch = 1000;
+  const total = useMemo(() => {
+    return lockedEntities.length;
+  }, [lockedEntities]);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [isDownloading, setIsDownloading] = useState(false);
+  const batchDownload = () => {
+    const paramsList: Array<
+      [Array<Entity>, Array<Layer>, Inventory<string>, number]
+    > = [];
+    for (let offset = 0; offset < total; ) {
+      paramsList.push([
+        lockedEntities.slice(offset, offset + perBatch),
+        layers,
+        inventorySrc,
+        offset,
+      ]);
+      offset = offset + perBatch;
+    }
+    const tasks: Array<Promise<boolean>> = [];
+
+    Promise.all(
+      paramsList.map((params): Promise<boolean> => {
+        return limit(() => {
+          return download(...params).then((isSuccess) => {
+            setCurrentIndex((prevState) => prevState + 1);
+            return isSuccess;
+          });
+        });
+      })
+    ).then((areAllSuccess) => {
+      setIsDownloading(false);
+      console.log(areAllSuccess);
+    });
+  };
   return (
     <div className={styles.container}>
       <div className={styles.left}></div>
@@ -77,22 +114,24 @@ const OverviewPanel = ({
               })}
               onClick={() => {
                 setIsDownloading(true);
+                setCurrentIndex(1);
                 setTimeout(() => {
-                  download(
-                    lockedEntities.slice(0, 1000),
-                    layers,
-                    inventorySrc
-                  ).then((isSuccess) => {
-                    setIsDownloading(false);
-                    console.log({ isSuccess });
-                  });
+                  batchDownload();
                 }, 0);
               }}
             />
           </div>
         </div>
         <div className={styles.content}>
-          <div className={styles.innerContainer}>hello world</div>
+          <div className={styles.innerContainer}>
+            {isDownloading ? (
+              <div>{`${currentIndex}/${Math.ceil(
+                total / perBatch
+              )} downloading ... `}</div>
+            ) : currentIndex === Math.ceil(total / perBatch) + 1 ? (
+              <div>Done</div>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>
