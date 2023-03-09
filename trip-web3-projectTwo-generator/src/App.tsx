@@ -386,15 +386,16 @@ export default function App() {
         ) : null}
 
         {/* 总览及下载 */}
-        {
-          OVERVIEW === currentStepCode ? (
-            <OverviewPanel
-              layers={layers}
-              lockedEntities={lockedEntities}
-              inventorySrc={inventorySrc}
-            />
-          ) : null
-        }
+        {OVERVIEW === currentStepCode ? (
+          <OverviewPanel
+            layers={layers}
+            lockedEntities={lockedEntities}
+            inventorySrc={inventorySrc}
+            onReleaseAll={() => {
+              setLockedEntities([]);
+            }}
+          />
+        ) : null}
       </div>
     </main>
   );

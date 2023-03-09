@@ -8,12 +8,14 @@ export type OverviewPanelProps = {
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
   inventorySrc: Inventory<string>;
+  onReleaseAll?: () => void;
 };
 
 const OverviewPanel = ({
   layers,
   lockedEntities,
   inventorySrc,
+  onReleaseAll,
 }: OverviewPanelProps) => {
   return (
     <div className={styles.container}>
@@ -38,13 +40,12 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Batch Release"
-              disabled={true}
+              disabled={lockedEntities.length < 1}
               className={classNames({
-                [styles.disabled]: true,
+                [styles.disabled]: lockedEntities.length < 1,
               })}
               onClick={() => {
-                // TODO:
-                console.log("batch release");
+                onReleaseAll && onReleaseAll();
               }}
             />
           </div>
