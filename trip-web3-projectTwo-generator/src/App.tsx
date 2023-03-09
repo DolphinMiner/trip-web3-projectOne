@@ -391,8 +391,31 @@ export default function App() {
             layers={layers}
             lockedEntities={lockedEntities}
             inventorySrc={inventorySrc}
-            onReleaseAll={() => {
-              setLockedEntities([]);
+            onRelease={(from, to) => {
+              if (from > lockedEntities.length - 1) {
+                // 如果起始位置超过了总长度,则认为本次release无效
+                return;
+              }
+              if (to !== undefined && to < from) {
+                // 如果设置了终点位置,但是终点位置小于起始位置,则认为本次release无效
+                return;
+              }
+              if (to === undefined) {
+                // 如果没有设置终点位置,则从起始位置开始的所有元素被release
+                setLockedEntities(
+                  lockedEntities.filter((lockedEntity, index) => {
+                    return index < from;
+                  })
+                );
+                return;
+              }
+              // 如果设置了有效的终点位置,则从起始位置到终点位置的元素被release
+              setLockedEntities(
+                lockedEntities.filter((lockedEntity, index) => {
+                  return index < from || index > to;
+                })
+              );
+              return;
             }}
           />
         ) : null}

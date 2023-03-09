@@ -233,7 +233,7 @@ export default function BatchPanel({
               onChange={(v) => {
                 setShuffleTotal(v);
               }}
-              options={[10, 20, 50, 100].map((v) => ({
+              options={[1, 5, 10, 20, 50, 100].map((v) => ({
                 label: v + "",
                 value: v,
               }))}

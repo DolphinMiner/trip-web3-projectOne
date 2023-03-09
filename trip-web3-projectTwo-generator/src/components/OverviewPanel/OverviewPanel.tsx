@@ -8,15 +8,16 @@ export type OverviewPanelProps = {
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
   inventorySrc: Inventory<string>;
-  onReleaseAll?: () => void;
+  onRelease?: (from: number, to?: number) => void;
 };
 
 const OverviewPanel = ({
   layers,
   lockedEntities,
   inventorySrc,
-  onReleaseAll,
+  onRelease,
 }: OverviewPanelProps) => {
+  const [isDownloading, setIsDownloading] = useState(false);
   return (
     <div className={styles.container}>
       <div className={styles.left}></div>
@@ -40,12 +41,12 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Batch Release"
-              disabled={lockedEntities.length < 1}
+              disabled={isDownloading || lockedEntities.length < 1}
               className={classNames({
-                [styles.disabled]: lockedEntities.length < 1,
+                [styles.disabled]: isDownloading || lockedEntities.length < 1,
               })}
               onClick={() => {
-                onReleaseAll && onReleaseAll();
+                onRelease && onRelease(0, 999);
               }}
             />
           </div>
@@ -67,16 +68,20 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Batch Download"
-              disabled={lockedEntities.length < 1}
+              disabled={isDownloading || lockedEntities.length < 1}
               className={classNames({
-                [styles.disabled]: lockedEntities.length < 1,
+                [styles.disabled]: isDownloading || lockedEntities.length < 1,
               })}
               onClick={() => {
-                download(lockedEntities, layers, inventorySrc).then(
-                  (isSuccess) => {
-                    console.log({ isSuccess });
-                  }
-                );
+                setIsDownloading(true);
+                setTimeout(() => {
+                  download(lockedEntities.slice(0, 1000), layers, inventorySrc).then(
+                    (isSuccess) => {
+                      setIsDownloading(false);
+                      console.log({ isSuccess });
+                    }
+                  );
+                }, 0);
               }}
             />
           </div>
