@@ -124,7 +124,12 @@ export default function BatchPanel({
             inventory: dynamicInventory,
             existedDNAs: lockedEntityDNAs,
           },
-          { isFirst: true, timeout: 10000, total: shuffleTotal }
+          {
+            isFirst: true,
+            timeout: 60000,
+            total: shuffleTotal,
+            preferDependent: true,
+          }
         )
           .then((nextDraftEntities) => {
             setDraftEntities(nextDraftEntities);

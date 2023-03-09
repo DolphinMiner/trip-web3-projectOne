@@ -17,12 +17,14 @@ const CACHE = {
   results: [],
   timeout: 0,
   remained: 0,
+  preferDependent: false,
 } as {
   start: number;
   end: number;
   results: Array<Entity>;
   timeout: number;
   remained: number;
+  preferDependent: boolean;
   total?: number;
 };
 
@@ -37,13 +39,18 @@ type Option = {
   isFirst: boolean;
   timeout: number; // 超时时间 ms
   total?: number; // 期望生成数量
+  preferDependent?: boolean; // 依赖优先
 };
 
-const loop = ({ layers, restrictions, inventory, existedDNAs }: Payload) => {
+const loop = (
+  { layers, restrictions, inventory, existedDNAs }: Payload,
+  preferDependent?: boolean
+) => {
   const { isValid, combination, nextInventory } = shuffle(
     layers,
     restrictions,
-    inventory
+    inventory,
+    preferDependent
   );
   // 当前生成成功
   if (isValid) {
@@ -58,12 +65,15 @@ const loop = ({ layers, restrictions, inventory, existedDNAs }: Payload) => {
         CACHE.total !== CACHE.results.length &&
         CACHE.remained !== CACHE.results.length
       ) {
-        loop({
-          layers,
-          restrictions,
-          inventory: nextInventory,
-          existedDNAs: nextExistedDNAs,
-        });
+        loop(
+          {
+            layers,
+            restrictions,
+            inventory: nextInventory,
+            existedDNAs: nextExistedDNAs,
+          },
+          preferDependent
+        );
       }
     }
   }
@@ -80,12 +90,13 @@ const retryBatchShuffle = (
     CACHE.results = [];
     CACHE.timeout = option.timeout;
     CACHE.start = new Date().getTime();
+    CACHE.preferDependent = !!option.preferDependent;
     if (option.total !== undefined) {
       CACHE.total = option.total;
     }
   }
   return new Promise<Array<Entity>>((resolve) => {
-    return resolve(loop(payload));
+    return resolve(loop(payload, CACHE.preferDependent));
   }).then((results) => {
     const end = new Date().getTime();
     if (end - CACHE.start > CACHE.timeout) {

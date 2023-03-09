@@ -46,7 +46,10 @@ const OverviewPanel = ({
                 [styles.disabled]: isDownloading || lockedEntities.length < 1,
               })}
               onClick={() => {
-                onRelease && onRelease(0, 999);
+                onRelease && onRelease(0);
+                // const to = lockedEntities.length - 1;
+                // const from = to - 1000 < 0 ? 0 : to - 1000;
+                // onRelease && onRelease(from, to);
               }}
             />
           </div>
@@ -75,12 +78,14 @@ const OverviewPanel = ({
               onClick={() => {
                 setIsDownloading(true);
                 setTimeout(() => {
-                  download(lockedEntities.slice(0, 1000), layers, inventorySrc).then(
-                    (isSuccess) => {
-                      setIsDownloading(false);
-                      console.log({ isSuccess });
-                    }
-                  );
+                  download(
+                    lockedEntities.slice(0, 1000),
+                    layers,
+                    inventorySrc
+                  ).then((isSuccess) => {
+                    setIsDownloading(false);
+                    console.log({ isSuccess });
+                  });
                 }, 0);
               }}
             />
