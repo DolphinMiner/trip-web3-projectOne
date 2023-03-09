@@ -57,7 +57,8 @@ const loop = (
     const entity = combinationToEntity(combination, layers);
     const dna = createDNA(entity);
     // 校验DNA有效
-    if (!existedDNAs.includes(dna)) {
+    const dnaIsExist = existedDNAs.includes(dna);
+    if (!dnaIsExist) {
       const nextExistedDNAs = [...existedDNAs, dna];
       CACHE.results.push(entity);
       if (

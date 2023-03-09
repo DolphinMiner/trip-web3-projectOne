@@ -126,7 +126,7 @@ export default function BatchPanel({
           },
           {
             isFirst: true,
-            timeout: 60000,
+            timeout: 10000,
             total: shuffleTotal,
             preferDependent: true,
           }

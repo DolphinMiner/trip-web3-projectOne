@@ -8,10 +8,9 @@ import type {
 } from "../types";
 import createOptions from "./createOptions";
 
-function random<T>(options: T[]): T {
-  return options[Math.floor(Math.random() * options.length)];
+function random(total: number) {
+  return Math.floor(Math.random() * total);
 }
-
 const shuffle = (
   layers: Array<Layer>,
   restrictions: Array<Restriction>,
@@ -83,7 +82,41 @@ const shuffle = (
           isValid: false,
         };
       }
-      const curStyle = random(options);
+      // TODO: 基于库存的随机
+      // 1. 获取所有options对应库存总和total
+      // 2. 从total中随机一个数n(0~total-1)
+      // 3. 判断
+      const supplyInfo = options.reduce(
+        (acc, curStyle) => {
+          const curStyleSupply = inventory[curLayer][curStyle];
+          return {
+            ...acc,
+            total: acc.total + curStyleSupply,
+            scope: {
+              ...acc.scope,
+              [curStyle]: [acc.total, acc.total + curStyleSupply - 1] as [
+                number,
+                number
+              ],
+            },
+          };
+        },
+        {
+          total: 0,
+          scope: {},
+        } as { total: number; scope: Record<Style, [number, number]> }
+      );
+      const randomIndex = random(supplyInfo.total);
+      const curStyle = options.reduce((acc, curOption) => {
+        if (acc !== null) return acc;
+        if (
+          randomIndex >= supplyInfo.scope[curOption][0] &&
+          randomIndex <= supplyInfo.scope[curOption][1]
+        ) {
+          return curOption;
+        }
+        return acc;
+      }, null);
       return {
         ...acc,
         combination: [...acc.combination, `${curLayer}.${curStyle}`],
