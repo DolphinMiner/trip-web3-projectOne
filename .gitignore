@@ -116,3 +116,5 @@ dist
 /demo2blindNFT/cache/
 /demo2blindNFT/webapp/contracts/
 demo2blindNFT/webapp/package-lock.json
+
+.dccache
