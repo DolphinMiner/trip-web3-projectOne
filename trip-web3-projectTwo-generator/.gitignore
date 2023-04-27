@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/sources/**/*.png
+/sources/**/*.zip
 /.pnp
 .pnp.js
 
