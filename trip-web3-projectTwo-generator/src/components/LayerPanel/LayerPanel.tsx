@@ -15,6 +15,8 @@ export type LayerPanelProps = {
   onInventoryChange: (v: Inventory) => void;
   inventorySrc: Inventory<string>;
   onInventorySrcChange: (v: Inventory<string>) => void;
+  imageType: string | undefined;
+  onImageTypeChange: (v: string) => void;
 };
 export default function LayerPanel({
   projectName,
@@ -24,6 +26,8 @@ export default function LayerPanel({
   onInventoryChange,
   inventorySrc,
   onInventorySrcChange,
+  imageType,
+  onImageTypeChange,
 }: LayerPanelProps) {
   const uuid = window.localStorage.getItem(LSK.UUID) || "";
   const [layer, setLayer] = useState("");
@@ -69,31 +73,54 @@ export default function LayerPanel({
       body: data,
     })
       .then((response) => response.json())
-      .then((res: { msg: string; data: Record<string, string> }) => {
-        console.log(res.data);
-        if (!res.data || Object.keys(res.data).length <= 0) {
-          throw new Error("Upload failed!");
+      .then(
+        (res: {
+          msg: string;
+          data?: {
+            srcObj: Record<string, string>;
+            imgType: string;
+          };
+        }) => {
+          if (res.data === undefined) {
+            throw new Error("Upload failed!");
+          }
+
+          const { srcObj = {}, imgType } = res.data;
+          // 判断此次上传图片类型是否存在
+          if (!imgType) {
+            throw new Error("Upload failed!");
+          }
+          // 判断每次上传图片类型是否相同
+          if (imageType !== undefined && imageType !== imgType) {
+            throw new Error("Multi image types");
+          }
+
+          if (Object.keys(srcObj).length <= 0) {
+            throw new Error("Upload failed!");
+          }
+
+          onImageTypeChange(imgType);
+          const styleList = Object.keys(srcObj);
+          onInventoryChange({
+            ...inventory,
+            [currentLayer]: styleList.reduce((acc, cur) => {
+              return {
+                ...acc,
+                [cur]: 0,
+              };
+            }, {} as Record<string, number>),
+          });
+          onInventorySrcChange({
+            ...inventorySrc,
+            [currentLayer]: styleList.reduce((acc, cur) => {
+              return {
+                ...acc,
+                [cur]: srcObj[cur],
+              };
+            }, {} as Record<string, string>),
+          });
         }
-        const styleList = Object.keys(res.data);
-        onInventoryChange({
-          ...inventory,
-          [currentLayer]: styleList.reduce((acc, cur) => {
-            return {
-              ...acc,
-              [cur]: 0,
-            };
-          }, {} as Record<string, number>),
-        });
-        onInventorySrcChange({
-          ...inventorySrc,
-          [currentLayer]: styleList.reduce((acc, cur) => {
-            return {
-              ...acc,
-              [cur]: res.data[cur],
-            };
-          }, {} as Record<string, string>),
-        });
-      })
+      )
       .catch((error) => {
         alert("Upload failed");
         console.error(error);

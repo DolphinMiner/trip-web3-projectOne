@@ -13,7 +13,10 @@ export const config = {
 };
 type Data = {
   message: string;
-  data?: Record<string, string>;
+  data?: {
+    srcObj: Record<string, string>;
+    imgType: string;
+  };
 };
 export default async function handler(
   req: NextApiRequest,
@@ -73,7 +76,7 @@ export default async function handler(
     fs.mkdirSync(targetFolder, { recursive: true });
 
     const tasks = Object.keys(zipData.files).map((filename) => {
-      const [styleName] = filename.split(".");
+      const [styleName, imageType] = filename.split(".");
       // @ts-ignore
       return zip
         .file(filename)
@@ -85,20 +88,37 @@ export default async function handler(
             styleName,
             // remove 'public' prefix
             stylePath: src.slice(6),
+            imageType,
           };
         });
     });
 
-    const srcObj = await (
-      await Promise.all(tasks)
-    ).reduce((acc, { styleName, stylePath }) => {
-      return {
-        ...acc,
-        [styleName]: stylePath,
-      };
-    }, {} as Record<string, string>);
+    let imgType: string | undefined = undefined;
+    const srcObj = await Promise.all(tasks).then((list) => {
+      return list.reduce((acc, { styleName, stylePath, imageType }) => {
+        if (typeof imageType !== "string") {
+          throw new Error("Missing image type");
+        } else if (imgType !== undefined && imgType !== imageType) {
+          throw new Error("Multi image types");
+        } else {
+          imgType = imageType;
+        }
 
-    res.status(200).json({ message: "File uploaded!", data: srcObj });
+        return {
+          ...acc,
+          [styleName]: stylePath,
+        };
+      }, {} as Record<string, string>);
+    });
+
+    if (imgType === undefined) {
+      throw new Error("Invalid image type");
+    }
+
+    res.status(200).json({
+      message: "File uploaded!",
+      data: { srcObj, imgType },
+    });
     return;
   } catch (error) {
     // @ts-ignore

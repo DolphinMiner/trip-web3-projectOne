@@ -118,3 +118,4 @@ dist
 demo2blindNFT/webapp/package-lock.json
 
 .dccache
+**/.DS_Store

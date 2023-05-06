@@ -9,6 +9,7 @@ const limit = promiseList<boolean>(1);
 
 export type OverviewPanelProps = {
   projectDesc: string;
+  imageType: string | undefined;
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
   inventorySrc: Inventory<string>;
@@ -17,6 +18,7 @@ export type OverviewPanelProps = {
 
 const OverviewPanel = ({
   projectDesc,
+  imageType,
   layers,
   lockedEntities,
   inventorySrc,
@@ -28,9 +30,16 @@ const OverviewPanel = ({
   }, [lockedEntities]);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isDownloading, setIsDownloading] = useState(false);
+  const isInvalidImageType = useMemo(() => {
+    return !imageType;
+  }, [imageType]);
+
   const batchDownload = () => {
+    if (imageType === undefined) {
+      return;
+    }
     const paramsList: Array<
-      [Array<Entity>, Array<Layer>, Inventory<string>, string, number]
+      [Array<Entity>, Array<Layer>, Inventory<string>, string, string, number]
     > = [];
     for (let offset = 0; offset < total; ) {
       paramsList.push([
@@ -38,6 +47,7 @@ const OverviewPanel = ({
         layers,
         inventorySrc,
         projectDesc,
+        imageType,
         offset,
       ]);
       offset = offset + perBatch;
@@ -57,6 +67,7 @@ const OverviewPanel = ({
       console.log(areAllSuccess);
     });
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.left}></div>
@@ -66,9 +77,9 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Single Release"
-              disabled={true}
+              disabled={isInvalidImageType || true}
               className={classNames({
-                [styles.disabled]: true,
+                [styles.disabled]: isInvalidImageType || true,
               })}
               onClick={() => {
                 // TODO:
@@ -80,9 +91,14 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Batch Release"
-              disabled={isDownloading || lockedEntities.length < 1}
+              disabled={
+                isInvalidImageType || isDownloading || lockedEntities.length < 1
+              }
               className={classNames({
-                [styles.disabled]: isDownloading || lockedEntities.length < 1,
+                [styles.disabled]:
+                  isInvalidImageType ||
+                  isDownloading ||
+                  lockedEntities.length < 1,
               })}
               onClick={() => {
                 onRelease && onRelease(0);
@@ -96,9 +112,9 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Single Download"
-              disabled={true}
+              disabled={isInvalidImageType || true}
               className={classNames({
-                [styles.disabled]: true,
+                [styles.disabled]: isInvalidImageType || true,
               })}
               onClick={() => {
                 // TODO:
@@ -110,9 +126,14 @@ const OverviewPanel = ({
             <input
               type="button"
               value="Batch Download"
-              disabled={isDownloading || lockedEntities.length < 1}
+              disabled={
+                isInvalidImageType || isDownloading || lockedEntities.length < 1
+              }
               className={classNames({
-                [styles.disabled]: isDownloading || lockedEntities.length < 1,
+                [styles.disabled]:
+                  isInvalidImageType ||
+                  isDownloading ||
+                  lockedEntities.length < 1,
               })}
               onClick={() => {
                 setIsDownloading(true);

@@ -82,6 +82,8 @@ export default function App() {
   // ----- State for LayerPanel
   // 自定义图层集和,关联图层渲染顺序,最靠前的图层最先渲染
   const [layers, setLayers] = useState<Array<Layer>>(getInitState().layers);
+  // 图片类型
+  const [imageType, setImageType] = useState<string>();
   // 树: 图层-样式-库存
   const [inventory, setInventory] = useState<Inventory>(() => {
     return syncInventoryFromLayers(layers, getInitState().inventory);
@@ -344,6 +346,10 @@ export default function App() {
             onInventorySrcChange={(v) => {
               setInventorySrc(v);
             }}
+            imageType={imageType}
+            onImageTypeChange={(v) => {
+              setImageType(v);
+            }}
           />
         ) : null}
 
@@ -405,6 +411,7 @@ export default function App() {
           <OverviewPanel
             layers={layers}
             projectDesc={projectDesc}
+            imageType={imageType}
             lockedEntities={lockedEntities}
             inventorySrc={inventorySrc}
             onRelease={(from, to) => {

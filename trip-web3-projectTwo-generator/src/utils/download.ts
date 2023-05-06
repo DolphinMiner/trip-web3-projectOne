@@ -3,7 +3,12 @@ import { saveAs } from "file-saver";
 import { Entity, Inventory, Layer } from "../types";
 import convertTo from "./convertTo";
 
-const formatMetadata = (description: string, entity: Entity, index: number) => {
+const formatMetadata = (
+  description: string,
+  imageType: string,
+  entity: Entity,
+  index: number
+) => {
   return {
     attributes: Object.keys(entity).map((key) => {
       return {
@@ -12,7 +17,7 @@ const formatMetadata = (description: string, entity: Entity, index: number) => {
       };
     }),
     description,
-    image: `ipfs://YourImageURI/${index}.jpg`,
+    image: `ipfs://YourImageURI/${index}.${imageType}`,
     name: `#${index}`,
   };
 };
@@ -22,6 +27,7 @@ const download = (
   layers: Array<Layer>,
   inventorySrc: Inventory<string>,
   description: string,
+  imageType: string,
   offset: number = 0
 ): Promise<boolean> => {
   const tasks = entities.map((entity) => {
@@ -32,7 +38,11 @@ const download = (
       const zip = new JSZip();
       imageBlobs.forEach((imageBlob, index) => {
         const jsonBlob = new Blob(
-          [JSON.stringify(formatMetadata(description, entities[index], index))],
+          [
+            JSON.stringify(
+              formatMetadata(description, imageType, entities[index], index)
+            ),
+          ],
           {
             type: "text/plain;charset=utf-8",
           }
