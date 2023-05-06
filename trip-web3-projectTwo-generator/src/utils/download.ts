@@ -22,14 +22,24 @@ const formatMetadata = (
   };
 };
 
+export type DownloadSource = {
+  entities: Array<Entity>;
+  layers: Array<Layer>;
+  inventorySrc: Inventory<string>;
+};
+export type DownloadConfig = {
+  projectName: string;
+  description: string;
+  imageType: string;
+  baseOffset: number; // 从 0 + initOffset 开始命名文件
+  zipOffset: number; // 分批下载时候多个zip包的偏移量
+};
 const download = (
-  entities: Array<Entity>,
-  layers: Array<Layer>,
-  inventorySrc: Inventory<string>,
-  description: string,
-  imageType: string,
-  offset: number = 0
+  source: DownloadSource,
+  config: DownloadConfig
 ): Promise<boolean> => {
+  const { entities, layers, inventorySrc } = source;
+  const { projectName, description, imageType, baseOffset, zipOffset } = config;
   const tasks = entities.map((entity) => {
     return convertTo(entity, layers, inventorySrc, "blob") as Promise<Blob>;
   });
@@ -47,14 +57,14 @@ const download = (
             type: "text/plain;charset=utf-8",
           }
         );
-        zip.file(`/image/${offset + index}.png`, imageBlob);
-        zip.file(`/json/${offset + index}.json`, jsonBlob);
+        zip.file(`/image/${baseOffset + zipOffset + index}.png`, imageBlob);
+        zip.file(`/json/${baseOffset + zipOffset + index}.json`, jsonBlob);
       });
 
       return zip
         .generateAsync({ type: "blob" })
         .then((zipBlob) => {
-          saveAs(zipBlob, `tokens.${offset}.zip`);
+          saveAs(zipBlob, `${projectName}.${zipOffset}.zip`);
         })
         .then(() => {
           return true;

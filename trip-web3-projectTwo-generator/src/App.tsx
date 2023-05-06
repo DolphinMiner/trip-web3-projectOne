@@ -31,6 +31,7 @@ const getInitState = () => {
     ),
     projectName: window.localStorage.getItem(LSK.PROJECT_NAME) || "",
     projectDesc: window.localStorage.getItem(LSK.PROJECT_DESC) || "",
+    imageType: window.localStorage.getItem(LSK.IMAGE_TYPE) || "png",
     totalSupply: parseInt(
       window.localStorage.getItem(LSK.TOTAL_SUPPLY) || JSON.stringify(10)
     ),
@@ -77,13 +78,15 @@ export default function App() {
   const [projectName, setProjectName] = useState(getInitState().projectName);
   // 项目描述
   const [projectDesc, setProjectDesc] = useState(getInitState().projectDesc);
+  // 偏移量，关系到图片起始值
+  const [offset, setOffset] = useState(0);
   // 期望总NFT数量
   const [totalSupply, setTotalSupply] = useState(getInitState().totalSupply);
   // ----- State for LayerPanel
   // 自定义图层集和,关联图层渲染顺序,最靠前的图层最先渲染
   const [layers, setLayers] = useState<Array<Layer>>(getInitState().layers);
   // 图片类型
-  const [imageType, setImageType] = useState<string>();
+  const [imageType, setImageType] = useState<string>(getInitState().imageType);
   // 树: 图层-样式-库存
   const [inventory, setInventory] = useState<Inventory>(() => {
     return syncInventoryFromLayers(layers, getInitState().inventory);
@@ -134,6 +137,9 @@ export default function App() {
   useEffect(() => {
     window.localStorage.setItem(LSK.PROJECT_NAME, projectName);
   }, [projectName]);
+  useEffect(() => {
+    window.localStorage.setItem(LSK.IMAGE_TYPE, imageType);
+  }, [imageType]);
   useEffect(() => {
     window.localStorage.setItem(LSK.PROJECT_DESC, projectDesc);
   }, [projectDesc]);
@@ -320,6 +326,10 @@ export default function App() {
             onProjectDescChange={(v) => {
               setProjectDesc(v);
             }}
+            imageType={imageType}
+            onImageTypeChange={(v) => {
+              setImageType(v);
+            }}
             totalSupply={totalSupply}
             onTotalSupplyChange={(v) => {
               setTotalSupply(v);
@@ -410,8 +420,10 @@ export default function App() {
         {OVERVIEW === currentStepCode ? (
           <OverviewPanel
             layers={layers}
+            projectName={projectName}
             projectDesc={projectDesc}
             imageType={imageType}
+            offset={offset}
             lockedEntities={lockedEntities}
             inventorySrc={inventorySrc}
             onRelease={(from, to) => {

@@ -6,6 +6,8 @@ export type InitPanelProps = {
   onProjectNameChange: (v: string) => void;
   projectDesc: string;
   onProjectDescChange: (v: string) => void;
+  imageType: string;
+  onImageTypeChange: (v: string) => void;
   totalSupply: number;
   onTotalSupplyChange: (v: number) => void;
 };
@@ -15,6 +17,8 @@ export default function InitPanel({
   onProjectNameChange,
   projectDesc,
   onProjectDescChange,
+  imageType,
+  onImageTypeChange,
   totalSupply,
   onTotalSupplyChange,
 }: InitPanelProps) {
@@ -59,6 +63,20 @@ export default function InitPanel({
           value={totalSupply}
           onChange={(e) => {
             onTotalSupplyChange(parseInt(e.target.value || "0"));
+          }}
+        />
+      </div>
+      <div className={styles.item}>
+        <label className={styles.label} htmlFor="imageType">
+          Image Type
+        </label>
+        <input
+          className={styles.input}
+          id="imageType"
+          type="text"
+          value={imageType}
+          onChange={(e) => {
+            onImageTypeChange(e.target.value);
           }}
         />
       </div>

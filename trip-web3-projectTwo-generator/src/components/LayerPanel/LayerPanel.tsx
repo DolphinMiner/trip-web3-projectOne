@@ -15,7 +15,7 @@ export type LayerPanelProps = {
   onInventoryChange: (v: Inventory) => void;
   inventorySrc: Inventory<string>;
   onInventorySrcChange: (v: Inventory<string>) => void;
-  imageType: string | undefined;
+  imageType: string;
   onImageTypeChange: (v: string) => void;
 };
 export default function LayerPanel({
@@ -91,7 +91,7 @@ export default function LayerPanel({
             throw new Error("Upload failed!");
           }
           // 判断每次上传图片类型是否相同
-          if (imageType !== undefined && imageType !== imgType) {
+          if (imageType !== imgType) {
             throw new Error("Multi image types");
           }
 

@@ -1,15 +1,17 @@
-import promiseList from "promise-limit";
 import { Entity, Inventory, Layer } from "@/src/types";
+import download, { DownloadConfig, DownloadSource } from "@/src/utils/download";
 import classNames from "classnames";
+import promiseList from "promise-limit";
 import { useMemo, useState } from "react";
 import styles from "./OverviewPanel.module.css";
-import download from "@/src/utils/download";
 
 const limit = promiseList<boolean>(1);
 
 export type OverviewPanelProps = {
+  projectName: string;
   projectDesc: string;
   imageType: string | undefined;
+  offset: number;
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
   inventorySrc: Inventory<string>;
@@ -17,8 +19,10 @@ export type OverviewPanelProps = {
 };
 
 const OverviewPanel = ({
+  projectName,
   projectDesc,
   imageType,
+  offset,
   layers,
   lockedEntities,
   inventorySrc,
@@ -31,26 +35,33 @@ const OverviewPanel = ({
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isDownloading, setIsDownloading] = useState(false);
   const isInvalidImageType = useMemo(() => {
-    return !imageType;
-  }, [imageType]);
+    const entityNames = Object.keys(inventorySrc);
+    const styleNames = Object.keys(inventorySrc[entityNames[0]]);
+    const [, imgType] = inventorySrc[entityNames[0]][styleNames[0]].split(".");
+    return imageType !== imgType;
+  }, [imageType, inventorySrc]);
 
   const batchDownload = () => {
     if (imageType === undefined) {
       return;
     }
-    const paramsList: Array<
-      [Array<Entity>, Array<Layer>, Inventory<string>, string, string, number]
-    > = [];
-    for (let offset = 0; offset < total; ) {
+    const paramsList: Array<[DownloadSource, DownloadConfig]> = [];
+    for (let zipOffset = 0; zipOffset < total; ) {
       paramsList.push([
-        lockedEntities.slice(offset, offset + perBatch),
-        layers,
-        inventorySrc,
-        projectDesc,
-        imageType,
-        offset,
+        {
+          entities: lockedEntities.slice(zipOffset, zipOffset + perBatch),
+          layers,
+          inventorySrc,
+        },
+        {
+          projectName,
+          description: projectDesc,
+          imageType,
+          baseOffset: offset,
+          zipOffset,
+        },
       ]);
-      offset = offset + perBatch;
+      zipOffset = zipOffset + perBatch;
     }
 
     Promise.all(
