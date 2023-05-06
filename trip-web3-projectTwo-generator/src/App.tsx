@@ -79,7 +79,7 @@ export default function App() {
   // 项目描述
   const [projectDesc, setProjectDesc] = useState(getInitState().projectDesc);
   // 偏移量，关系到图片起始值
-  const [offset, setOffset] = useState(0);
+  const [baseOffset, setBaseOffset] = useState(0);
   // 期望总NFT数量
   const [totalSupply, setTotalSupply] = useState(getInitState().totalSupply);
   // ----- State for LayerPanel
@@ -335,6 +335,10 @@ export default function App() {
               setTotalSupply(v);
               setLockedEntities([]);
             }}
+            baseOffset={baseOffset}
+            onBaseOffsetChange={(v) => {
+              setBaseOffset(v);
+            }}
           />
         ) : null}
 
@@ -423,7 +427,7 @@ export default function App() {
             projectName={projectName}
             projectDesc={projectDesc}
             imageType={imageType}
-            offset={offset}
+            baseOffset={baseOffset}
             lockedEntities={lockedEntities}
             inventorySrc={inventorySrc}
             onRelease={(from, to) => {

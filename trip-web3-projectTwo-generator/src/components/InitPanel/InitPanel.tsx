@@ -10,6 +10,8 @@ export type InitPanelProps = {
   onImageTypeChange: (v: string) => void;
   totalSupply: number;
   onTotalSupplyChange: (v: number) => void;
+  baseOffset: number;
+  onBaseOffsetChange: (v: number) => void;
 };
 
 export default function InitPanel({
@@ -21,6 +23,8 @@ export default function InitPanel({
   onImageTypeChange,
   totalSupply,
   onTotalSupplyChange,
+  baseOffset,
+  onBaseOffsetChange,
 }: InitPanelProps) {
   return (
     <div className={styles.container}>
@@ -77,6 +81,20 @@ export default function InitPanel({
           value={imageType}
           onChange={(e) => {
             onImageTypeChange(e.target.value);
+          }}
+        />
+      </div>
+      <div className={styles.item}>
+        <label className={styles.label} htmlFor="baseOffset">
+          Base Offset
+        </label>
+        <input
+          className={styles.input}
+          id="baseOffset"
+          type="number"
+          value={baseOffset}
+          onChange={(e) => {
+            onBaseOffsetChange(parseInt(e.target.value || "0"));
           }}
         />
       </div>

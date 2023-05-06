@@ -50,7 +50,12 @@ const download = (
         const jsonBlob = new Blob(
           [
             JSON.stringify(
-              formatMetadata(description, imageType, entities[index], index)
+              formatMetadata(
+                description,
+                imageType,
+                entities[index],
+                baseOffset + zipOffset + index
+              )
             ),
           ],
           {

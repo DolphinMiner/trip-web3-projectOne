@@ -11,7 +11,7 @@ export type OverviewPanelProps = {
   projectName: string;
   projectDesc: string;
   imageType: string | undefined;
-  offset: number;
+  baseOffset: number;
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
   inventorySrc: Inventory<string>;
@@ -22,7 +22,7 @@ const OverviewPanel = ({
   projectName,
   projectDesc,
   imageType,
-  offset,
+  baseOffset,
   layers,
   lockedEntities,
   inventorySrc,
@@ -57,7 +57,7 @@ const OverviewPanel = ({
           projectName,
           description: projectDesc,
           imageType,
-          baseOffset: offset,
+          baseOffset,
           zipOffset,
         },
       ]);
