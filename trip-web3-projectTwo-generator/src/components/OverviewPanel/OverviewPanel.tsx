@@ -10,7 +10,7 @@ const limit = promiseList<boolean>(1);
 export type OverviewPanelProps = {
   projectName: string;
   projectDesc: string;
-  imageType: string | undefined;
+  imageType: string;
   baseOffset: number;
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
