@@ -30,6 +30,7 @@ const getInitState = () => {
       window.localStorage.getItem(LSK.CURRENT_STEP) || JSON.stringify(0)
     ),
     projectName: window.localStorage.getItem(LSK.PROJECT_NAME) || "",
+    projectDesc: window.localStorage.getItem(LSK.PROJECT_DESC) || "",
     totalSupply: parseInt(
       window.localStorage.getItem(LSK.TOTAL_SUPPLY) || JSON.stringify(10)
     ),
@@ -74,6 +75,8 @@ export default function App() {
   // ----- State for InitPanel
   // 项目名
   const [projectName, setProjectName] = useState(getInitState().projectName);
+  // 项目描述
+  const [projectDesc, setProjectDesc] = useState(getInitState().projectDesc);
   // 期望总NFT数量
   const [totalSupply, setTotalSupply] = useState(getInitState().totalSupply);
   // ----- State for LayerPanel
@@ -130,6 +133,9 @@ export default function App() {
     window.localStorage.setItem(LSK.PROJECT_NAME, projectName);
   }, [projectName]);
   useEffect(() => {
+    window.localStorage.setItem(LSK.PROJECT_DESC, projectDesc);
+  }, [projectDesc]);
+  useEffect(() => {
     window.localStorage.setItem(LSK.TOTAL_SUPPLY, JSON.stringify(totalSupply));
   }, [totalSupply]);
   // ----- Action for LayerPanel
@@ -184,6 +190,11 @@ export default function App() {
       // 检查项目名
       if (!projectName) {
         alert("Project name should not be empty!");
+        return;
+      }
+      // 检查项目描述
+      if (!projectDesc) {
+        alert("Project description should not be empty!");
         return;
       }
       // 检查库存总量
@@ -303,6 +314,10 @@ export default function App() {
             onProjectNameChange={(v) => {
               setProjectName(v);
             }}
+            projectDesc={projectDesc}
+            onProjectDescChange={(v) => {
+              setProjectDesc(v);
+            }}
             totalSupply={totalSupply}
             onTotalSupplyChange={(v) => {
               setTotalSupply(v);
@@ -389,6 +404,7 @@ export default function App() {
         {OVERVIEW === currentStepCode ? (
           <OverviewPanel
             layers={layers}
+            projectDesc={projectDesc}
             lockedEntities={lockedEntities}
             inventorySrc={inventorySrc}
             onRelease={(from, to) => {

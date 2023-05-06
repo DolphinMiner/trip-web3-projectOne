@@ -4,6 +4,8 @@ import styles from "./InitPanel.module.css";
 export type InitPanelProps = {
   projectName: string;
   onProjectNameChange: (v: string) => void;
+  projectDesc: string;
+  onProjectDescChange: (v: string) => void;
   totalSupply: number;
   onTotalSupplyChange: (v: number) => void;
 };
@@ -11,6 +13,8 @@ export type InitPanelProps = {
 export default function InitPanel({
   projectName,
   onProjectNameChange,
+  projectDesc,
+  onProjectDescChange,
   totalSupply,
   onTotalSupplyChange,
 }: InitPanelProps) {
@@ -31,6 +35,20 @@ export default function InitPanel({
         />
       </div>
       <div className={styles.item}>
+        <label className={styles.label} htmlFor="projectDesc">
+          Project Description
+        </label>
+        <input
+          className={styles.input}
+          id="projectDesc"
+          type="text"
+          value={projectDesc}
+          onChange={(e) => {
+            onProjectDescChange(e.target.value);
+          }}
+        />
+      </div>
+      <div className={styles.item}>
         <label className={styles.label} htmlFor="totalSupply">
           Total Supply
         </label>
@@ -40,7 +58,7 @@ export default function InitPanel({
           type="number"
           value={totalSupply}
           onChange={(e) => {
-            onTotalSupplyChange(parseInt(e.target.value || '0'));
+            onTotalSupplyChange(parseInt(e.target.value || "0"));
           }}
         />
       </div>

@@ -25,7 +25,7 @@ export const MANUAL = "MANUAL";
 // 批量随机
 export const BATCH = "BATCH";
 // 总览及导出
-export const OVERVIEW = 'OVERVIEW'
+export const OVERVIEW = "OVERVIEW";
 // 操作步骤
 export const STEPS = [
   { code: INIT, text: "初始化" },
@@ -41,6 +41,7 @@ export const LSK = {
   UUID: "UUID",
   CURRENT_STEP: "CURRENT_STEP",
   PROJECT_NAME: "PROJECT_NAME",
+  PROJECT_DESC: "PROJECT_DESC",
   TOTAL_SUPPLY: "TOTAL_SUPPLY",
   LAYERS: "LAYERS",
   INVENTORY: "INVENTORY",

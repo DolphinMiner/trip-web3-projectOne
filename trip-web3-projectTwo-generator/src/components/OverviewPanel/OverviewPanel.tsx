@@ -5,9 +5,10 @@ import { useMemo, useState } from "react";
 import styles from "./OverviewPanel.module.css";
 import download from "@/src/utils/download";
 
-const limit = promiseList(1);
+const limit = promiseList<boolean>(1);
 
 export type OverviewPanelProps = {
+  projectDesc: string;
   layers: Array<Layer>;
   lockedEntities: Array<Entity>;
   inventorySrc: Inventory<string>;
@@ -15,6 +16,7 @@ export type OverviewPanelProps = {
 };
 
 const OverviewPanel = ({
+  projectDesc,
   layers,
   lockedEntities,
   inventorySrc,
@@ -28,18 +30,18 @@ const OverviewPanel = ({
   const [isDownloading, setIsDownloading] = useState(false);
   const batchDownload = () => {
     const paramsList: Array<
-      [Array<Entity>, Array<Layer>, Inventory<string>, number]
+      [Array<Entity>, Array<Layer>, Inventory<string>, string, number]
     > = [];
     for (let offset = 0; offset < total; ) {
       paramsList.push([
         lockedEntities.slice(offset, offset + perBatch),
         layers,
         inventorySrc,
+        projectDesc,
         offset,
       ]);
       offset = offset + perBatch;
     }
-    const tasks: Array<Promise<boolean>> = [];
 
     Promise.all(
       paramsList.map((params): Promise<boolean> => {
