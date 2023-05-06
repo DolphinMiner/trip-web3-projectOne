@@ -1,30 +1,26 @@
+import getRemainedSupply from "@/src/utils/getRemainedSupply";
+import isValidEntity from "@/src/utils/isValidEntity";
+import retryBatchShuffle from "@/src/utils/retryBatchShuffle";
 import classNames from "classnames";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { ENTITY_EMPTY_VALUE } from "../../constants";
 import type {
-  Layer,
+  DNA,
   Entity,
-  EntityAction,
   Inventory,
-  Style,
+  Layer,
   LayerWithStyle,
   Restriction,
-  DNA,
+  Style,
 } from "../../types";
-import Avatar from "../Avatar";
-import LayerPreview from "../LayerPreview";
-import { ENTITY_EMPTY_VALUE, ENTITY_ACTION } from "../../constants";
-import createOptions from "../../utils/createOptions";
 import createDNA from "../../utils/createDNA";
-import styles from "./BatchPanel.module.css";
+import createOptions from "../../utils/createOptions";
+import Avatar from "../Avatar";
 import EntityDrawer from "../EntityDrawer";
-import createEntity from "@/src/utils/createEntity";
-import StyleSelector from "../StyleSelector";
-import batchShuffle from "@/src/utils/batchShuffle";
-import retryBatchShuffle from "@/src/utils/retryBatchShuffle";
-import getRemainedSupply from "@/src/utils/getRemainedSupply";
+import LayerPreview from "../LayerPreview";
 import Selector from "../Selector";
-import isValidEntity from "@/src/utils/isValidEntity";
+import StyleSelector from "../StyleSelector";
+import styles from "./BatchPanel.module.css";
 
 export type BatchPanelProps = {
   layers: Array<Layer>;

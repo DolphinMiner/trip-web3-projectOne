@@ -1,11 +1,11 @@
+import { useEffect, useMemo, useState } from "react";
+import InfiniteScroll from "react-infinite-scroller";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
-import InfiniteScroll from "react-infinite-scroller";
 import { Entity, Inventory, Layer } from "../../types";
+import createDNA from "../../utils/createDNA";
 import Avatar from "../Avatar";
 import styles from "./EntityDrawer.module.css";
-import createDNA from "../../utils/createDNA";
-import { useEffect, useMemo, useState } from "react";
 
 export type EntityDrawerProps = {
   open: boolean;
@@ -32,7 +32,7 @@ const EntityDrawer = ({
   const total = useMemo(() => {
     return entities.length;
   }, [entities]);
-  const showItems = (posts) => {
+  const showItems = (posts: Entity[]) => {
     const items = [];
     for (let i = 0; i < records; i++) {
       const entity = posts[i];
@@ -77,41 +77,41 @@ const EntityDrawer = ({
   return (
     <Drawer open={open} onClose={onClose} direction="right">
       <div className={styles.container}>
-        {/* <div className={styles.innerContainer}>
-          {entities.length === 0 ? (
-            <div>There is no locked entities.</div>
-          ) : null}
-          {entities.map((entity, index) => (
-            <div
-              key={createDNA(entity)}
-              className={styles.item}
-              onClick={() => {
-                onSelectEntity(index);
-              }}
-            >
-              <Avatar
-                entity={entity}
-                layers={layers}
-                inventorySrc={inventorySrc}
-                className={styles.avatar}
-              />
-            </div>
-          ))}
-        </div> */}
+        {entities.length <= itemsPerPage ? (
+          <div className={styles.innerContainer}>
+            {entities.map((entity, index) => (
+              <div
+                key={createDNA(entity)}
+                className={styles.item}
+                onClick={() => {
+                  onSelectEntity(index);
+                }}
+              >
+                <Avatar
+                  entity={entity}
+                  layers={layers}
+                  inventorySrc={inventorySrc}
+                  className={styles.avatar}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            loader={
+              <h4 key="loader" className="loader">
+                Loading...
+              </h4>
+            }
+            useWindow={false}
+          >
+            {showItems(entities)}
+          </InfiniteScroll>
+        )}
         {total === 0 ? <div>There is no locked entities.</div> : null}
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={loadMore}
-          hasMore={hasMore}
-          loader={
-            <h4 key="loader" className="loader">
-              Loading...
-            </h4>
-          }
-          useWindow={false}
-        >
-          {showItems(entities)}
-        </InfiniteScroll>
       </div>
     </Drawer>
   );

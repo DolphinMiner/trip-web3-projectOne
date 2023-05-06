@@ -69,7 +69,7 @@ const download = (
       return zip
         .generateAsync({ type: "blob" })
         .then((zipBlob) => {
-          saveAs(zipBlob, `${projectName}.${zipOffset}.zip`);
+          saveAs(zipBlob, `${projectName}.${baseOffset + zipOffset}.zip`);
         })
         .then(() => {
           return true;
