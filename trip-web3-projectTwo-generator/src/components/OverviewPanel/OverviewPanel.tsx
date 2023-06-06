@@ -18,6 +18,7 @@ export type OverviewPanelProps = {
   onRelease?: (from: number, to?: number) => void;
 };
 
+const PER_BATCH = 100;
 const OverviewPanel = ({
   projectName,
   projectDesc,
@@ -28,7 +29,6 @@ const OverviewPanel = ({
   inventorySrc,
   onRelease,
 }: OverviewPanelProps) => {
-  const perBatch = 1000;
   const total = useMemo(() => {
     return lockedEntities.length;
   }, [lockedEntities]);
@@ -49,7 +49,7 @@ const OverviewPanel = ({
     for (let zipOffset = 0; zipOffset < total; ) {
       paramsList.push([
         {
-          entities: lockedEntities.slice(zipOffset, zipOffset + perBatch),
+          entities: lockedEntities.slice(zipOffset, zipOffset + PER_BATCH),
           layers,
           inventorySrc,
         },
@@ -61,7 +61,7 @@ const OverviewPanel = ({
           zipOffset,
         },
       ]);
-      zipOffset = zipOffset + perBatch;
+      zipOffset = zipOffset + PER_BATCH;
     }
 
     Promise.all(
@@ -160,9 +160,9 @@ const OverviewPanel = ({
           <div className={styles.innerContainer}>
             {isDownloading ? (
               <div>{`${currentIndex}/${Math.ceil(
-                total / perBatch
+                total / PER_BATCH
               )} downloading ... `}</div>
-            ) : currentIndex === Math.ceil(total / perBatch) + 1 ? (
+            ) : currentIndex === Math.ceil(total / PER_BATCH) + 1 ? (
               <div>Done</div>
             ) : null}
           </div>
