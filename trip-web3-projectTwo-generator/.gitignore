@@ -42,3 +42,4 @@ public/upload
 *.zip
 
 src/config.ts
+script/*.json
